@@ -2,17 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Movement : MonoBehaviour
+public class Movement : InputComponent
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void setInput(NormalInput inputs)
     {
-        
+        inputs.Map.Movement.performed += ctx =>
+        {
+            Vector3 v = transform.position;
+
+            var aux = ctx.ReadValue<Vector2>();
+
+            v.x += aux.x;
+            v.y += aux.y;
+
+            transform.position = v;
+        };
+
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
