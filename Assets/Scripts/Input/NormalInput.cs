@@ -25,6 +25,14 @@ public class @NormalInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Interaction"",
+                    ""type"": ""Button"",
+                    ""id"": ""8586698f-4f17-4411-a474-e53207b69c18"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -137,6 +145,17 @@ public class @NormalInput : IInputActionCollection, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3ab97461-0c2c-4349-b558-32c343a79f50"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""Interaction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -173,6 +192,7 @@ public class @NormalInput : IInputActionCollection, IDisposable
         // Map
         m_Map = asset.FindActionMap("Map", throwIfNotFound: true);
         m_Map_Movement = m_Map.FindAction("Movement", throwIfNotFound: true);
+        m_Map_Interaction = m_Map.FindAction("Interaction", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -223,11 +243,13 @@ public class @NormalInput : IInputActionCollection, IDisposable
     private readonly InputActionMap m_Map;
     private IMapActions m_MapActionsCallbackInterface;
     private readonly InputAction m_Map_Movement;
+    private readonly InputAction m_Map_Interaction;
     public struct MapActions
     {
         private @NormalInput m_Wrapper;
         public MapActions(@NormalInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Map_Movement;
+        public InputAction @Interaction => m_Wrapper.m_Map_Interaction;
         public InputActionMap Get() { return m_Wrapper.m_Map; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -240,6 +262,9 @@ public class @NormalInput : IInputActionCollection, IDisposable
                 @Movement.started -= m_Wrapper.m_MapActionsCallbackInterface.OnMovement;
                 @Movement.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnMovement;
                 @Movement.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnMovement;
+                @Interaction.started -= m_Wrapper.m_MapActionsCallbackInterface.OnInteraction;
+                @Interaction.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnInteraction;
+                @Interaction.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnInteraction;
             }
             m_Wrapper.m_MapActionsCallbackInterface = instance;
             if (instance != null)
@@ -247,6 +272,9 @@ public class @NormalInput : IInputActionCollection, IDisposable
                 @Movement.started += instance.OnMovement;
                 @Movement.performed += instance.OnMovement;
                 @Movement.canceled += instance.OnMovement;
+                @Interaction.started += instance.OnInteraction;
+                @Interaction.performed += instance.OnInteraction;
+                @Interaction.canceled += instance.OnInteraction;
             }
         }
     }
@@ -263,5 +291,6 @@ public class @NormalInput : IInputActionCollection, IDisposable
     public interface IMapActions
     {
         void OnMovement(InputAction.CallbackContext context);
+        void OnInteraction(InputAction.CallbackContext context);
     }
 }
