@@ -33,6 +33,14 @@ public class @NormalInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Text"",
+                    ""type"": ""Button"",
+                    ""id"": ""89bafa49-d1b4-40fb-b1d4-f14f101c04d6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -156,6 +164,17 @@ public class @NormalInput : IInputActionCollection, IDisposable
                     ""action"": ""Interaction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""26a7516c-a376-4128-b105-744a3b578e1d"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""Text"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -193,6 +212,7 @@ public class @NormalInput : IInputActionCollection, IDisposable
         m_Map = asset.FindActionMap("Map", throwIfNotFound: true);
         m_Map_Movement = m_Map.FindAction("Movement", throwIfNotFound: true);
         m_Map_Interaction = m_Map.FindAction("Interaction", throwIfNotFound: true);
+        m_Map_Text = m_Map.FindAction("Text", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -244,12 +264,14 @@ public class @NormalInput : IInputActionCollection, IDisposable
     private IMapActions m_MapActionsCallbackInterface;
     private readonly InputAction m_Map_Movement;
     private readonly InputAction m_Map_Interaction;
+    private readonly InputAction m_Map_Text;
     public struct MapActions
     {
         private @NormalInput m_Wrapper;
         public MapActions(@NormalInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Map_Movement;
         public InputAction @Interaction => m_Wrapper.m_Map_Interaction;
+        public InputAction @Text => m_Wrapper.m_Map_Text;
         public InputActionMap Get() { return m_Wrapper.m_Map; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -265,6 +287,9 @@ public class @NormalInput : IInputActionCollection, IDisposable
                 @Interaction.started -= m_Wrapper.m_MapActionsCallbackInterface.OnInteraction;
                 @Interaction.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnInteraction;
                 @Interaction.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnInteraction;
+                @Text.started -= m_Wrapper.m_MapActionsCallbackInterface.OnText;
+                @Text.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnText;
+                @Text.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnText;
             }
             m_Wrapper.m_MapActionsCallbackInterface = instance;
             if (instance != null)
@@ -275,6 +300,9 @@ public class @NormalInput : IInputActionCollection, IDisposable
                 @Interaction.started += instance.OnInteraction;
                 @Interaction.performed += instance.OnInteraction;
                 @Interaction.canceled += instance.OnInteraction;
+                @Text.started += instance.OnText;
+                @Text.performed += instance.OnText;
+                @Text.canceled += instance.OnText;
             }
         }
     }
@@ -292,5 +320,6 @@ public class @NormalInput : IInputActionCollection, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnInteraction(InputAction.CallbackContext context);
+        void OnText(InputAction.CallbackContext context);
     }
 }
