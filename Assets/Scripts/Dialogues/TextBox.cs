@@ -21,7 +21,7 @@ public class TextBox : InputComponent
 
     Queue<string> lines;
     string currentLine;
-    
+
     Dialogue currentDialogue;
 
     bool endOfLine;
@@ -39,7 +39,7 @@ public class TextBox : InputComponent
 
         if (!displayingDialogue)
         {
-            
+
 
             currentDialogue = d;
 
@@ -96,6 +96,8 @@ public class TextBox : InputComponent
         {
             textMesh.text += c;
 
+            playTypingSound();
+
             yield return new WaitForSeconds(typeDelay);
 
         }
@@ -103,6 +105,7 @@ public class TextBox : InputComponent
         yield return null;
 
     }
+
 
     void fillCurrentLine()
     {
@@ -113,6 +116,11 @@ public class TextBox : InputComponent
         textMesh.text = currentLine;
         endOfLine = true;
 
+    }
+
+    void playTypingSound()
+    { 
+        //Do something
     }
 
 
