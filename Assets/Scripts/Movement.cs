@@ -8,14 +8,18 @@ public class Movement : InputComponent
     {
         inputs.Map.Movement.performed += ctx =>
         {
-            Vector3 v = transform.position;
+            if (!Pauser.isPaused) {
 
-            var aux = ctx.ReadValue<Vector2>();
+                Vector3 v = transform.position;
 
-            v.x += aux.x;
-            v.y += aux.y;
+                var aux = ctx.ReadValue<Vector2>();
 
-            transform.position = v;
+                v.x += aux.x;
+                v.y += aux.y;
+
+                transform.position = v;
+            }
+            
         };
 
 

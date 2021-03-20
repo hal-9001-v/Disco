@@ -21,13 +21,20 @@ public class InteractionTrigger : InputComponent
 
 
     void triggerInteractableInRange() {
-        foreach (Interactable interactable in interactables) {
-            if (Vector2.Distance(interactable.transform.position, transform.position) < range) {
-                interactable.triggerInteraction();
 
-                return;
+        if (!Pauser.isPaused) {
+            
+            foreach (Interactable interactable in interactables)
+            {
+                if (Vector2.Distance(interactable.transform.position, transform.position) < range)
+                {
+                    interactable.triggerInteraction();
+
+                    return;
+                }
             }
         }
+        
 
     }
     public override void setInput(NormalInput inputs)

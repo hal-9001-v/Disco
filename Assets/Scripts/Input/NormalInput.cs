@@ -41,6 +41,14 @@ public class @NormalInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""b28a4302-86b9-4b29-82c4-387798db5d95"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -175,6 +183,28 @@ public class @NormalInput : IInputActionCollection, IDisposable
                     ""action"": ""Text"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5a3e0454-4083-4d31-8ffc-f01e2516e6f8"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""949e958a-4e8e-46f9-bec0-eab4135eeeb4"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -213,6 +243,7 @@ public class @NormalInput : IInputActionCollection, IDisposable
         m_Map_Movement = m_Map.FindAction("Movement", throwIfNotFound: true);
         m_Map_Interaction = m_Map.FindAction("Interaction", throwIfNotFound: true);
         m_Map_Text = m_Map.FindAction("Text", throwIfNotFound: true);
+        m_Map_Pause = m_Map.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -265,6 +296,7 @@ public class @NormalInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Map_Movement;
     private readonly InputAction m_Map_Interaction;
     private readonly InputAction m_Map_Text;
+    private readonly InputAction m_Map_Pause;
     public struct MapActions
     {
         private @NormalInput m_Wrapper;
@@ -272,6 +304,7 @@ public class @NormalInput : IInputActionCollection, IDisposable
         public InputAction @Movement => m_Wrapper.m_Map_Movement;
         public InputAction @Interaction => m_Wrapper.m_Map_Interaction;
         public InputAction @Text => m_Wrapper.m_Map_Text;
+        public InputAction @Pause => m_Wrapper.m_Map_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Map; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -290,6 +323,9 @@ public class @NormalInput : IInputActionCollection, IDisposable
                 @Text.started -= m_Wrapper.m_MapActionsCallbackInterface.OnText;
                 @Text.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnText;
                 @Text.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnText;
+                @Pause.started -= m_Wrapper.m_MapActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_MapActionsCallbackInterface = instance;
             if (instance != null)
@@ -303,6 +339,9 @@ public class @NormalInput : IInputActionCollection, IDisposable
                 @Text.started += instance.OnText;
                 @Text.performed += instance.OnText;
                 @Text.canceled += instance.OnText;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -321,5 +360,6 @@ public class @NormalInput : IInputActionCollection, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnInteraction(InputAction.CallbackContext context);
         void OnText(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

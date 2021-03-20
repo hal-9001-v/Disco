@@ -67,22 +67,25 @@ public class TextBox : InputComponent
 
     void startNextLine()
     {
-
-        if (typing != null)
-            StopCoroutine(typing);
-
-
-        if (lines.Count == 0)
+        if (!Pauser.isPaused)
         {
-            if (currentDialogue.afterText != null)
-                currentDialogue.afterText.Invoke();
+            if (typing != null)
+                StopCoroutine(typing);
 
-            hide();
+
+            if (lines.Count == 0)
+            {
+                if (currentDialogue.afterText != null)
+                    currentDialogue.afterText.Invoke();
+
+                hide();
+            }
+            else
+            {
+                typing = StartCoroutine(typeLine());
+            }
         }
-        else
-        {
-            typing = StartCoroutine(typeLine());
-        }
+
 
     }
 
@@ -109,17 +112,21 @@ public class TextBox : InputComponent
 
     void fillCurrentLine()
     {
+        if (!Pauser.isPaused)
+        {
 
-        if (typing != null)
-            StopCoroutine(typing);
+            if (typing != null)
+                StopCoroutine(typing);
 
-        textMesh.text = currentLine;
-        endOfLine = true;
+            textMesh.text = currentLine;
+            endOfLine = true;
+        }
+
 
     }
 
     void playTypingSound()
-    { 
+    {
         //Do something
     }
 
@@ -136,7 +143,6 @@ public class TextBox : InputComponent
         myGroup.alpha = 1;
 
     }
-
 
     public override void setInput(NormalInput inputs)
     {
