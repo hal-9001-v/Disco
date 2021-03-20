@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class TextBox : InputComponent
 {
 
     public CanvasGroup myGroup;
+    [Header("Text Meshes")]
     public TextMeshProUGUI textMesh;
+    public TextMeshProUGUI nameMesh;
+
 
     [Header("Settings")]
     [Range(0.01f, 1)]
@@ -17,6 +21,8 @@ public class TextBox : InputComponent
 
     Queue<string> lines;
     string currentLine;
+    
+    Dialogue currentDialogue;
 
     bool endOfLine;
     bool displayingDialogue;
@@ -28,24 +34,30 @@ public class TextBox : InputComponent
         hide();
     }
 
-    public void startDialogue(string[] dialogue)
+    public void startDialogue(Dialogue d)
     {
 
         if (!displayingDialogue)
         {
+            
+
+            currentDialogue = d;
+
+            myGroup.transform.position = currentDialogue.getBoxPosition();
+            nameMesh.text = currentDialogue.getDialogueName();
+
+            show();
+            displayingDialogue = true;
 
             if (typing != null)
                 StopCoroutine(typing);
 
-            displayingDialogue = true;
-
             lines.Clear();
-            foreach (string s in dialogue)
+            foreach (string s in d.getLines())
             {
                 lines.Enqueue(s);
             }
 
-            show();
 
             typing = StartCoroutine(typeLine());
         }
@@ -62,11 +74,13 @@ public class TextBox : InputComponent
 
         if (lines.Count == 0)
         {
+            if (currentDialogue.afterText != null)
+                currentDialogue.afterText.Invoke();
+
             hide();
         }
         else
         {
-            Debug.Log("New Line!");
             typing = StartCoroutine(typeLine());
         }
 
@@ -76,6 +90,7 @@ public class TextBox : InputComponent
     {
         textMesh.text = "";
         currentLine = lines.Dequeue();
+        endOfLine = false;
 
         foreach (char c in currentLine.ToCharArray())
         {
