@@ -5,7 +5,8 @@ using UnityEngine;
 public class GlobalSettings : MonoBehaviour
 {
 
-    public enum Language { 
+    public enum Language
+    {
         English,
         Spanish
     };
@@ -14,17 +15,24 @@ public class GlobalSettings : MonoBehaviour
 
     public static Language selectedLanguage = Language.English;
 
+    public static int currentScene;
+
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
+
+            //Set on root level, so DontDestroyOnLoad can work
+            transform.parent = null;
+
             DontDestroyOnLoad(this);
         }
-        else {
+        else
+        {
             Destroy(this);
         }
-        
+
 
     }
 
