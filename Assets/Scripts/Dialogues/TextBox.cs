@@ -4,8 +4,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(AudioSource))]
 public class TextBox : InputComponent
 {
+    AudioSource audioSource;
 
     public CanvasGroup myGroup;
     [Header("Text Meshes")]
@@ -29,6 +31,8 @@ public class TextBox : InputComponent
 
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
+
         lines = new Queue<string>();
 
         hide();
@@ -128,6 +132,9 @@ public class TextBox : InputComponent
     void playTypingSound()
     {
         //Do something
+        if (audioSource != null && !audioSource.isPlaying)
+            audioSource.Play();
+
     }
 
 

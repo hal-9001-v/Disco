@@ -14,14 +14,25 @@ public class Pauser : InputComponent
 
     float volumeValue;
 
-
-
-
     const float maxAlpha = 1;
 
     private void Start()
     {
         resumeGame();
+    }
+
+    public void setCanSwitchPause(Component o,bool b) {
+
+        //Don't let player open Pause when a new scene is being loaded
+        if (o.GetType() == typeof(LevelLoader))
+        {
+            canSwitchPause = b;
+        }
+        else {
+            Debug.Log(o.name + " is trying to access Pauser, but it has no permission!");
+        }
+        
+        
     }
 
     public void switchPause()
@@ -37,6 +48,9 @@ public class Pauser : InputComponent
 
     public void pauseGame()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         isPaused = true;
 
         Time.timeScale = 0;
@@ -55,6 +69,9 @@ public class Pauser : InputComponent
 
     public void resumeGame()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         isPaused = false;
 
         Time.timeScale = 1;

@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class LevelLoader : MonoBehaviour
 {
     public Animator screenAnimator;
+    Pauser pauser;
 
     const float screenAnimationTime = 1;
     
@@ -16,6 +17,11 @@ public class LevelLoader : MonoBehaviour
 
     const string goInvisibleTrigger = "GoInvisible";
     const string goBlackTrigger = "GoBlack";
+
+    private void Start()
+    {
+        pauser = FindObjectOfType<Pauser>();
+    }
 
     public void goToNextScene()
     {
@@ -32,6 +38,12 @@ public class LevelLoader : MonoBehaviour
 
     IEnumerator LoadScene(int scene)
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        if (pauser != null)
+            pauser.setCanSwitchPause(this,false);
+
         if (scene == loadingSceneIndex)
         {
             GlobalSettings.currentScene = scene + 1;

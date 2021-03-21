@@ -21,6 +21,8 @@ public class LoadingScreen : MonoBehaviour
 
         var operation = SceneManager.LoadSceneAsync(GlobalSettings.currentScene);
 
+        Debug.Log("Start Loading scene " + SceneManager.GetSceneByBuildIndex(GlobalSettings.currentScene)+"!");
+
         while (!operation.isDone) {
             Debug.Log("Loading: " + operation.progress*100 + "%");
             yield return null;
