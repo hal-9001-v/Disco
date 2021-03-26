@@ -106,7 +106,7 @@ AudioMixerGroupController:
   m_UserColorIndex: 0
   m_Mute: 0
   m_Solo: 0
-  m_BypassEffects: 1
+  m_BypassEffects: 0
 --- !u!244 &24400004
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -133,9 +133,9 @@ AudioMixerSnapshotController:
   m_FloatValues:
     b2aacad09a2084b4882600138ecc57b1: 0
     e258db399239a9244b05340e6b96bb90: 1
-    64674aca37d69d6409bb0ddb6ade6dce: -9.833286
+    64674aca37d69d6409bb0ddb6ade6dce: 0
     3c5a200d81b43434bbbb9c4015e4c807: 0.85120004
-    1c7999ad3ebcadb4ebe3957a2cb4c245: 20
+    1c7999ad3ebcadb4ebe3957a2cb4c245: 0
     dacf981fc431b584fa7b56e5536cd38d: 0
   m_TransitionOverrides: {}
 --- !u!244 &1662466286314410651
@@ -170,7 +170,7 @@ AudioMixerGroupController:
   m_UserColorIndex: 0
   m_Mute: 0
   m_Solo: 0
-  m_BypassEffects: 1
+  m_BypassEffects: 0
 --- !u!244 &9076615892978963149
 AudioMixerEffectController:
   m_ObjectHideFlags: 3

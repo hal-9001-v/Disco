@@ -12,7 +12,8 @@ public class Dialogue : MonoBehaviour
     public Transform talkingPivot;
     public UnityEvent afterText;
 
-    
+    public Dialogue[] nextDialogues;
+
 
     private void Start()
     {
@@ -27,12 +28,11 @@ public class Dialogue : MonoBehaviour
         switch (GlobalSettings.selectedLanguage)
         {
 
-            case GlobalSettings.Language.English:
-
+            case GlobalSettings.Languages.English:
                 lines = myLines.englishLines;
                 break;
 
-            case GlobalSettings.Language.Spanish:
+            case GlobalSettings.Languages.Spanish:
                 lines = myLines.spanishLines;
                 break;
 
@@ -42,6 +42,29 @@ public class Dialogue : MonoBehaviour
         }
 
         return lines;
+
+    }
+
+    public string[] getAnswers()
+    {
+        string[] answers;
+
+        switch (GlobalSettings.selectedLanguage)
+        {
+            case GlobalSettings.Languages.English:
+                answers = myLines.englishAnswers;
+                break;
+
+            case GlobalSettings.Languages.Spanish:
+                answers = myLines.spanishAnswers;
+                break;
+
+            default:
+                answers = null;
+                break;
+
+        }
+        return answers;
 
     }
 
@@ -64,7 +87,7 @@ public class Dialogue : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("No talking pivot in " + name+ " dialogue!");
+            Debug.LogWarning("No talking pivot in " + name + " dialogue!");
             boxPosition = Vector3.zero;
         }
 
@@ -72,18 +95,19 @@ public class Dialogue : MonoBehaviour
         return boxPosition;
     }
 
-    public string getDialogueName() {
+    public string getDialogueName()
+    {
         string dialogueName;
 
         switch (GlobalSettings.selectedLanguage)
         {
 
-            case GlobalSettings.Language.English:
+            case GlobalSettings.Languages.English:
 
                 dialogueName = myLines.englishName;
                 break;
 
-            case GlobalSettings.Language.Spanish:
+            case GlobalSettings.Languages.Spanish:
                 dialogueName = myLines.spanishName;
                 break;
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class GlobalSettings : MonoBehaviour
 {
 
-    public enum Language
+    public enum Languages
     {
         English,
         Spanish
@@ -13,27 +13,16 @@ public class GlobalSettings : MonoBehaviour
 
     static GlobalSettings instance;
 
-    public static Language selectedLanguage = Language.English;
+    public static Languages selectedLanguage = Languages.English;
 
     public static int currentScene;
 
-    private void Awake()
+    public static void updateUILanguage()
     {
-        if (instance == null)
+
+        foreach (UILanguage uI in FindObjectsOfType<UILanguage>())
         {
-            instance = this;
-
-            //Set on root level, so DontDestroyOnLoad can work
-            transform.parent = null;
-
-            DontDestroyOnLoad(this);
+            uI.setLanguage(selectedLanguage);
         }
-        else
-        {
-            Destroy(this);
-        }
-
-
     }
-
 }

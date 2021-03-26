@@ -1,83 +1,175 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
+using System;
+using System.IO;
 
-public class SettingsBoard : MonoBehaviour{
+public class SettingsBoard : MonoBehaviour
+{
     public AudioMixer audioMixer;
 
     [Header("Sliders")]
     const string globalVolume = "GlobalVolume";
-    const float globalMax = 0;
-    const float globalMin = -80;
-    const float globalDefaultValue = 0;
+    const float globalMax = 1;
+    const float globalMin = 0.05f;
     public Slider globalSlider;
 
     const string musicVolume = "MusicVolume";
-    const float musicMax = 0;
-    const float musicMin = -80;
-    const float musicDefaultValue = 0;
+    const float musicMax = 1;
+    const float musicMin = 0.05f;
     public Slider musicSlider;
 
     const string effectsVolume = "EffectsVolume";
-    const float effectsMax = 0;
-    const float effectsMin = -80;
-    const float effectsDefaultValue = 0;
+    const float effectsMax = 1;
+    const float effectsMin = 0.05f;
     public Slider effectsSlider;
 
     const string dialogueVolume = "DialogueVolume";
-    const float dialogueMax = 20;
-    const float dialogueMin = -80;
-    const float dialogueDefaultValue = 0;
+    const float dialogueMax = 1;
+    const float dialogueMin = 0.05f;
     public Slider dialogueSlider;
+
+    int currentLanguage = 0;
+
+    string savePath;
+
+    public void Awake()
+    {
+        savePath = Application.persistentDataPath + "/Settings.data";
+    }
 
     public void Start()
     {
-        float volumeReceiver;
+        setSliders();
+    }
+
+    void setSliders()
+    {
 
         globalSlider.minValue = globalMin;
         globalSlider.maxValue = globalMax;
-        audioMixer.GetFloat(globalVolume,  out volumeReceiver);
-        globalSlider.value = volumeReceiver;
+        globalSlider.value = globalMax;
 
-        musicSlider.maxValue = musicMax;
         musicSlider.minValue = musicMin;
-        audioMixer.GetFloat(musicVolume, out volumeReceiver);
-        musicSlider.value = volumeReceiver;
+        musicSlider.maxValue = musicMax;
+        musicSlider.value = musicMax;
 
         effectsSlider.minValue = effectsMin;
         effectsSlider.maxValue = effectsMax;
-        audioMixer.GetFloat(effectsVolume, out volumeReceiver);
-        effectsSlider.value = volumeReceiver;
+        effectsSlider.value = effectsMax;
 
         dialogueSlider.minValue = dialogueMin;
         dialogueSlider.maxValue = dialogueMax;
-        audioMixer.GetFloat(dialogueVolume, out volumeReceiver);
-        dialogueSlider.value = volumeReceiver;
-
+        dialogueSlider.value = dialogueMax;
 
     }
 
     public void setGlobalVolume(float value)
     {
-        audioMixer.SetFloat(globalVolume, value);
+        audioMixer.SetFloat(globalVolume, Mathf.Log10(value) * 20);
     }
 
     public void setMusicVolume(float value)
     {
-        audioMixer.SetFloat(musicVolume, value);
+        audioMixer.SetFloat(musicVolume, Mathf.Log10(value) * 20);
     }
 
     public void setEffectsVolume(float value)
     {
-        audioMixer.SetFloat(effectsVolume, value);
+        audioMixer.SetFloat(effectsVolume, Mathf.Log10(value) * 20);
     }
 
     public void setDialogueVolume(float value)
     {
-        audioMixer.SetFloat(dialogueVolume, value);
+        audioMixer.SetFloat(dialogueVolume, Mathf.Log10(value) * 20);
     }
 
+    public void nextLanguage() {
+        int languagesLength = Enum.GetNames(typeof(GlobalSettings.Languages)).Length;
+
+        currentLanguage++;
+
+        if (currentLanguage == languagesLength) {
+            currentLanguage = 0;
+        }
+
+        switch (currentLanguage) {
+            case 0:
+                GlobalSettings.selectedLanguage = GlobalSettings.Languages.English;
+                break;
+            case 1:
+                GlobalSettings.selectedLanguage = GlobalSettings.Languages.Spanish;
+                break;
+        
+        }
+
+        GlobalSettings.updateUILanguage();
+    }
+
+    /*
+    void saveSettings()
+    {
+        SettingsSaveData saveData = new SettingsSaveData();
+        
+        saveData.globalVolumeValue = globalSlider.value;
+        saveData.effectsVolumeValue = effectsSlider.value;
+        saveData.musicVolumeValue = musicSlider.value;
+        saveData.dialogueVolumeValue = dialogueSlider.value;
+
+        string textObject = JsonUtility.ToJson(saveData);
+        try
+        {
+            File.WriteAllText(savePath, textObject);
+
+            Debug.Log(savePath + " file created!");
+        }
+        catch
+        {
+            Debug.LogWarning(savePath + " does not exit!");
+        }
+
+
+    }
+
+    void loadSettings()
+    {
+        try
+        {
+            string readData = File.ReadAllText(savePath);
+            SettingsSaveData saveData = JsonUtility.FromJson<SettingsSaveData>(readData);
+
+            if (saveData != null)
+            {
+
+                audioMixer.SetFloat(globalVolume, saveData.globalVolumeValue);
+                audioMixer.SetFloat(musicVolume, saveData.musicVolumeValue);
+                audioMixer.SetFloat(effectsVolume, saveData.effectsVolumeValue);
+                audioMixer.SetFloat(dialogueVolume, saveData.dialogueVolumeValue);
+
+                setSliders();
+
+                Debug.Log(":D");
+
+            }
+
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.ToString());
+
+            saveSettings();
+        };
+
+    }
+
+    class SettingsSaveData
+    {
+        public float globalVolumeValue;
+        public float effectsVolumeValue;
+        public float musicVolumeValue;
+        public float dialogueVolumeValue;
+
+    }
+    */
 
 }
