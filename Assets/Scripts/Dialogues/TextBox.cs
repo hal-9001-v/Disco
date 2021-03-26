@@ -14,6 +14,11 @@ public class TextBox : InputComponent
     public TextMeshProUGUI textMesh;
     public TextMeshProUGUI nameMesh;
 
+    public TextMeshProUGUI[] answersMeshes;
+    public Animator[] answersAnimators;
+
+    const string selectAnswerTrigger = "Select";
+    const string unselectAnswerTrigger = "Unselect";
 
     [Header("Settings")]
     [Range(0.01f, 1)]
@@ -24,10 +29,14 @@ public class TextBox : InputComponent
     Queue<string> lines;
     string currentLine;
 
+    string[] answers;
+    int currentAnswer = -1;
+
     Dialogue currentDialogue;
 
     bool endOfLine;
     bool displayingDialogue;
+    bool waitingForAnswer;
 
     private void Awake()
     {
@@ -40,31 +49,30 @@ public class TextBox : InputComponent
 
     public void startDialogue(Dialogue d)
     {
+        Debug.Log("Starting Dialogue " + d.name);
 
-        if (!displayingDialogue)
+        currentDialogue = d;
+        currentAnswer = -1;
+
+        myGroup.transform.position = currentDialogue.getBoxPosition();
+        nameMesh.text = currentDialogue.getDialogueName();
+
+        show();
+        displayingDialogue = true;
+
+        hideAnswers();
+
+        if (typing != null)
+            StopCoroutine(typing);
+
+        lines.Clear();
+        foreach (string s in d.getLines())
         {
-
-
-            currentDialogue = d;
-
-            myGroup.transform.position = currentDialogue.getBoxPosition();
-            nameMesh.text = currentDialogue.getDialogueName();
-
-            show();
-            displayingDialogue = true;
-
-            if (typing != null)
-                StopCoroutine(typing);
-
-            lines.Clear();
-            foreach (string s in d.getLines())
-            {
-                lines.Enqueue(s);
-            }
-
-
-            typing = StartCoroutine(typeLine());
+            lines.Enqueue(s);
         }
+
+
+        typing = StartCoroutine(typeLine());
 
 
     }
@@ -76,18 +84,7 @@ public class TextBox : InputComponent
             if (typing != null)
                 StopCoroutine(typing);
 
-
-            if (lines.Count == 0)
-            {
-                if (currentDialogue.afterText != null)
-                    currentDialogue.afterText.Invoke();
-
-                hide();
-            }
-            else
-            {
-                typing = StartCoroutine(typeLine());
-            }
+            typing = StartCoroutine(typeLine());
         }
 
 
@@ -95,21 +92,29 @@ public class TextBox : InputComponent
 
     IEnumerator typeLine()
     {
-        textMesh.text = "";
+
         currentLine = lines.Dequeue();
+
+        textMesh.text = currentLine;
+
         endOfLine = false;
 
-        foreach (char c in currentLine.ToCharArray())
+
+
+        for (int i = 0; i <= currentLine.Length; i++)
         {
-            textMesh.text += c;
+
+            textMesh.maxVisibleCharacters = i;
 
             playTypingSound();
 
             yield return new WaitForSeconds(typeDelay);
 
+
         }
 
-        yield return null;
+        endOfLine = true;
+
 
     }
 
@@ -122,7 +127,7 @@ public class TextBox : InputComponent
             if (typing != null)
                 StopCoroutine(typing);
 
-            textMesh.text = currentLine;
+            textMesh.maxVisibleCharacters = textMesh.text.Length;
             endOfLine = true;
         }
 
@@ -151,6 +156,86 @@ public class TextBox : InputComponent
 
     }
 
+    bool displayAnswers()
+    {
+
+        answers = currentDialogue.getAnswers();
+
+
+        if (answers != null)
+        {
+            if (answersMeshes.Length < answers.Length)
+            {
+                Debug.LogWarning("AnswerMeshes are " + answersMeshes.Length + " and Text Container have " + currentDialogue.myLines.englishAnswers.Length + " answers!");
+                waitingForAnswer = false;
+                return false;
+            }
+
+            for (int i = 0; i < answers.Length; i++)
+            {
+                answersMeshes[i].enabled = true;
+                answersMeshes[i].text = answers[i];
+
+
+            }
+
+            selectAnswer(0);
+            waitingForAnswer = true;
+            return true;
+        }
+        else
+        {
+            waitingForAnswer = false;
+            return false;
+        }
+
+    }
+
+    void selectAnswer(int i)
+    {
+        if (i < 0)
+        {
+            i = answers.Length - 1;
+        }
+        else if (i >= answers.Length)
+            i = 0;
+
+        if (currentAnswer != -1)
+        {
+            answersAnimators[currentAnswer].SetTrigger(unselectAnswerTrigger);
+        }
+        currentAnswer = i;
+        answersAnimators[currentAnswer].SetTrigger(selectAnswerTrigger);
+    }
+
+    void confirmAnswer()
+    {
+
+        waitingForAnswer = false;
+
+        if (currentDialogue.afterText != null)
+            currentDialogue.afterText.Invoke();
+
+        if (currentDialogue.nextDialogues != null && currentDialogue.nextDialogues.Length > 0)
+        {
+            startDialogue(currentDialogue.nextDialogues[currentAnswer]);
+        }
+        else
+        {
+            hide();
+        }
+
+    }
+
+    void hideAnswers()
+    {
+        for (int i = 0; i < answersMeshes.Length; i++)
+        {
+            answersMeshes[i].enabled = false;
+        }
+
+    }
+
     public override void setInput(NormalInput inputs)
     {
         inputs.Map.Text.performed += ctx =>
@@ -158,14 +243,49 @@ public class TextBox : InputComponent
             if (displayingDialogue)
             {
 
+                if (waitingForAnswer)
+                {
+                    confirmAnswer();
+                    Debug.Log("Confirm");
+
+                    return;
+                }
+
                 if (endOfLine)
-                    startNextLine();
-                else
-                    fillCurrentLine();
+                {
+                    if (lines.Count == 0)
+                    {
+                        if (!displayAnswers())
+                        {
+                            currentDialogue.afterText.Invoke();
+                            hide();
+                        }
+
+                    }
+                    else {
+                        startNextLine();
+                        Debug.Log("Next Line");
+                    }
+                        
+
+                    return;
+                }
+
+
+                fillCurrentLine();
+                Debug.Log("fill");
+
 
             }
 
+        };
 
+        inputs.Map.ChangeAnswer.performed += ctx =>
+        {
+            if (ctx.ReadValue<float>() < 0)
+                selectAnswer(currentAnswer + 1);
+            else if (ctx.ReadValue<float>() > 0)
+                selectAnswer(currentAnswer - 1);
         };
     }
 
