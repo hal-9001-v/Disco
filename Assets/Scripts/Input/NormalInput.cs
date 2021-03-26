@@ -49,6 +49,22 @@ public class @NormalInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Change Answer"",
+                    ""type"": ""Button"",
+                    ""id"": ""288dc7c9-2b13-4054-905f-e3b84d195801"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""ConfirmAnswer"",
+                    ""type"": ""Button"",
+                    ""id"": ""c8fea6f8-876f-4fce-96c5-04b644bad6df"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -205,6 +221,83 @@ public class @NormalInput : IInputActionCollection, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""a3486d5e-91e2-4c31-89b3-ec35963043a4"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Answer"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""484602a4-55ad-4400-b4ca-27bd82594528"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""Change Answer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""22ee2656-7db5-4b2d-b3de-bf81beb0ff02"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""Change Answer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""fdbe7d33-b5c4-49ef-916a-ea393924264c"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""Change Answer"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""88335f54-87ee-40b2-ae96-7a5c2dbf8d8a"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""Change Answer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""6cd82772-a188-411b-93be-2482d211ee41"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""Change Answer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7019c9dc-df6c-4031-acf8-c043d4742f2f"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""ConfirmAnswer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -244,6 +337,8 @@ public class @NormalInput : IInputActionCollection, IDisposable
         m_Map_Interaction = m_Map.FindAction("Interaction", throwIfNotFound: true);
         m_Map_Text = m_Map.FindAction("Text", throwIfNotFound: true);
         m_Map_Pause = m_Map.FindAction("Pause", throwIfNotFound: true);
+        m_Map_ChangeAnswer = m_Map.FindAction("Change Answer", throwIfNotFound: true);
+        m_Map_ConfirmAnswer = m_Map.FindAction("ConfirmAnswer", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -297,6 +392,8 @@ public class @NormalInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Map_Interaction;
     private readonly InputAction m_Map_Text;
     private readonly InputAction m_Map_Pause;
+    private readonly InputAction m_Map_ChangeAnswer;
+    private readonly InputAction m_Map_ConfirmAnswer;
     public struct MapActions
     {
         private @NormalInput m_Wrapper;
@@ -305,6 +402,8 @@ public class @NormalInput : IInputActionCollection, IDisposable
         public InputAction @Interaction => m_Wrapper.m_Map_Interaction;
         public InputAction @Text => m_Wrapper.m_Map_Text;
         public InputAction @Pause => m_Wrapper.m_Map_Pause;
+        public InputAction @ChangeAnswer => m_Wrapper.m_Map_ChangeAnswer;
+        public InputAction @ConfirmAnswer => m_Wrapper.m_Map_ConfirmAnswer;
         public InputActionMap Get() { return m_Wrapper.m_Map; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -326,6 +425,12 @@ public class @NormalInput : IInputActionCollection, IDisposable
                 @Pause.started -= m_Wrapper.m_MapActionsCallbackInterface.OnPause;
                 @Pause.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnPause;
                 @Pause.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnPause;
+                @ChangeAnswer.started -= m_Wrapper.m_MapActionsCallbackInterface.OnChangeAnswer;
+                @ChangeAnswer.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnChangeAnswer;
+                @ChangeAnswer.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnChangeAnswer;
+                @ConfirmAnswer.started -= m_Wrapper.m_MapActionsCallbackInterface.OnConfirmAnswer;
+                @ConfirmAnswer.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnConfirmAnswer;
+                @ConfirmAnswer.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnConfirmAnswer;
             }
             m_Wrapper.m_MapActionsCallbackInterface = instance;
             if (instance != null)
@@ -342,6 +447,12 @@ public class @NormalInput : IInputActionCollection, IDisposable
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
+                @ChangeAnswer.started += instance.OnChangeAnswer;
+                @ChangeAnswer.performed += instance.OnChangeAnswer;
+                @ChangeAnswer.canceled += instance.OnChangeAnswer;
+                @ConfirmAnswer.started += instance.OnConfirmAnswer;
+                @ConfirmAnswer.performed += instance.OnConfirmAnswer;
+                @ConfirmAnswer.canceled += instance.OnConfirmAnswer;
             }
         }
     }
@@ -361,5 +472,7 @@ public class @NormalInput : IInputActionCollection, IDisposable
         void OnInteraction(InputAction.CallbackContext context);
         void OnText(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnChangeAnswer(InputAction.CallbackContext context);
+        void OnConfirmAnswer(InputAction.CallbackContext context);
     }
 }

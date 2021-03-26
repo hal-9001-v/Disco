@@ -2,9 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class StartMenu : InputComponent
 {
-    
+
     [Header("Layers")]
     public CanvasGroup firstLayerGroup;
     public CanvasGroup settingsGroup;
@@ -79,11 +83,13 @@ public class StartMenu : InputComponent
         }
     }
 
-    public void saveSettings() { 
-        
+    public void saveSettings()
+    {
+
     }
 
-    public void setVolume(float value) {
+    public void setVolume(float value)
+    {
         volumeValue = value;
     }
 
@@ -91,7 +97,12 @@ public class StartMenu : InputComponent
     {
     }
 
-    public void exitGame() {
+    public void exitGame()
+    {
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+#else
         Application.Quit();
+#endif
     }
 }

@@ -21,6 +21,9 @@ public class LevelLoader : MonoBehaviour
     private void Start()
     {
         pauser = FindObjectOfType<Pauser>();
+
+        //Every scene must have a LevelLoader. Call UILanguage every time a new scene is loaded
+        GlobalSettings.updateUILanguage();
     }
 
     public void goToNextScene()
