@@ -236,6 +236,7 @@ public class TextBox : InputComponent
 
     }
 
+
     public override void setInput(NormalInput inputs)
     {
         inputs.Map.Text.performed += ctx =>
@@ -284,6 +285,7 @@ public class TextBox : InputComponent
         {
             if (ctx.ReadValue<float>() < 0)
                 selectAnswer(currentAnswer + 1);
+
             else if (ctx.ReadValue<float>() > 0)
                 selectAnswer(currentAnswer - 1);
         };
