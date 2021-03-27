@@ -52,6 +52,8 @@ public class TextBox : InputComponent
         Debug.Log("Starting Dialogue " + d.name);
 
         currentDialogue = d;
+        currentDialogue.atStart.Invoke();
+
         currentAnswer = -1;
 
         myGroup.transform.position = currentDialogue.getBoxPosition();
@@ -156,38 +158,31 @@ public class TextBox : InputComponent
 
     }
 
-    bool displayAnswers()
+    void displayAnswers()
     {
 
         answers = currentDialogue.getAnswers();
+        waitingForAnswer = true;
 
-
-        if (answers != null)
+        if (answers != null && answers.Length > 0)
         {
             if (answersMeshes.Length < answers.Length)
             {
                 Debug.LogWarning("AnswerMeshes are " + answersMeshes.Length + " and Text Container have " + currentDialogue.myLines.englishAnswers.Length + " answers!");
-                waitingForAnswer = false;
-                return false;
             }
 
+            //Show Meshes
             for (int i = 0; i < answers.Length; i++)
             {
                 answersMeshes[i].enabled = true;
                 answersMeshes[i].text = answers[i];
 
-
             }
 
             selectAnswer(0);
-            waitingForAnswer = true;
-            return true;
         }
         else
-        {
-            waitingForAnswer = false;
-            return false;
-        }
+            hide();
 
     }
 
@@ -210,20 +205,15 @@ public class TextBox : InputComponent
 
     void confirmAnswer()
     {
-
-        waitingForAnswer = false;
-
         if (currentDialogue.afterText != null)
             currentDialogue.afterText.Invoke();
 
-        if (currentDialogue.nextDialogues != null && currentDialogue.nextDialogues.Length > 0)
+        if (currentDialogue.nextDialogues != null && currentDialogue.nextDialogues.Length > 0 && currentAnswer >= 0)
         {
             startDialogue(currentDialogue.nextDialogues[currentAnswer]);
         }
-        else
-        {
-            hide();
-        }
+
+        waitingForAnswer = false;
 
     }
 
@@ -242,39 +232,24 @@ public class TextBox : InputComponent
         {
             if (displayingDialogue)
             {
-
                 if (waitingForAnswer)
                 {
                     confirmAnswer();
-                    Debug.Log("Confirm");
-
-                    return;
                 }
-
-                if (endOfLine)
+                else
                 {
-                    if (lines.Count == 0)
+                    if (endOfLine)
                     {
-                        if (!displayAnswers())
-                        {
-                            currentDialogue.afterText.Invoke();
-                            hide();
-                        }
-
+                        if (lines.Count != 0)
+                            startNextLine();
+                        else
+                            displayAnswers();
                     }
-                    else {
-                        startNextLine();
-                        Debug.Log("Next Line");
+                    else
+                    {
+                        fillCurrentLine();
                     }
-                        
-
-                    return;
                 }
-
-
-                fillCurrentLine();
-                Debug.Log("fill");
-
 
             }
 
