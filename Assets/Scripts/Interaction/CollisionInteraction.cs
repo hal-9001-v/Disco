@@ -3,72 +3,89 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(Collider2D))]
 public class CollisionInteraction : MonoBehaviour
 {
+    public UnityEvent enterEvents;
+
+    public UnityEvent exitEvents;
 
 
-    public UnityEvent events;
-
-    Renderer myRenderer;
-
-    Collider myCollider;
-
-    public bool onlyOnce;
-
-    public bool hideWhenDone;
-
-    bool done;
-
+    [Header("Settings")]
+    public bool enterOnlyOnce;
+    public bool exitOnlyOnce;
     public bool readyForInteraction = true;
 
 
-    private void Awake()
-    {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+#if UNITY_EDITOR
+    [Header("Debug")]
+    public bool debugLog;
+#endif
 
-        myRenderer = GetComponent<Renderer>();
-        myCollider = GetComponent<Collider>();
-        if (myCollider != null)
+
+    bool enterDone;
+    bool exitDone;
+
+
+
+    private void Start()
+    {
+        var collider = GetComponent<Collider2D>();
+
+        if (collider != null && !collider.isTrigger)
         {
-            myCollider.isTrigger = true;
+            collider.isTrigger = true;
+            Debug.LogWarning("Setting Collider of " + name + " as trigger!");
         }
 
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (readyForInteraction)
         {
-            if (other.tag == "Player")
+            if (collision.GetComponent<InteractionTrigger>() != null)
             {
-                if (done && onlyOnce)
+
+#if UNITY_EDITOR
+                if (debugLog)
+                    Debug.Log("Entering Interaction Collision with " + name + "!");
+#endif
+
+                if (enterDone && enterOnlyOnce)
                 {
                     return;
                 }
 
-                events.Invoke();
-                done = true;
+                enterEvents.Invoke();
+                enterDone = true;
+            }
 
-                if (myCollider != null && onlyOnce)
-                    myCollider.enabled = false;
 
-                if (hideWhenDone)
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (readyForInteraction)
+        {
+            if (collision.GetComponent<InteractionTrigger>() != null)
+            {
+
+#if UNITY_EDITOR
+                if (debugLog)
+                    Debug.Log("Exiting Interaction Collision with " + name + "!");
+#endif
+
+                if (exitDone && exitOnlyOnce)
                 {
-                    if (myRenderer != null)
-                    {
-                        myRenderer.enabled = false;
-                    }
-
-                    if (myCollider != null)
-                    {
-                        myCollider.enabled = false;
-                    }
-
+                    return;
                 }
-
+                exitEvents.Invoke();
+                exitDone = true;
             }
         }
+
     }
 
 

@@ -7,9 +7,17 @@ public class EventInteraction : Interactable
 {
     public UnityEvent events;
 
+
+    [Header("Settings")]
     public bool onlyOnce;
 
     public bool readyForInteraction = true;
+
+#if UNITY_EDITOR
+    [Header("Debug")]
+    public bool debugLog;
+#endif
+
 
     bool done;
 
@@ -26,6 +34,11 @@ public class EventInteraction : Interactable
             //Debug.Log("Interaction");
             if (done && onlyOnce)
                 return;
+
+#if UNITY_EDITOR
+            if (debugLog)
+                Debug.Log("Starting Event Interaction with " + name + "!");
+#endif
 
             events.Invoke();
             done = true;
