@@ -15,21 +15,20 @@ public class DistanceInteraction : MonoBehaviour
 
     public UnityEvent events;
 
-    Renderer myRenderer;
-
-    Collider myCollider;
-
+    [Header("Settings")]
     public bool onlyOnce;
 
-    public bool hideWhenDone;
+    public bool readyForInteraction = true;
 
-    bool done;
+#if UNITY_EDITOR
+    [Header("Debug")]
+    public bool debugLog;
+#endif
 
-    public bool readyForInteraction;
 
     private void Awake()
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        var player = FindObjectOfType<InteractionTrigger>();
 
         if (player != null)
         {
@@ -40,9 +39,6 @@ public class DistanceInteraction : MonoBehaviour
             Debug.LogWarning("No player in Scene!");
         }
 
-        myRenderer = GetComponent<Renderer>();
-        myCollider = GetComponent<Collider>();
-
     }
 
     private void Update()
@@ -52,33 +48,20 @@ public class DistanceInteraction : MonoBehaviour
 
     private void triggerEvent()
     {
-        if (playerTransform != null)
+        if (readyForInteraction && playerTransform != null)
         {
             if (Vector3.Distance(playerTransform.position, transform.position) <= range)
             {
-                if (done && onlyOnce)
-                    return;
-
                 events.Invoke();
-                done = true;
 
-                if (hideWhenDone)
-                {
-                    if (myRenderer != null)
-                    {
-                        myRenderer.enabled = false;
-                    }
+                if (onlyOnce)
+                    enabled = false;
 
-                    if (myCollider != null)
-                    {
-                        myCollider.enabled = false;
-                    }
-
-                }
-
-
+#if UNITY_EDITOR
+                if(debugLog)
+                    Debug.Log("Start Distance Interaction with "+name+"!");
+#endif
             }
-
         }
 
     }

@@ -10,6 +10,8 @@ public class Dialogue : MonoBehaviour
     [Space(5)]
     [Header("Settings")]
     public Transform talkingPivot;
+
+    public UnityEvent atStart;
     public UnityEvent afterText;
 
     public Dialogue[] nextDialogues;

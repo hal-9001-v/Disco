@@ -13,12 +13,12 @@ public class InteractionTrigger : InputComponent
 
     public Color drawColor;
 
+
     // Start is called before the first frame update
     void Start()
     {
-        findInteractables();
+        interactables = FindObjectsOfType<Interactable>();
     }
-
 
     void triggerInteractableInRange() {
 
@@ -42,10 +42,6 @@ public class InteractionTrigger : InputComponent
         inputs.Map.Interaction.performed += ctx => {
             triggerInteractableInRange();
         };
-    }
-
-    void findInteractables() {
-        interactables = FindObjectsOfType<Interactable>();
     }
 
 
