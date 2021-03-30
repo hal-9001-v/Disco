@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class Movement : InputComponent
 {
+
+    bool playerIsMoving;
     public override void setInput(NormalInput inputs)
     {
         inputs.Map.Movement.performed += ctx =>
         {
+
+            playerIsMoving = true;
+
             if (!Pauser.isPaused) {
 
                 Vector3 v = transform.position;
@@ -21,6 +26,14 @@ public class Movement : InputComponent
             }
             
         };
+
+
+        inputs.Map.Movement.canceled += ctx =>
+        {
+            playerIsMoving = false;
+            
+        };
+
 
 
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -44,4 +45,33 @@ public class EventInteraction : Interactable
             done = true;
         }
     }
+
+
+
+    public EventInteractionData getSaveData() {
+
+
+        var data = new EventInteractionData()
+        {
+            name = name,
+            done = done,
+            readyForInteraction = readyForInteraction
+        };
+        return data;
+
+    }
+
+    public void setFromLoadData(EventInteractionData data) {
+        done = data.done;
+        readyForInteraction = data.readyForInteraction;
+    }
 }
+
+[Serializable]
+public class EventInteractionData
+{
+    public string name;
+    public bool done;
+    public bool readyForInteraction;
+}
+
