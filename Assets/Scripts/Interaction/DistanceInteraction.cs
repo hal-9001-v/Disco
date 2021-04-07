@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -19,6 +20,8 @@ public class DistanceInteraction : MonoBehaviour
     public bool onlyOnce;
 
     public bool readyForInteraction = true;
+
+    bool done;
 
 #if UNITY_EDITOR
     [Header("Debug")]
@@ -58,12 +61,31 @@ public class DistanceInteraction : MonoBehaviour
                     enabled = false;
 
 #if UNITY_EDITOR
-                if(debugLog)
-                    Debug.Log("Start Distance Interaction with "+name+"!");
+                if (debugLog)
+                    Debug.Log("Start Distance Interaction with " + name + "!");
 #endif
             }
         }
 
+    }
+
+    public DistanceInteractionData getSaveData()
+    {
+        var data = new DistanceInteractionData()
+        {
+            name = name,
+            done = done,
+            readyForInteraction = readyForInteraction
+        };
+
+        return data;
+
+    }
+
+    public void setFromLoadData(DistanceInteractionData data)
+    {
+        done = data.done;
+        readyForInteraction = data.readyForInteraction;
     }
 
     private void OnDrawGizmos()
@@ -72,3 +94,13 @@ public class DistanceInteraction : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, range);
     }
 }
+
+[Serializable]
+public class DistanceInteractionData
+{
+    public string name;
+
+    public bool done;
+    public bool readyForInteraction;
+}
+

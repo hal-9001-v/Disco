@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -89,4 +90,38 @@ public class CollisionInteraction : MonoBehaviour
     }
 
 
+
+    public CollisionInteractionData getSaveData()
+    {
+        var data = new CollisionInteractionData()
+        {
+            name = name,
+            enterDone = enterDone,
+            exitDone = exitDone,
+            readyForInteraction = readyForInteraction
+        };
+
+        return data;
+
+    }
+
+    public void setFromLoadData(CollisionInteractionData data)
+    {
+        enterDone = data.enterDone;
+        exitDone = data.exitDone;
+        readyForInteraction = data.readyForInteraction;
+    }
+
 }
+
+
+[Serializable]
+public class CollisionInteractionData
+{
+
+    public string name;
+    public bool enterDone;
+    public bool exitDone;
+    public bool readyForInteraction;
+}
+

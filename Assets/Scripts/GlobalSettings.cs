@@ -17,6 +17,8 @@ public class GlobalSettings : MonoBehaviour
 
     public static int currentScene;
 
+    public static bool loadFromData;
+
     public static void updateUILanguage()
     {
 

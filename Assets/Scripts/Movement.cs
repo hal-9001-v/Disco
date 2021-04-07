@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class Movement : InputComponent
 {
+
     public override void setInput(NormalInput inputs)
     {
         inputs.Map.Movement.performed += ctx =>
         {
+
             if (!Pauser.isPaused) {
 
                 Vector3 v = transform.position;
@@ -21,6 +23,7 @@ public class Movement : InputComponent
             }
             
         };
+
 
 
     }

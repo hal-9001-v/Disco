@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -9,18 +10,32 @@ using UnityEditor;
 public class StartMenu : InputComponent
 {
 
+    [Header("Buttons")]
+    public Button continueButton;
+
     [Header("Layers")]
     public CanvasGroup firstLayerGroup;
     public CanvasGroup settingsGroup;
-
-    float volumeValue;
-
-    const float maxAlpha = 1;
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        int i = LevelSaveManager.getSaveSceneIndex();
+
+        if (i == -1)
+        {
+            continueButton.interactable = false;
+
+            var color = continueButton.image.color;
+            color.a = 0.3f;
+
+            continueButton.image.color = color;
+
+        }
+
+
 
         displayFirstLayer();
     }
@@ -81,16 +96,6 @@ public class StartMenu : InputComponent
             firstLayerGroup.alpha = 1;
             firstLayerGroup.blocksRaycasts = true;
         }
-    }
-
-    public void saveSettings()
-    {
-
-    }
-
-    public void setVolume(float value)
-    {
-        volumeValue = value;
     }
 
     public override void setInput(NormalInput inputs)
