@@ -328,6 +328,11 @@ public class @NormalInput : IInputActionCollection, IDisposable
                     ""isOR"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Combat"",
+            ""bindingGroup"": ""Combat"",
+            ""devices"": []
         }
     ]
 }");
@@ -464,6 +469,15 @@ public class @NormalInput : IInputActionCollection, IDisposable
         {
             if (m_NormalSchemeIndex == -1) m_NormalSchemeIndex = asset.FindControlSchemeIndex("Normal");
             return asset.controlSchemes[m_NormalSchemeIndex];
+        }
+    }
+    private int m_CombatSchemeIndex = -1;
+    public InputControlScheme CombatScheme
+    {
+        get
+        {
+            if (m_CombatSchemeIndex == -1) m_CombatSchemeIndex = asset.FindControlSchemeIndex("Combat");
+            return asset.controlSchemes[m_CombatSchemeIndex];
         }
     }
     public interface IMapActions
