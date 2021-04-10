@@ -65,6 +65,14 @@ public class @NormalInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""384303da-f7b3-4b88-84cf-2603ec98cdad"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -298,6 +306,17 @@ public class @NormalInput : IInputActionCollection, IDisposable
                     ""action"": ""ConfirmAnswer"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ffa11535-b350-45e8-a049-acb23fa405b8"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -339,6 +358,7 @@ public class @NormalInput : IInputActionCollection, IDisposable
         m_Map_Pause = m_Map.FindAction("Pause", throwIfNotFound: true);
         m_Map_ChangeAnswer = m_Map.FindAction("Change Answer", throwIfNotFound: true);
         m_Map_ConfirmAnswer = m_Map.FindAction("ConfirmAnswer", throwIfNotFound: true);
+        m_Map_Jump = m_Map.FindAction("Jump", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -394,6 +414,7 @@ public class @NormalInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Map_Pause;
     private readonly InputAction m_Map_ChangeAnswer;
     private readonly InputAction m_Map_ConfirmAnswer;
+    private readonly InputAction m_Map_Jump;
     public struct MapActions
     {
         private @NormalInput m_Wrapper;
@@ -404,6 +425,7 @@ public class @NormalInput : IInputActionCollection, IDisposable
         public InputAction @Pause => m_Wrapper.m_Map_Pause;
         public InputAction @ChangeAnswer => m_Wrapper.m_Map_ChangeAnswer;
         public InputAction @ConfirmAnswer => m_Wrapper.m_Map_ConfirmAnswer;
+        public InputAction @Jump => m_Wrapper.m_Map_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Map; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -431,6 +453,9 @@ public class @NormalInput : IInputActionCollection, IDisposable
                 @ConfirmAnswer.started -= m_Wrapper.m_MapActionsCallbackInterface.OnConfirmAnswer;
                 @ConfirmAnswer.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnConfirmAnswer;
                 @ConfirmAnswer.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnConfirmAnswer;
+                @Jump.started -= m_Wrapper.m_MapActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnJump;
             }
             m_Wrapper.m_MapActionsCallbackInterface = instance;
             if (instance != null)
@@ -453,6 +478,9 @@ public class @NormalInput : IInputActionCollection, IDisposable
                 @ConfirmAnswer.started += instance.OnConfirmAnswer;
                 @ConfirmAnswer.performed += instance.OnConfirmAnswer;
                 @ConfirmAnswer.canceled += instance.OnConfirmAnswer;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
             }
         }
     }
@@ -474,5 +502,6 @@ public class @NormalInput : IInputActionCollection, IDisposable
         void OnPause(InputAction.CallbackContext context);
         void OnChangeAnswer(InputAction.CallbackContext context);
         void OnConfirmAnswer(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
 }
