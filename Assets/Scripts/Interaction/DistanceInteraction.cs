@@ -7,25 +7,23 @@ using UnityEngine.Events;
 public class DistanceInteraction : MonoBehaviour
 {
 
-    [Range(0, 20)]
-    public float range;
+    [Header("Settings")]
+    [SerializeField]
+    [Range(0, 20)] float _range;
+    [SerializeField] UnityEvent events;
 
-    public Color gizmosColor;
+    [SerializeField] bool onlyOnce;
+
+    [SerializeField] bool readyForInteraction = true;
+
 
     static Transform playerTransform;
-
-    public UnityEvent events;
-
-    [Header("Settings")]
-    public bool onlyOnce;
-
-    public bool readyForInteraction = true;
-
     bool done;
 
 #if UNITY_EDITOR
     [Header("Debug")]
     public bool debugLog;
+    public Color gizmosColor;
 #endif
 
 
@@ -53,7 +51,7 @@ public class DistanceInteraction : MonoBehaviour
     {
         if (readyForInteraction && playerTransform != null)
         {
-            if (Vector3.Distance(playerTransform.position, transform.position) <= range)
+            if (Vector3.Distance(playerTransform.position, transform.position) <= _range)
             {
                 events.Invoke();
 
@@ -91,7 +89,7 @@ public class DistanceInteraction : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = gizmosColor;
-        Gizmos.DrawWireSphere(transform.position, range);
+        Gizmos.DrawWireSphere(transform.position, _range);
     }
 }
 

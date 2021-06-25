@@ -27,8 +27,6 @@ public class CollisionInteraction : MonoBehaviour
     bool enterDone;
     bool exitDone;
 
-
-
     private void Start()
     {
         var collider = GetComponent<Collider2D>();
@@ -89,9 +87,7 @@ public class CollisionInteraction : MonoBehaviour
 
     }
 
-
-
-    public CollisionInteractionData getSaveData()
+    public CollisionInteractionData GetSaveData()
     {
         var data = new CollisionInteractionData()
         {
@@ -105,7 +101,7 @@ public class CollisionInteraction : MonoBehaviour
 
     }
 
-    public void setFromLoadData(CollisionInteractionData data)
+    public void SetFromLoadData(CollisionInteractionData data)
     {
         enterDone = data.enterDone;
         exitDone = data.exitDone;

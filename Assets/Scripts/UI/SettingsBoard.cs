@@ -40,10 +40,10 @@ public class SettingsBoard : MonoBehaviour
 
     public void Start()
     {
-        setSliders();
+        SetSliders();
     }
 
-    void setSliders()
+    void SetSliders()
     {
 
         globalSlider.minValue = globalMin;
@@ -64,27 +64,27 @@ public class SettingsBoard : MonoBehaviour
 
     }
 
-    public void setGlobalVolume(float value)
+    public void SetGlobalVolume(float value)
     {
         audioMixer.SetFloat(globalVolume, Mathf.Log10(value) * 20);
     }
 
-    public void setMusicVolume(float value)
+    public void SetMusicVolume(float value)
     {
         audioMixer.SetFloat(musicVolume, Mathf.Log10(value) * 20);
     }
 
-    public void setEffectsVolume(float value)
+    public void SetEffectsVolume(float value)
     {
         audioMixer.SetFloat(effectsVolume, Mathf.Log10(value) * 20);
     }
 
-    public void setDialogueVolume(float value)
+    public void SetDialogueVolume(float value)
     {
         audioMixer.SetFloat(dialogueVolume, Mathf.Log10(value) * 20);
     }
 
-    public void nextLanguage() {
+    public void NextLanguage() {
         int languagesLength = Enum.GetNames(typeof(GlobalSettings.Languages)).Length;
 
         currentLanguage++;
@@ -103,7 +103,7 @@ public class SettingsBoard : MonoBehaviour
         
         }
 
-        GlobalSettings.updateUILanguage();
+        GlobalSettings.UpdateUILanguage();
     }
 
     /*

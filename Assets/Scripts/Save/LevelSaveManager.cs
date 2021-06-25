@@ -9,7 +9,7 @@ public class LevelSaveManager : MonoBehaviour
 {
     static readonly string filePath = Application.persistentDataPath + "/save.data";
 
-    static SaveData loadLevelData()
+    static SaveData LoadLevelData()
     {
 
         try
@@ -32,14 +32,14 @@ public class LevelSaveManager : MonoBehaviour
 
     }
 
-    public static void setLevelFromData()
+    public static void SetLevelFromData()
     {
-        var data = loadLevelData();
+        var data = LoadLevelData();
 
 
         if (data != null)
         {
-            setInteractablesFromData(data);
+            SetInteractablesFromData(data);
         }
 
 
@@ -48,47 +48,47 @@ public class LevelSaveManager : MonoBehaviour
 
     public static int getSaveSceneIndex()
     {
-        var data = loadLevelData();
+        var data = LoadLevelData();
 
         if (data != null)
-            return data.currentScene;
+            return data.CurrentScene;
         else
             return -1;
     }
 
-    public static void saveLevelData()
+    public static void SaveLevelData()
     {
         Debug.Log("LEVEL SAVE MANAGER: Saving Data of " + SceneManager.GetActiveScene().name);
         SaveData data = new SaveData();
 
-        data.currentScene = SceneManager.GetActiveScene().buildIndex;
+        data.CurrentScene = SceneManager.GetActiveScene().buildIndex;
 
         var eventObjects = FindObjectsOfType<EventInteraction>();
-        data.eventInteractions = new EventInteractionData[eventObjects.Length];
+        data.EventInteractions = new EventInteractionData[eventObjects.Length];
 
-        for (int i = 0; i < data.eventInteractions.Length; i++)
+        for (int i = 0; i < data.EventInteractions.Length; i++)
         {
-            data.eventInteractions[i] = eventObjects[i].GetSaveData();
+            data.EventInteractions[i] = eventObjects[i].GetSaveData();
         }
 
 
 
         var collisionObjects = FindObjectsOfType<CollisionInteraction>();
-        data.collisionInteractions = new CollisionInteractionData[collisionObjects.Length];
+        data.CollisionInteractions = new CollisionInteractionData[collisionObjects.Length];
 
-        for (int i = 0; i < data.collisionInteractions.Length; i++)
+        for (int i = 0; i < data.CollisionInteractions.Length; i++)
         {
-            data.collisionInteractions[i] = collisionObjects[i].getSaveData();
+            data.CollisionInteractions[i] = collisionObjects[i].GetSaveData();
         }
 
 
 
         var distanceObjects = FindObjectsOfType<DistanceInteraction>();
-        data.distanceInteractions = new DistanceInteractionData[distanceObjects.Length];
+        data.DistanceInteractions = new DistanceInteractionData[distanceObjects.Length];
 
-        for (int i = 0; i < data.distanceInteractions.Length; i++)
+        for (int i = 0; i < data.DistanceInteractions.Length; i++)
         {
-            data.distanceInteractions[i] = distanceObjects[i].getSaveData();
+            data.DistanceInteractions[i] = distanceObjects[i].getSaveData();
         }
 
 
@@ -109,30 +109,30 @@ public class LevelSaveManager : MonoBehaviour
 
     }
 
-    static void setInteractablesFromData(SaveData data)
+    static void SetInteractablesFromData(SaveData data)
     {
-        Dictionary<string, EventInteractionData> eventInteractions = new Dictionary<string, EventInteractionData>();
-        Dictionary<string, CollisionInteractionData> collisionInteractions = new Dictionary<string, CollisionInteractionData>();
-        Dictionary<string, DistanceInteractionData> distanceInteractions = new Dictionary<string, DistanceInteractionData>();
+        Dictionary<string, EventInteractionData> EventInteractions = new Dictionary<string, EventInteractionData>();
+        Dictionary<string, CollisionInteractionData> CollisionInteractions = new Dictionary<string, CollisionInteractionData>();
+        Dictionary<string, DistanceInteractionData> DistanceInteractions = new Dictionary<string, DistanceInteractionData>();
 
         #region Set Dictionaries
 
-        foreach (EventInteractionData interaction in data.eventInteractions)
+        foreach (EventInteractionData interaction in data.EventInteractions)
         {
-            eventInteractions.Add(interaction.name, interaction);
+            EventInteractions.Add(interaction.name, interaction);
         }
 
 
 
-        foreach (CollisionInteractionData interaction in data.collisionInteractions)
+        foreach (CollisionInteractionData interaction in data.CollisionInteractions)
         {
-            collisionInteractions.Add(interaction.name, interaction);
+            CollisionInteractions.Add(interaction.name, interaction);
         }
 
 
-        foreach (DistanceInteractionData interaction in data.distanceInteractions)
+        foreach (DistanceInteractionData interaction in data.DistanceInteractions)
         {
-            distanceInteractions.Add(interaction.name, interaction);
+            DistanceInteractions.Add(interaction.name, interaction);
         }
 
         #endregion
@@ -141,7 +141,7 @@ public class LevelSaveManager : MonoBehaviour
         {
             foreach (EventInteraction interaction in FindObjectsOfType<EventInteraction>())
             {
-                var interactionData = eventInteractions[interaction.name];
+                var interactionData = EventInteractions[interaction.name];
 
                 if (interactionData != null)
                     interaction.SetFromLoadData(interactionData);
@@ -152,10 +152,10 @@ public class LevelSaveManager : MonoBehaviour
 
             foreach (CollisionInteraction interaction in FindObjectsOfType<CollisionInteraction>())
             {
-                var interactionData = collisionInteractions[interaction.name];
+                var interactionData = CollisionInteractions[interaction.name];
 
                 if (interactionData != null)
-                    interaction.setFromLoadData(interactionData);
+                    interaction.SetFromLoadData(interactionData);
                 else
                     Debug.LogWarning("No data saved for " + interaction.name);
 
@@ -163,7 +163,7 @@ public class LevelSaveManager : MonoBehaviour
 
             foreach (DistanceInteraction interaction in FindObjectsOfType<DistanceInteraction>())
             {
-                var interactionData = distanceInteractions[interaction.name];
+                var interactionData = DistanceInteractions[interaction.name];
 
                 if (interactionData != null)
                     interaction.setFromLoadData(interactionData);
@@ -187,13 +187,13 @@ public class LevelSaveManager : MonoBehaviour
     class SaveData
     {
 
-        public EventInteractionData[] eventInteractions;
+        public EventInteractionData[] EventInteractions;
 
-        public CollisionInteractionData[] collisionInteractions;
+        public CollisionInteractionData[] CollisionInteractions;
 
-        public DistanceInteractionData[] distanceInteractions;
+        public DistanceInteractionData[] DistanceInteractions;
 
 
-        public int currentScene;
+        public int CurrentScene;
 
     }

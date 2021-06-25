@@ -21,12 +21,12 @@ public class GlobalSettings : MonoBehaviour
 
     public static bool loadFromData;
 
-    public static void updateUILanguage()
+    public static void UpdateUILanguage()
     {
 
         foreach (UILanguage uI in FindObjectsOfType<UILanguage>())
         {
-            uI.setLanguage(selectedLanguage);
+            uI.SetLanguage(selectedLanguage);
         }
     }
 }

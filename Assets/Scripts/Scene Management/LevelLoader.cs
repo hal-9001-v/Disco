@@ -23,32 +23,32 @@ public class LevelLoader : MonoBehaviour
         pauser = FindObjectOfType<Pauser>();
 
         //Every scene must have a LevelLoader. Call UILanguage every time a new scene is loaded
-        GlobalSettings.updateUILanguage();
+        GlobalSettings.UpdateUILanguage();
 
-        setSceneFromSaveData();
+        SetSceneFromSaveData();
     }
 
-    public void goToNextScene()
+    public void GoToNextScene()
     {
         StartCoroutine(LoadScene(SceneManager.GetActiveScene().buildIndex + 1));
     }
 
-    public void goToScene(int sceneIndex)
+    public void GoToScene(int sceneIndex)
     {
         StartCoroutine(LoadScene(sceneIndex));
     }
 
-    public void goToMenu()
+    public void GoToMenu()
     {
         StartCoroutine(LoadScene(menuSceneIndex));
     }
 
-    public void saveGame()
+    public void SaveGame()
     {
-        LevelSaveManager.saveLevelData();
+        LevelSaveManager.SaveLevelData();
     }
 
-    public bool canContinueGame()
+    public bool CanContinueGame()
     {
 
         int index = LevelSaveManager.getSaveSceneIndex();
@@ -60,7 +60,7 @@ public class LevelLoader : MonoBehaviour
 
     }
 
-    public void continueGame()
+    public void ContinueGame()
     {
         int index = LevelSaveManager.getSaveSceneIndex();
 
@@ -72,7 +72,7 @@ public class LevelLoader : MonoBehaviour
 
         GlobalSettings.loadFromData = true;
 
-        goToScene(index);
+        GoToScene(index);
 
     }
 
@@ -82,7 +82,7 @@ public class LevelLoader : MonoBehaviour
         Cursor.visible = false;
 
         if (pauser != null)
-            pauser.setCanSwitchPause(this, false);
+            pauser.SetCanSwitchPause(this, false);
 
         if (scene == loadingSceneIndex)
         {
@@ -105,14 +105,14 @@ public class LevelLoader : MonoBehaviour
     }
 
 
-    void setSceneFromSaveData()
+    void SetSceneFromSaveData()
     {
         int index = LevelSaveManager.getSaveSceneIndex();
 
         if (index == SceneManager.GetActiveScene().buildIndex)
         {
             Debug.Log("LEVEL LOADER: Setting Scene" + SceneManager.GetActiveScene().name + " from Data!");
-            LevelSaveManager.setLevelFromData();
+            LevelSaveManager.SetLevelFromData();
         }
     }
 

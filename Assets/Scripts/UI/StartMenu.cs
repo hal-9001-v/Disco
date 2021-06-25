@@ -37,25 +37,25 @@ public class StartMenu : InputComponent
 
 
 
-        displayFirstLayer();
+        DisplayFirstLayer();
     }
 
-    public void displaySettings()
+    public void DisplaySettings()
     {
-        showSettings();
+        ShowSettings();
 
-        hideFirstLayerButtons();
+        HideFirstLayerButtons();
     }
 
-    public void displayFirstLayer()
+    public void DisplayFirstLayer()
     {
-        showFirstLayerButtons();
+        ShowFirstLayerButtons();
 
-        hideSettings();
+        HideSettings();
 
     }
 
-    void showSettings()
+    void ShowSettings()
     {
 
         if (settingsGroup != null)
@@ -66,7 +66,7 @@ public class StartMenu : InputComponent
 
     }
 
-    void hideSettings()
+    void HideSettings()
     {
 
         if (settingsGroup != null)
@@ -78,7 +78,7 @@ public class StartMenu : InputComponent
 
     }
 
-    void hideFirstLayerButtons()
+    void HideFirstLayerButtons()
     {
 
         if (firstLayerGroup != null)
@@ -88,7 +88,7 @@ public class StartMenu : InputComponent
         }
     }
 
-    void showFirstLayerButtons()
+    void ShowFirstLayerButtons()
     {
 
         if (firstLayerGroup != null)
@@ -102,7 +102,7 @@ public class StartMenu : InputComponent
     {
     }
 
-    public void exitGame()
+    public void ExitGame()
     {
 #if UNITY_EDITOR
         EditorApplication.isPlaying = false;

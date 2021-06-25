@@ -6,65 +6,84 @@ using UnityEngine.Events;
 
 public class EventInteraction : Interactable
 {
-    public UnityEvent events;
-
-
     [Header("Settings")]
-    public bool onlyOnce;
+    [Range(0.5f, 5)]
+    [SerializeField] float _range;
+    [SerializeField] bool _onlyOnce;
+    [SerializeField] bool _readyForInteraction = true;
+    [SerializeField] UnityEvent _events;
 
-    public bool readyForInteraction = true;
+    [Header("Gizmos")]
+    [SerializeField] Color _drawColor = Color.yellow;
 
 #if UNITY_EDITOR
     [Header("Debug")]
-    public bool debugLog;
+    public bool _debugLog;
 #endif
-
-
     bool done;
 
-    private void OnDrawGizmos()
+    Transform _player;
+
+    private void Awake()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawCube(transform.position, new Vector3(0.5f, 0.5f, 0.5f));
+        var trigger = FindObjectOfType<InteractionTrigger>();
+
+        if (trigger != null) {
+            _player = trigger.transform;
+        }
     }
 
     public override void TriggerInteraction()
     {
-        if (readyForInteraction)
-        {
-            //Debug.Log("Interaction");
-            if (done && onlyOnce)
-                return;
+        if (!_readyForInteraction) return;
+
+        //Debug.Log("Interaction");
+        if (done && _onlyOnce)
+            return;
+
+        if (Vector3.Distance(_player.position, transform.position) > _range)
+            return;
 
 #if UNITY_EDITOR
-            if (debugLog)
-                Debug.Log("Starting Event Interaction with " + name + "!");
+        if (_debugLog)
+            Debug.Log("Starting Event Interaction with " + name + "!");
 #endif
 
-            events.Invoke();
-            done = true;
-        }
+        _events.Invoke();
+        done = true;
+
     }
 
+    public void SetReadyForInteraction(bool b)
+    {
+        _readyForInteraction = b;
+    }
 
-
-    public EventInteractionData GetSaveData() {
+    public EventInteractionData GetSaveData()
+    {
 
 
         var data = new EventInteractionData()
         {
             name = name,
             done = done,
-            readyForInteraction = readyForInteraction
+            readyForInteraction = _readyForInteraction
         };
         return data;
 
     }
 
-    public void SetFromLoadData(EventInteractionData data) {
+    public void SetFromLoadData(EventInteractionData data)
+    {
         done = data.done;
-        readyForInteraction = data.readyForInteraction;
+        _readyForInteraction = data.readyForInteraction;
     }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = _drawColor;
+        Gizmos.DrawWireSphere(transform.position, _range);
+    }
+
 }
 
 [Serializable]

@@ -16,7 +16,7 @@ public class UILanguage : MonoBehaviour
 
 
 
-    public void setLanguage(GlobalSettings.Languages language)
+    public void SetLanguage(GlobalSettings.Languages language)
     {
 
         if (textContainer != null)

@@ -18,10 +18,10 @@ public class Pauser : InputComponent
 
     private void Start()
     {
-        resumeGame();
+        ResumeGame();
     }
 
-    public void setCanSwitchPause(Component o,bool b) {
+    public void SetCanSwitchPause(Component o,bool b) {
 
         //Don't let player open Pause when a new scene is being loaded
         if (o.GetType() == typeof(LevelLoader))
@@ -35,18 +35,18 @@ public class Pauser : InputComponent
         
     }
 
-    public void switchPause()
+    public void SwitchPause()
     {
         if (canSwitchPause) {
             if (isPaused)
-                resumeGame();
+                ResumeGame();
             else
-                pauseGame();
+                PauseGame();
         }
         
     }
 
-    public void pauseGame()
+    public void PauseGame()
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -63,11 +63,11 @@ public class Pauser : InputComponent
 
         }
 
-        displayPauseButtons();
+        DisplayPauseButtons();
 
     }
 
-    public void resumeGame()
+    public void ResumeGame()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -84,26 +84,26 @@ public class Pauser : InputComponent
 
     }
 
-    public void displaySettings()
+    public void DisplaySettings()
     {
         canSwitchPause = false;
 
-        showSettings();
+        ShowSettings();
 
-        hidePauseButtons();
+        HidePauseButtons();
     }
 
-    public void displayPauseButtons()
+    public void DisplayPauseButtons()
     {
         canSwitchPause = true;
 
-        showPauseButtons();
+        ShowPauseButtons();
 
-        hideSettings();
+        HideSettings();
 
     }
 
-    void showSettings()
+    void ShowSettings()
     {
 
         if (settingsGroup != null)
@@ -114,7 +114,7 @@ public class Pauser : InputComponent
 
     }
 
-    void hideSettings()
+    void HideSettings()
     {
 
         if (settingsGroup != null)
@@ -126,7 +126,7 @@ public class Pauser : InputComponent
 
     }
 
-    void hidePauseButtons()
+    void HidePauseButtons()
     {
 
         if (pauseGroup != null)
@@ -136,7 +136,7 @@ public class Pauser : InputComponent
         }
     }
 
-    void showPauseButtons()
+    void ShowPauseButtons()
     {
 
         if (pauseGroup != null)
@@ -146,11 +146,11 @@ public class Pauser : InputComponent
         }
     }
 
-    public void saveSettings() { 
+    public void SaveSettings() { 
         
     }
 
-    public void setVolume(float value) {
+    public void SetVolume(float value) {
         volumeValue = value;
     }
 
@@ -158,7 +158,7 @@ public class Pauser : InputComponent
     {
         inputs.Map.Pause.performed += ctx =>
         {
-            switchPause();
+            SwitchPause();
 
         };
     }
