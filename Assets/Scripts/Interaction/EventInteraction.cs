@@ -28,7 +28,7 @@ public class EventInteraction : Interactable
         Gizmos.DrawCube(transform.position, new Vector3(0.5f, 0.5f, 0.5f));
     }
 
-    public override void triggerInteraction()
+    public override void TriggerInteraction()
     {
         if (readyForInteraction)
         {
@@ -48,7 +48,7 @@ public class EventInteraction : Interactable
 
 
 
-    public EventInteractionData getSaveData() {
+    public EventInteractionData GetSaveData() {
 
 
         var data = new EventInteractionData()
@@ -61,7 +61,7 @@ public class EventInteraction : Interactable
 
     }
 
-    public void setFromLoadData(EventInteractionData data) {
+    public void SetFromLoadData(EventInteractionData data) {
         done = data.done;
         readyForInteraction = data.readyForInteraction;
     }

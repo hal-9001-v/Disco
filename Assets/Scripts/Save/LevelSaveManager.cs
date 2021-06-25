@@ -68,7 +68,7 @@ public class LevelSaveManager : MonoBehaviour
 
         for (int i = 0; i < data.eventInteractions.Length; i++)
         {
-            data.eventInteractions[i] = eventObjects[i].getSaveData();
+            data.eventInteractions[i] = eventObjects[i].GetSaveData();
         }
 
 
@@ -144,7 +144,7 @@ public class LevelSaveManager : MonoBehaviour
                 var interactionData = eventInteractions[interaction.name];
 
                 if (interactionData != null)
-                    interaction.setFromLoadData(interactionData);
+                    interaction.SetFromLoadData(interactionData);
                 else
                     Debug.LogWarning("No data saved for " + interaction.name);
 

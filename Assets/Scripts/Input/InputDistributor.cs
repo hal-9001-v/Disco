@@ -8,7 +8,6 @@ public class InputDistributor : MonoBehaviour
 
     static InputDistributor instance;
 
-
     private void Start()
     {
         if (instance == null)
@@ -43,7 +42,7 @@ public class InputDistributor : MonoBehaviour
         {
             foreach (InputComponent components in FindObjectsOfType<InputComponent>())
             {
-                components.setInput(inputMap);
+                components.SetInput(inputMap);
             }
         }
         else

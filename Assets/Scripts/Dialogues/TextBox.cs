@@ -49,6 +49,7 @@ public class TextBox : InputComponent
 
     public void startDialogue(Dialogue d)
     {
+        GlobalSettings.isPlayerInDialogue = true;
         Debug.Log("Starting Dialogue " + d.name);
 
         currentDialogue = d;
@@ -150,11 +151,25 @@ public class TextBox : InputComponent
         myGroup.alpha = 0;
         displayingDialogue = false;
 
+        StartCoroutine(SetPlayerOutOfDialogue());
+
     }
+
+    IEnumerator SetPlayerOutOfDialogue() {
+
+        yield return new WaitForSeconds(0.5f);
+
+        GlobalSettings.isPlayerInDialogue = false;
+
+    }
+    
 
     public void show()
     {
         myGroup.alpha = 1;
+
+        StopAllCoroutines();
+        GlobalSettings.isPlayerInDialogue = true;
 
     }
 
@@ -227,7 +242,7 @@ public class TextBox : InputComponent
     }
 
 
-    public override void setInput(NormalInput inputs)
+    public override void SetInput(NormalInput inputs)
     {
         inputs.Map.Text.performed += ctx =>
         {

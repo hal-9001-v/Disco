@@ -20,15 +20,15 @@ public class InteractionTrigger : InputComponent
         interactables = FindObjectsOfType<Interactable>();
     }
 
-    void triggerInteractableInRange() {
+    void TriggerInteractableInRange() {
 
-        if (!Pauser.isPaused) {
+        if (CanPlayerInteract()) {
             
             foreach (Interactable interactable in interactables)
             {
                 if (Vector2.Distance(interactable.transform.position, transform.position) < range)
                 {
-                    interactable.triggerInteraction();
+                    interactable.TriggerInteraction();
 
                     return;
                 }
@@ -37,11 +37,16 @@ public class InteractionTrigger : InputComponent
         
 
     }
-    public override void setInput(NormalInput inputs)
+    public override void SetInput(NormalInput inputs)
     {
         inputs.Map.Interaction.performed += ctx => {
-            triggerInteractableInRange();
+            TriggerInteractableInRange();
         };
+    }
+
+
+    bool CanPlayerInteract() {
+        return !GlobalSettings.isPlayerInDialogue && !Pauser.isPaused;
     }
 
 
@@ -50,4 +55,6 @@ public class InteractionTrigger : InputComponent
         Gizmos.color = drawColor;
         Gizmos.DrawWireSphere(transform.position, range);
     }
+
+
 }

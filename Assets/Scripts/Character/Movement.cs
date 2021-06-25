@@ -7,28 +7,42 @@ using UnityEditor;
 
 public class Movement : InputComponent
 {
-    public Rigidbody2D rigid_body;
+    [Header("Objects")]
+    [SerializeField] Rigidbody2D _rigid_body;
+    [SerializeField] Transform _groundPivot;
+    [SerializeField] AnimatorCommand _animatorCommand;
+
+    [Header("Settings")]
     [Range(1f, 50f)] public float velocity;
     [Range(1f, 100f)] public float jumpHeight;
-    [Range(0f, 0.25f)] public float groundRadius;
-    public Transform groundPivot;
+    [Range(0f, 1f)] [SerializeField] float _groundRadius;
+
     public LayerMask groundLayer;
 
     private bool facingRight = false;
 
     void OnDrawGizmos()
     {
-        if (groundPivot != null)
+        if (_groundPivot != null)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(groundPivot.position, groundRadius);
+            Gizmos.DrawWireSphere(_groundPivot.position, _groundRadius);
         }
+    }
+
+    private void Start()
+    {
+        if (_animatorCommand != null)
+            _animatorCommand.Idle();
     }
 
     private void ApplyMovement(Vector2 movementReadValue)
     {
-        if (!Pauser.isPaused)
+        if (CanPlayerMove())
         {
+            if (_animatorCommand != null)
+                _animatorCommand.Run();
+
             Vector2 newVelocity = new Vector2(0, 0);
 
             if (movementReadValue.x > 0)
@@ -42,32 +56,38 @@ public class Movement : InputComponent
                 FlipCharacter(false);
             }
 
-            newVelocity.y = rigid_body.velocity.y;
-            rigid_body.velocity = newVelocity;
+            newVelocity.y = _rigid_body.velocity.y;
+            _rigid_body.velocity = newVelocity;
         }
     }
 
     private void StopMovement()
     {
-        if (!Pauser.isPaused)
+        if (CanPlayerMove())
         {
-            rigid_body.velocity = new Vector2(0, rigid_body.velocity.y);
+            if (_animatorCommand != null)
+                _animatorCommand.Idle();
+
+            _rigid_body.velocity = new Vector2(0, _rigid_body.velocity.y);
         }
     }
 
     private void Jump()
     {
-        if (!Pauser.isPaused)
+        if (CanPlayerMove())
         {
+
             Collider2D[] groundColliders =
-                Physics2D.OverlapCircleAll(groundPivot.position, groundRadius, groundLayer);
+                Physics2D.OverlapCircleAll(_groundPivot.position, _groundRadius, groundLayer);
 
             for (int i = 0; i < groundColliders.Length; i++)
             {
                 if (groundColliders[i].gameObject != gameObject)
                 {
-                    rigid_body.velocity = new Vector2(rigid_body.velocity.x,
-                        Mathf.Pow(jumpHeight * 2 * rigid_body.gravityScale, 0.5f));
+                    _rigid_body.velocity = new Vector2(_rigid_body.velocity.x,
+                        Mathf.Pow(jumpHeight * 2 * _rigid_body.gravityScale, 0.5f));
+
+                    _animatorCommand.Jump();
                 }
             }
         }
@@ -82,7 +102,12 @@ public class Movement : InputComponent
         }
     }
 
-    public override void setInput(NormalInput inputs)
+    bool CanPlayerMove()
+    {
+        return !Pauser.isPaused && !GlobalSettings.isPlayerInDialogue;
+    }
+
+    public override void SetInput(NormalInput inputs)
     {
         inputs.Map.Movement.performed += ctx =>
         {

@@ -15,6 +15,8 @@ public class GlobalSettings : MonoBehaviour
 
     public static Languages selectedLanguage = Languages.English;
 
+    public static bool isPlayerInDialogue;
+
     public static int currentScene;
 
     public static bool loadFromData;

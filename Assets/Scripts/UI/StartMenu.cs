@@ -98,7 +98,7 @@ public class StartMenu : InputComponent
         }
     }
 
-    public override void setInput(NormalInput inputs)
+    public override void SetInput(NormalInput inputs)
     {
     }
 

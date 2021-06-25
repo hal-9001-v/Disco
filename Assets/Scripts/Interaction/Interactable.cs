@@ -3,6 +3,6 @@
 public abstract class Interactable : MonoBehaviour
 {
 
-    public abstract void triggerInteraction();
+    public abstract void TriggerInteraction();
 
 }

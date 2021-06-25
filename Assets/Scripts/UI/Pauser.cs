@@ -154,7 +154,7 @@ public class Pauser : InputComponent
         volumeValue = value;
     }
 
-    public override void setInput(NormalInput inputs)
+    public override void SetInput(NormalInput inputs)
     {
         inputs.Map.Pause.performed += ctx =>
         {
