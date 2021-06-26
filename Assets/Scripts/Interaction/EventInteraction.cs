@@ -6,6 +6,10 @@ using UnityEngine.Events;
 
 public class EventInteraction : Interactable
 {
+
+    [Header("References")]
+    [SerializeField] SpriteRenderer _markSprite;
+
     [Header("Settings")]
     [Range(0.5f, 5)]
     [SerializeField] float _range;
@@ -21,6 +25,7 @@ public class EventInteraction : Interactable
     public bool _debugLog;
 #endif
     bool done;
+    bool _playerInRange;
 
     Transform _player;
 
@@ -28,21 +33,15 @@ public class EventInteraction : Interactable
     {
         var trigger = FindObjectOfType<InteractionTrigger>();
 
-        if (trigger != null) {
+        if (trigger != null)
+        {
             _player = trigger.transform;
         }
     }
 
     public override void TriggerInteraction()
     {
-        if (!_readyForInteraction) return;
-
-        //Debug.Log("Interaction");
-        if (done && _onlyOnce)
-            return;
-
-        if (Vector3.Distance(_player.position, transform.position) > _range)
-            return;
+        if (!CanInteract()) return;
 
 #if UNITY_EDITOR
         if (_debugLog)
@@ -51,6 +50,43 @@ public class EventInteraction : Interactable
 
         _events.Invoke();
         done = true;
+
+    }
+
+    bool CanInteract()
+    {
+        if (!_readyForInteraction) return false;
+
+        if (done && _onlyOnce) return false;
+
+        if (!_playerInRange) return false;
+
+        return true;
+    }
+
+    private void FixedUpdate()
+    {
+        if (_player != null && Vector2.Distance(_player.position, transform.position) <= _range)
+        {
+            _playerInRange = true;
+        }
+        else
+        {
+            _playerInRange = false;
+        }
+
+        //Show mark if this interactable is can be interacted
+        if (_markSprite != null)
+        {
+            if (CanInteract())
+            {
+                _markSprite.enabled = true;
+            }
+            else
+            {
+                _markSprite.enabled = false;
+            }
+        }
 
     }
 
