@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputDistributor : MonoBehaviour
+public class CombatInputDistributor : MonoBehaviour
 {
-    NormalInput inputMap;
-    
-    static InputDistributor instance;
+    CombatInput inputMap;
+
+    static CombatInputDistributor instance;
 
     private void Start()
     {
@@ -14,8 +14,8 @@ public class InputDistributor : MonoBehaviour
         {
             instance = this;
 
-            inputMap = new NormalInput();
-            setInput();
+            inputMap = new CombatInput();
+            SetInput();
 
             inputMap.Enable();
         }
@@ -34,22 +34,20 @@ public class InputDistributor : MonoBehaviour
             inputMap.Enable();
     }
 
-    void setInput()
+    void SetInput()
     {
 
         if (inputMap != null)
         {
-            foreach (InputComponent components in FindObjectsOfType<InputComponent>())
+            foreach (CombatInputComponent components in FindObjectsOfType<CombatInputComponent>())
             {
-                components.SetInput(inputMap);
+                components.setInput(inputMap);
             }
         }
         else
         {
-            Debug.LogWarning("No NormalInput in Input");
+            Debug.LogWarning("No CombatInput in Input");
         }
-
-
 
     }
 }

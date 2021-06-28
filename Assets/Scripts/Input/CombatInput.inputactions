@@ -1,0 +1,164 @@
+{
+    "name": "CombatInput",
+    "maps": [
+        {
+            "name": "Combat",
+            "id": "bf8a1cc7-76e0-4087-ba1a-4b821c9ccee1",
+            "actions": [
+                {
+                    "name": "RythmUp",
+                    "type": "Button",
+                    "id": "2a50f517-8b9a-46b3-ae4d-208dd1288005",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Rhythm Down",
+                    "type": "Button",
+                    "id": "d74c313b-9964-4139-a682-2538c8ca0d28",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Rhythm Left",
+                    "type": "Button",
+                    "id": "1250b2fa-fdb7-4854-84e3-533c68be3948",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Rhythm Right",
+                    "type": "Button",
+                    "id": "57854085-f1e7-4851-bd38-7f175bd78c95",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Card Left",
+                    "type": "Button",
+                    "id": "9c0b6255-9738-4183-bbed-a2d5cb8ed8cd",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Card Right",
+                    "type": "Button",
+                    "id": "01c880ae-3594-444f-a990-dffc42627af7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Card Send",
+                    "type": "Button",
+                    "id": "25468bfd-06d9-42d7-b823-45df41bf2d6e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1cc2fc4e-a74a-4c4d-9772-0e64a24c0f51",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Normal",
+                    "action": "RythmUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ddee3e83-bc54-4bed-a723-8a2d3572b16e",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Normal",
+                    "action": "Rhythm Down",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "13ad2d12-08e9-45ca-8da6-af81facf59d3",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Normal",
+                    "action": "Rhythm Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ba9cc088-9f35-40d7-a55d-9b74f1a7e5ac",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Normal",
+                    "action": "Rhythm Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "836764ed-cc09-4c77-af5c-8b2b381af461",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Normal",
+                    "action": "Card Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ed911354-4d50-4fa9-abe5-2521d34bab8a",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Normal",
+                    "action": "Card Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f3bc9953-0b52-497b-8a94-fb475ea36838",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Normal",
+                    "action": "Card Send",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "CombatScheme",
+            "bindingGroup": "CombatScheme",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Gamepad>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}

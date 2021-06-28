@@ -334,6 +334,11 @@
                     "isOR": false
                 }
             ]
+        },
+        {
+            "name": "Combat",
+            "bindingGroup": "Combat",
+            "devices": []
         }
     ]
 }
