@@ -10,21 +10,22 @@ public class DistanceInteraction : MonoBehaviour
     [Header("Settings")]
     [SerializeField]
     [Range(0, 20)] float _range;
-    [SerializeField] UnityEvent events;
 
-    [SerializeField] bool onlyOnce;
+    //Invoke _events only the first time?
+    [SerializeField] bool _onlyOnce;
 
-    [SerializeField] bool readyForInteraction = true;
+    public bool ReadyForInteraction = true;
 
-
-    static Transform playerTransform;
-    bool done;
+    [SerializeField] UnityEvent _events;
 
 #if UNITY_EDITOR
     [Header("Debug")]
-    public bool debugLog;
-    public Color gizmosColor;
+    [SerializeField] bool _debugLog;
+    [SerializeField] Color _gizmosColor;
 #endif
+
+    static Transform _playerTransform;
+    bool _done;
 
 
     private void Awake()
@@ -33,7 +34,7 @@ public class DistanceInteraction : MonoBehaviour
 
         if (player != null)
         {
-            playerTransform = player.transform;
+            _playerTransform = player.transform;
         }
         else
         {
@@ -49,17 +50,17 @@ public class DistanceInteraction : MonoBehaviour
 
     private void triggerEvent()
     {
-        if (readyForInteraction && playerTransform != null)
+        if (ReadyForInteraction && _playerTransform != null)
         {
-            if (Vector3.Distance(playerTransform.position, transform.position) <= _range)
+            if (Vector3.Distance(_playerTransform.position, transform.position) <= _range)
             {
-                events.Invoke();
+                _events.Invoke();
 
-                if (onlyOnce)
+                if (_onlyOnce)
                     enabled = false;
 
 #if UNITY_EDITOR
-                if (debugLog)
+                if (_debugLog)
                     Debug.Log("Start Distance Interaction with " + name + "!");
 #endif
             }
@@ -71,9 +72,9 @@ public class DistanceInteraction : MonoBehaviour
     {
         var data = new DistanceInteractionData()
         {
-            name = name,
-            done = done,
-            readyForInteraction = readyForInteraction
+            Name = name,
+            Done = _done,
+            ReadyForInteraction = ReadyForInteraction
         };
 
         return data;
@@ -82,13 +83,13 @@ public class DistanceInteraction : MonoBehaviour
 
     public void setFromLoadData(DistanceInteractionData data)
     {
-        done = data.done;
-        readyForInteraction = data.readyForInteraction;
+        _done = data.Done;
+        ReadyForInteraction = data.ReadyForInteraction;
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = gizmosColor;
+        Gizmos.color = _gizmosColor;
         Gizmos.DrawWireSphere(transform.position, _range);
     }
 }
@@ -96,9 +97,9 @@ public class DistanceInteraction : MonoBehaviour
 [Serializable]
 public class DistanceInteractionData
 {
-    public string name;
+    public string Name;
 
-    public bool done;
-    public bool readyForInteraction;
+    public bool Done;
+    public bool ReadyForInteraction;
 }
 

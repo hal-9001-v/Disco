@@ -7,14 +7,13 @@ using UnityEngine.SceneManagement;
 
 public class LevelSaveManager : MonoBehaviour
 {
-    static readonly string filePath = Application.persistentDataPath + "/save.data";
+    static readonly string FilePath = Application.persistentDataPath + "/save.data";
 
     static SaveData LoadLevelData()
     {
-
         try
         {
-            StreamReader reader = new StreamReader(filePath);
+            StreamReader reader = new StreamReader(FilePath);
 
             string jsonData = reader.ReadToEnd();
 
@@ -46,7 +45,7 @@ public class LevelSaveManager : MonoBehaviour
 
     }
 
-    public static int getSaveSceneIndex()
+    public static int GetSaveSceneIndex()
     {
         var data = LoadLevelData();
 
@@ -94,7 +93,7 @@ public class LevelSaveManager : MonoBehaviour
 
         try
         {
-            StreamWriter writer = new StreamWriter(new FileStream(filePath, FileMode.OpenOrCreate));
+            StreamWriter writer = new StreamWriter(new FileStream(FilePath, FileMode.OpenOrCreate));
 
             writer.Write(JsonUtility.ToJson(data));
 
@@ -119,20 +118,20 @@ public class LevelSaveManager : MonoBehaviour
 
         foreach (EventInteractionData interaction in data.EventInteractions)
         {
-            EventInteractions.Add(interaction.name, interaction);
+            EventInteractions.Add(interaction.Name, interaction);
         }
 
 
 
         foreach (CollisionInteractionData interaction in data.CollisionInteractions)
         {
-            CollisionInteractions.Add(interaction.name, interaction);
+            CollisionInteractions.Add(interaction.Name, interaction);
         }
 
 
         foreach (DistanceInteractionData interaction in data.DistanceInteractions)
         {
-            DistanceInteractions.Add(interaction.name, interaction);
+            DistanceInteractions.Add(interaction.Name, interaction);
         }
 
         #endregion
@@ -186,7 +185,6 @@ public class LevelSaveManager : MonoBehaviour
     [Serializable]
     class SaveData
     {
-
         public EventInteractionData[] EventInteractions;
 
         public CollisionInteractionData[] CollisionInteractions;

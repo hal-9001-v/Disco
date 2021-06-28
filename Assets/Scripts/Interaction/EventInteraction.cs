@@ -13,6 +13,7 @@ public class EventInteraction : Interactable
     [Header("Settings")]
     [Range(0.5f, 5)]
     [SerializeField] float _range;
+    //Invoke _events only the first time?
     [SerializeField] bool _onlyOnce;
     [SerializeField] bool _readyForInteraction = true;
     [SerializeField] UnityEvent _events;
@@ -24,7 +25,7 @@ public class EventInteraction : Interactable
     [Header("Debug")]
     public bool _debugLog;
 #endif
-    bool done;
+    bool _done;
     bool _playerInRange;
 
     Transform _player;
@@ -49,7 +50,7 @@ public class EventInteraction : Interactable
 #endif
 
         _events.Invoke();
-        done = true;
+        _done = true;
 
     }
 
@@ -57,7 +58,7 @@ public class EventInteraction : Interactable
     {
         if (!_readyForInteraction) return false;
 
-        if (done && _onlyOnce) return false;
+        if (_done && _onlyOnce) return false;
 
         if (!_playerInRange) return false;
 
@@ -101,9 +102,9 @@ public class EventInteraction : Interactable
 
         var data = new EventInteractionData()
         {
-            name = name,
-            done = done,
-            readyForInteraction = _readyForInteraction
+            Name = name,
+            Done = _done,
+            ReadyForInteraction = _readyForInteraction
         };
         return data;
 
@@ -111,8 +112,8 @@ public class EventInteraction : Interactable
 
     public void SetFromLoadData(EventInteractionData data)
     {
-        done = data.done;
-        _readyForInteraction = data.readyForInteraction;
+        _done = data.Done;
+        _readyForInteraction = data.ReadyForInteraction;
     }
     private void OnDrawGizmos()
     {
@@ -125,8 +126,8 @@ public class EventInteraction : Interactable
 [Serializable]
 public class EventInteractionData
 {
-    public string name;
-    public bool done;
-    public bool readyForInteraction;
+    public string Name;
+    public bool Done;
+    public bool ReadyForInteraction;
 }
 

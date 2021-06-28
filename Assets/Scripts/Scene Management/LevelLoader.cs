@@ -51,7 +51,7 @@ public class LevelLoader : MonoBehaviour
     public bool CanContinueGame()
     {
 
-        int index = LevelSaveManager.getSaveSceneIndex();
+        int index = LevelSaveManager.GetSaveSceneIndex();
 
         if (index != -1)
             return true;
@@ -62,7 +62,7 @@ public class LevelLoader : MonoBehaviour
 
     public void ContinueGame()
     {
-        int index = LevelSaveManager.getSaveSceneIndex();
+        int index = LevelSaveManager.GetSaveSceneIndex();
 
         if (index == -1)
         {
@@ -107,7 +107,7 @@ public class LevelLoader : MonoBehaviour
 
     void SetSceneFromSaveData()
     {
-        int index = LevelSaveManager.getSaveSceneIndex();
+        int index = LevelSaveManager.GetSaveSceneIndex();
 
         if (index == SceneManager.GetActiveScene().buildIndex)
         {

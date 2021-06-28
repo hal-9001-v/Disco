@@ -22,7 +22,7 @@ public class StartMenu : InputComponent
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        int i = LevelSaveManager.getSaveSceneIndex();
+        int i = LevelSaveManager.GetSaveSceneIndex();
 
         if (i == -1)
         {

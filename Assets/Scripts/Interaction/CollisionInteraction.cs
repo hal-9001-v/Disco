@@ -7,25 +7,25 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Collider2D))]
 public class CollisionInteraction : MonoBehaviour
 {
-    public UnityEvent enterEvents;
-
-    public UnityEvent exitEvents;
-
 
     [Header("Settings")]
-    public bool enterOnlyOnce;
-    public bool exitOnlyOnce;
-    public bool readyForInteraction = true;
+    //Invoke _enterEvents only the first time?
+    [SerializeField] bool _enterOnlyOnce;
+    //Invoke _exitEvents only the first time?
+    [SerializeField] bool _exitOnlyOnce;
+    public bool ReadyForInteraction = true;
+
+    [SerializeField] UnityEvent _enterEvents;
+    [SerializeField] UnityEvent _exitEvents;
 
 
 #if UNITY_EDITOR
     [Header("Debug")]
-    public bool debugLog;
+    [SerializeField]bool _debugLog;
 #endif
 
-
-    bool enterDone;
-    bool exitDone;
+    bool _enterDone;
+    bool _exitDone;
 
     private void Start()
     {
@@ -41,23 +41,23 @@ public class CollisionInteraction : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (readyForInteraction)
+        if (ReadyForInteraction)
         {
             if (collision.GetComponent<InteractionTrigger>() != null)
             {
 
 #if UNITY_EDITOR
-                if (debugLog)
+                if (_debugLog)
                     Debug.Log("Entering Interaction Collision with " + name + "!");
 #endif
 
-                if (enterDone && enterOnlyOnce)
+                if (_enterDone && _enterOnlyOnce)
                 {
                     return;
                 }
 
-                enterEvents.Invoke();
-                enterDone = true;
+                _enterEvents.Invoke();
+                _enterDone = true;
             }
 
 
@@ -66,22 +66,22 @@ public class CollisionInteraction : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (readyForInteraction)
+        if (ReadyForInteraction)
         {
             if (collision.GetComponent<InteractionTrigger>() != null)
             {
 
 #if UNITY_EDITOR
-                if (debugLog)
+                if (_debugLog)
                     Debug.Log("Exiting Interaction Collision with " + name + "!");
 #endif
 
-                if (exitDone && exitOnlyOnce)
+                if (_exitDone && _exitOnlyOnce)
                 {
                     return;
                 }
-                exitEvents.Invoke();
-                exitDone = true;
+                _exitEvents.Invoke();
+                _exitDone = true;
             }
         }
 
@@ -91,10 +91,10 @@ public class CollisionInteraction : MonoBehaviour
     {
         var data = new CollisionInteractionData()
         {
-            name = name,
-            enterDone = enterDone,
-            exitDone = exitDone,
-            readyForInteraction = readyForInteraction
+            Name = name,
+            EnterDone = _enterDone,
+            ExitDone = _exitDone,
+            ReadyForInteraction = ReadyForInteraction
         };
 
         return data;
@@ -103,9 +103,9 @@ public class CollisionInteraction : MonoBehaviour
 
     public void SetFromLoadData(CollisionInteractionData data)
     {
-        enterDone = data.enterDone;
-        exitDone = data.exitDone;
-        readyForInteraction = data.readyForInteraction;
+        _enterDone = data.EnterDone;
+        _exitDone = data.ExitDone;
+        ReadyForInteraction = data.ReadyForInteraction;
     }
 
 }
@@ -115,9 +115,9 @@ public class CollisionInteraction : MonoBehaviour
 public class CollisionInteractionData
 {
 
-    public string name;
-    public bool enterDone;
-    public bool exitDone;
-    public bool readyForInteraction;
+    public string Name;
+    public bool EnterDone;
+    public bool ExitDone;
+    public bool ReadyForInteraction;
 }
 
