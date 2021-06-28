@@ -15,7 +15,7 @@ public class CombatInputDistributor : MonoBehaviour
             instance = this;
 
             inputMap = new CombatInput();
-            setInput();
+            SetInput();
 
             inputMap.Enable();
         }
@@ -34,7 +34,7 @@ public class CombatInputDistributor : MonoBehaviour
             inputMap.Enable();
     }
 
-    void setInput()
+    void SetInput()
     {
 
         if (inputMap != null)
