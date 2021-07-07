@@ -4,21 +4,23 @@ using UnityEngine;
 
 public class InteractionTrigger : InputComponent
 {
-    Interactable[] _interactables;
 
+    InputInteraction[] _interactables;
     // Start is called before the first frame update
     void Start()
     {
-        _interactables = FindObjectsOfType<Interactable>();
+        _interactables = FindObjectsOfType<InputInteraction>();
     }
 
     void TriggerInteractableInRange()
     {
         if (CanPlayerInteract())
         {
-            foreach (Interactable interactable in _interactables)
+            foreach (InputInteraction interactable in _interactables)
             {
-                interactable.TriggerInteraction();
+                if (interactable.TriggerInteraction()) {
+                    return;
+                }
 
             }
         }

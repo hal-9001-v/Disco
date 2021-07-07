@@ -9,6 +9,13 @@ public class Scroller : MonoBehaviour
     public float originalBeatTempo;
     public bool hasStarted;
     public float fps;
+
+    public List<ArrowObject> Arrows;
+
+    private void Awake()
+    {
+        Arrows = new List<ArrowObject>();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -26,18 +33,13 @@ public class Scroller : MonoBehaviour
 
         if (!hasStarted)
         {
-
             //hasStarted = true;
-
         }
         else {
-
-            foreach (ArrowObject arrows in FindObjectsOfType<ArrowObject>())
+            foreach (ArrowObject arrow in Arrows)
             {
-                arrows.transform.position -= new Vector3(0f, beatTempo * Time.deltaTime, 0f);
+                arrow.transform.position -= new Vector3(0f, beatTempo * Time.deltaTime, 0f);
             }
-            
-
         }
     }
 }

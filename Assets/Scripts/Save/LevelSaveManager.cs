@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -7,8 +6,106 @@ using UnityEngine.SceneManagement;
 
 public class LevelSaveManager : MonoBehaviour
 {
+    /*This Class stores the data from the current Scene. In case the scene is not the same from data, nothing shall happen.
+    *
+    *NOTE:Use LoadGame for loading and SaveGame for saving.
+     */
+
     static readonly string FilePath = Application.persistentDataPath + "/save.data";
 
+    public static void LoadGame()
+    {
+        var data = LoadLevelData();
+
+        if (data != null)
+        {
+            if (data.CurrentScene == SceneManager.GetActiveScene().buildIndex)
+            {
+                SetInteractablesFromData(data);
+
+            }
+            else
+            {
+                Debug.LogWarning("Trying to load a different scene from Data!");
+            }
+        }
+
+    }
+
+    public static void SaveGame()
+    {
+        SaveLevelData();
+    }
+
+    public static int GetSaveSceneIndex()
+    {
+        var data = LoadLevelData();
+
+        if (data != null)
+            return data.CurrentScene;
+        else
+            return -1;
+    }
+
+    static void SaveLevelData()
+    {
+        Debug.Log("LEVEL SAVE MANAGER: Saving Data of " + SceneManager.GetActiveScene().name);
+        SaveData data = new SaveData();
+
+        data.CurrentScene = SceneManager.GetActiveScene().buildIndex;
+
+        #region Find Interaction Objects
+
+        /*Components to Save:
+        * -InputInteraction
+        * -CollisionInteraction
+        * -DistanceInteraction
+        */
+
+        //INPUT INTERACTION
+        var inputObjects = FindObjectsOfType<InputInteraction>();
+        data.InputInteractions = new InputInteractionData[inputObjects.Length];
+
+        for (int i = 0; i < data.InputInteractions.Length; i++)
+        {
+            data.InputInteractions[i] = inputObjects[i].GetSaveData();
+        }
+
+        //COLLISION INTERACTION
+        var collisionObjects = FindObjectsOfType<CollisionInteraction>();
+        data.CollisionInteractions = new CollisionInteractionData[collisionObjects.Length];
+
+        for (int i = 0; i < data.CollisionInteractions.Length; i++)
+        {
+            data.CollisionInteractions[i] = collisionObjects[i].GetSaveData();
+        }
+
+        //DISTANCE INTERACTION
+        var distanceObjects = FindObjectsOfType<DistanceInteraction>();
+        data.DistanceInteractions = new DistanceInteractionData[distanceObjects.Length];
+
+        for (int i = 0; i < data.DistanceInteractions.Length; i++)
+        {
+            data.DistanceInteractions[i] = distanceObjects[i].GetSaveData();
+        }
+
+        #endregion
+        try
+        {
+            StreamWriter writer = new StreamWriter(new FileStream(FilePath, FileMode.OpenOrCreate));
+
+            writer.Write(JsonUtility.ToJson(data));
+
+            writer.Close();
+
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e.ToString());
+        }
+
+
+    }
     static SaveData LoadLevelData()
     {
         try
@@ -30,104 +127,23 @@ public class LevelSaveManager : MonoBehaviour
 
 
     }
-
-    public static void SetLevelFromData()
-    {
-        var data = LoadLevelData();
-
-
-        if (data != null)
-        {
-            SetInteractablesFromData(data);
-        }
-
-
-
-    }
-
-    public static int GetSaveSceneIndex()
-    {
-        var data = LoadLevelData();
-
-        if (data != null)
-            return data.CurrentScene;
-        else
-            return -1;
-    }
-
-    public static void SaveLevelData()
-    {
-        Debug.Log("LEVEL SAVE MANAGER: Saving Data of " + SceneManager.GetActiveScene().name);
-        SaveData data = new SaveData();
-
-        data.CurrentScene = SceneManager.GetActiveScene().buildIndex;
-
-        var eventObjects = FindObjectsOfType<EventInteraction>();
-        data.EventInteractions = new EventInteractionData[eventObjects.Length];
-
-        for (int i = 0; i < data.EventInteractions.Length; i++)
-        {
-            data.EventInteractions[i] = eventObjects[i].GetSaveData();
-        }
-
-
-
-        var collisionObjects = FindObjectsOfType<CollisionInteraction>();
-        data.CollisionInteractions = new CollisionInteractionData[collisionObjects.Length];
-
-        for (int i = 0; i < data.CollisionInteractions.Length; i++)
-        {
-            data.CollisionInteractions[i] = collisionObjects[i].GetSaveData();
-        }
-
-
-
-        var distanceObjects = FindObjectsOfType<DistanceInteraction>();
-        data.DistanceInteractions = new DistanceInteractionData[distanceObjects.Length];
-
-        for (int i = 0; i < data.DistanceInteractions.Length; i++)
-        {
-            data.DistanceInteractions[i] = distanceObjects[i].getSaveData();
-        }
-
-
-        try
-        {
-            StreamWriter writer = new StreamWriter(new FileStream(FilePath, FileMode.OpenOrCreate));
-
-            writer.Write(JsonUtility.ToJson(data));
-
-            writer.Close();
-
-        }
-        catch (Exception e)
-        {
-            Debug.LogError(e.ToString());
-        }
-
-
-    }
-
     static void SetInteractablesFromData(SaveData data)
     {
-        Dictionary<string, EventInteractionData> EventInteractions = new Dictionary<string, EventInteractionData>();
+        Dictionary<string, InputInteractionData> EventInteractions = new Dictionary<string, InputInteractionData>();
         Dictionary<string, CollisionInteractionData> CollisionInteractions = new Dictionary<string, CollisionInteractionData>();
         Dictionary<string, DistanceInteractionData> DistanceInteractions = new Dictionary<string, DistanceInteractionData>();
 
-        #region Set Dictionaries
+        #region Set Dictionaries with Interaction Objects
 
-        foreach (EventInteractionData interaction in data.EventInteractions)
+        foreach (InputInteractionData interaction in data.InputInteractions)
         {
             EventInteractions.Add(interaction.Name, interaction);
         }
-
-
 
         foreach (CollisionInteractionData interaction in data.CollisionInteractions)
         {
             CollisionInteractions.Add(interaction.Name, interaction);
         }
-
 
         foreach (DistanceInteractionData interaction in data.DistanceInteractions)
         {
@@ -138,7 +154,8 @@ public class LevelSaveManager : MonoBehaviour
 
         try
         {
-            foreach (EventInteraction interaction in FindObjectsOfType<EventInteraction>())
+            #region Set Gameobjects with Data
+            foreach (InputInteraction interaction in FindObjectsOfType<InputInteraction>())
             {
                 var interactionData = EventInteractions[interaction.name];
 
@@ -165,11 +182,12 @@ public class LevelSaveManager : MonoBehaviour
                 var interactionData = DistanceInteractions[interaction.name];
 
                 if (interactionData != null)
-                    interaction.setFromLoadData(interactionData);
+                    interaction.SetFromLoadData(interactionData);
                 else
                     Debug.LogWarning("No data saved for " + interaction.name);
 
             }
+            #endregion
 
         }
         catch (KeyNotFoundException e)
@@ -182,16 +200,16 @@ public class LevelSaveManager : MonoBehaviour
     }
 }
 
-    [Serializable]
-    class SaveData
-    {
-        public EventInteractionData[] EventInteractions;
+[Serializable]
+class SaveData
+{
+    public InputInteractionData[] InputInteractions;
 
-        public CollisionInteractionData[] CollisionInteractions;
+    public CollisionInteractionData[] CollisionInteractions;
 
-        public DistanceInteractionData[] DistanceInteractions;
+    public DistanceInteractionData[] DistanceInteractions;
 
 
-        public int CurrentScene;
+    public int CurrentScene;
 
-    }
+}

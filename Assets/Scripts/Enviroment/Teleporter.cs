@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Teleporter : MonoBehaviour
 {
-
+    //This class will move the InteractionTrigger(the player) between _locationA and _locationB
     [Header("References")]
+    [Tooltip("Move Player to this location with MovePlayerToA()")]
     [SerializeField] Transform _locationA;
+    [Tooltip("Move Player to this location with MovePlayerToB()")]
     [SerializeField] Transform _locationB;
 
     Transform _player;
@@ -23,6 +25,7 @@ public class Teleporter : MonoBehaviour
 
     public void MovePlayerToA()
     {
+        Debug.Log("To A");
         if (_player != null)
         {
 
@@ -40,6 +43,7 @@ public class Teleporter : MonoBehaviour
 
     public void MovePlayerToB()
     {
+        Debug.Log("To B");
         if (_player != null)
         {
 

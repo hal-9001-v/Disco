@@ -155,14 +155,15 @@ public class TextBox : InputComponent
 
     }
 
-    IEnumerator SetPlayerOutOfDialogue() {
+    IEnumerator SetPlayerOutOfDialogue()
+    {
 
         yield return new WaitForSeconds(0.5f);
 
         GlobalSettings.isPlayerInDialogue = false;
 
     }
-    
+
 
     public void show()
     {
@@ -197,25 +198,32 @@ public class TextBox : InputComponent
             selectAnswer(0);
         }
         else
+        {
             hide();
+            currentDialogue.afterText.Invoke();
+
+        }
 
     }
 
     void selectAnswer(int i)
     {
-        if (i < 0)
+        if (answers != null)
         {
-            i = answers.Length - 1;
-        }
-        else if (i >= answers.Length)
-            i = 0;
+            if (i < 0)
+            {
+                i = answers.Length - 1;
+            }
+            else if (i >= answers.Length)
+                i = 0;
 
-        if (currentAnswer != -1)
-        {
-            answersAnimators[currentAnswer].SetTrigger(unselectAnswerTrigger);
+            if (currentAnswer != -1)
+            {
+                answersAnimators[currentAnswer].SetTrigger(unselectAnswerTrigger);
+            }
+            currentAnswer = i;
+            answersAnimators[currentAnswer].SetTrigger(selectAnswerTrigger);
         }
-        currentAnswer = i;
-        answersAnimators[currentAnswer].SetTrigger(selectAnswerTrigger);
     }
 
     void confirmAnswer()

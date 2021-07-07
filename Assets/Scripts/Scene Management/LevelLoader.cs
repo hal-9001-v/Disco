@@ -45,7 +45,7 @@ public class LevelLoader : MonoBehaviour
 
     public void SaveGame()
     {
-        LevelSaveManager.SaveLevelData();
+        LevelSaveManager.SaveGame();
     }
 
     public bool CanContinueGame()
@@ -112,7 +112,7 @@ public class LevelLoader : MonoBehaviour
         if (index == SceneManager.GetActiveScene().buildIndex)
         {
             Debug.Log("LEVEL LOADER: Setting Scene" + SceneManager.GetActiveScene().name + " from Data!");
-            LevelSaveManager.SetLevelFromData();
+            LevelSaveManager.LoadGame();
         }
     }
 

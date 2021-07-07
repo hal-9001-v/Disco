@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,11 +9,11 @@ public class DistanceInteraction : MonoBehaviour
     [SerializeField]
     [Range(0, 20)] float _range;
 
-    //Invoke _events only the first time?
+    [Tooltip("Invoke _events only the first time?")]
     [SerializeField] bool _onlyOnce;
 
     public bool ReadyForInteraction = true;
-
+    [Tooltip("This event will be triggered every time InteractionTrigger is within range")]
     [SerializeField] UnityEvent _events;
 
 #if UNITY_EDITOR
@@ -26,7 +24,6 @@ public class DistanceInteraction : MonoBehaviour
 
     static Transform _playerTransform;
     bool _done;
-
 
     private void Awake()
     {
@@ -43,32 +40,36 @@ public class DistanceInteraction : MonoBehaviour
 
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        triggerEvent();
-    }
 
-    private void triggerEvent()
-    {
+        //Check if it can be interacted and if player is within Range
         if (ReadyForInteraction && _playerTransform != null)
         {
             if (Vector3.Distance(_playerTransform.position, transform.position) <= _range)
             {
-                _events.Invoke();
+                Interaction();
 
-                if (_onlyOnce)
-                    enabled = false;
-
-#if UNITY_EDITOR
-                if (_debugLog)
-                    Debug.Log("Start Distance Interaction with " + name + "!");
-#endif
             }
         }
-
     }
 
-    public DistanceInteractionData getSaveData()
+
+
+    private void Interaction()
+    {
+        _events.Invoke();
+
+        if (_onlyOnce)
+            enabled = false;
+
+#if UNITY_EDITOR
+        if (_debugLog)
+            Debug.Log("Start Distance Interaction with " + name + "!");
+#endif
+    }
+
+    public DistanceInteractionData GetSaveData()
     {
         var data = new DistanceInteractionData()
         {
@@ -81,7 +82,7 @@ public class DistanceInteraction : MonoBehaviour
 
     }
 
-    public void setFromLoadData(DistanceInteractionData data)
+    public void SetFromLoadData(DistanceInteractionData data)
     {
         _done = data.Done;
         ReadyForInteraction = data.ReadyForInteraction;

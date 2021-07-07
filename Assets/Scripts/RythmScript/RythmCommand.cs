@@ -9,7 +9,6 @@ public class RythmCommand : MonoBehaviour
     [SerializeField] Spawner _spawner;
     SpriteRenderer[] _renderers;
 
-
     private void Awake()
     {
         if (_buttonsParent == null)
@@ -46,14 +45,14 @@ public class RythmCommand : MonoBehaviour
         }
     }
 
-
-    public void StartFight()
+    public void StartFight(string song)
     {
-        if (_spawner != null) {
+        if (_spawner != null)
+        {
+            _spawner.StoreSong(song);
             _spawner.StartPlaying();
+            GlobalSettings.IsPlayerInFight = true;
         }
-
         Show();
     }
-
 }

@@ -7,19 +7,19 @@ public class Spawner : MonoBehaviour
     public bool IsPlaying { get; private set; }
 
     //ArrowGOs
-    public GameObject leftArrow;
-    public GameObject upArrow;
-    public GameObject downArrow;
-    public GameObject rightArrow;
+    [Header("Referencees")]
+    public GameObject _leftArrowPrototype;
+    public GameObject _upArrowPrototype;
+    public GameObject _downArrowPrototype;
+    public GameObject _rightArrowPrototype;
 
     //Arrow Logic
-    public GameObject currentArrow;
+    public GameObject arrowToCreate;
     private bool waiting;
     private bool standBy;
 
     //BeatCalculator GOs
     int i;
-    private bool hasEnded;
     public Scroller levelScroller;
     private float notePauseTime;
     public char[] charray;
@@ -34,31 +34,33 @@ public class Spawner : MonoBehaviour
 
     private void Awake()
     {
-        hasEnded = false;
         levelScroller = FindObjectOfType<Scroller>();
         i = 0;
         waiting = false;
         standBy = false;
-        StoreSong();
+
+        string song = "^,^,<,<,>,-5p,<,>,>,>/";
+        StoreSong(song);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (IsPlaying)
+        if (IsPlaying && standBy == false)
         {
             notePauseTime = levelScroller.fps / levelScroller.originalBeatTempo;
-            if (!waiting && !standBy && !hasEnded)
+            if (!waiting)
             {
                 Pause(notePauseTime);
                 Generator();
-                Spawn(currentArrow);
+                Spawn(arrowToCreate);
             }
         }
 
     }
 
-    public void StartPlaying() {
+    public void StartPlaying()
+    {
         IsPlaying = true;
     }
 
@@ -68,7 +70,6 @@ public class Spawner : MonoBehaviour
 
         switch (charray[i])
         {
-
             case '^':
                 SelectCurrentArrow(0);
                 break;
@@ -94,25 +95,20 @@ public class Spawner : MonoBehaviour
             case ',':
                 break;
             case '/':
-                hasEnded = true;
                 break;
             default:
-                currentArrow = null;
+                arrowToCreate = null;
                 break;
         }
         i++;
     }
 
-    public void StoreSong()
+    public void StoreSong(string song)
     {
-        int j = 0;
-        string song = "^,^,<,<,>,-5p,<,>,>,>/";
         charray = new char[song.Length];
-        foreach (char c in song)
+        for (int i = 0; i < song.Length; i++)
         {
-
-            charray[j] = c;
-            j++;
+            charray[i] = song[i];
         }
     }
 
@@ -120,18 +116,17 @@ public class Spawner : MonoBehaviour
     {
         switch (arrow)
         {
-
             case ((int)CurrentArrow.Up):
-                currentArrow = upArrow;
+                arrowToCreate = _upArrowPrototype;
                 break;
             case ((int)CurrentArrow.Down):
-                currentArrow = downArrow;
+                arrowToCreate = _downArrowPrototype;
                 break;
             case ((int)CurrentArrow.Left):
-                currentArrow = leftArrow;
+                arrowToCreate = _leftArrowPrototype;
                 break;
             case ((int)CurrentArrow.Right):
-                currentArrow = rightArrow;
+                arrowToCreate = _rightArrowPrototype;
                 break;
 
         }
@@ -142,7 +137,9 @@ public class Spawner : MonoBehaviour
     {
         if (arrow != null)
         {
-            Instantiate(arrow, new Vector3(arrow.transform.position.x, arrow.transform.position.y, arrow.transform.position.z), Quaternion.identity);
+            var newArrow = Instantiate(arrow, new Vector3(arrow.transform.position.x, arrow.transform.position.y, arrow.transform.position.z), Quaternion.identity);
+
+            levelScroller.Arrows.Add(newArrow.GetComponent<ArrowObject>());
             Debug.Log("Spawned!");
 
         }

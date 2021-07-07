@@ -19,8 +19,6 @@ public class CharacterMovement : InputComponent
 
     public LayerMask GroundLayer;
 
-    private bool facingRight = false;
-
     void OnDrawGizmos()
     {
         if (_groundPivot != null)
@@ -48,12 +46,12 @@ public class CharacterMovement : InputComponent
             if (movementReadValue.x > 0)
             {
                 newVelocity.x = velocity;
-                FlipCharacter(true);
+                _animatorCommand.Flip(true);
             }
             else if (movementReadValue.x < 0)
             {
                 newVelocity.x = -velocity;
-                FlipCharacter(false);
+                _animatorCommand.Flip(false);
             }
 
             newVelocity.y = _rigid_body.velocity.y;
@@ -93,18 +91,9 @@ public class CharacterMovement : InputComponent
         }
     }
 
-    void FlipCharacter(bool flipRight)
-    {
-        if (flipRight != facingRight)
-        {
-            transform.localScale = new Vector3(-1 * transform.localScale.x, transform.localScale.y, transform.localScale.z);
-            facingRight = flipRight;
-        }
-    }
-
     bool CanPlayerMove()
     {
-        return !Pauser.isPaused && !GlobalSettings.isPlayerInDialogue;
+        return !Pauser.isPaused && !GlobalSettings.isPlayerInDialogue && !GlobalSettings.IsPlayerInFight;
     }
 
     public override void SetInput(NormalInput inputs)
