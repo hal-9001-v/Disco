@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 148d5187b9fce8d44bb0881b201cd6af, type: 3}
   m_Name: Furro
   m_EditorClassIdentifier: 
-  englishName: Furry
-  spanishName: Furro
-  englishLines:
-  - Hello :D
-  englishAnswers: []
-  spanishLines:
-  - Hola :D
-  spanishAnswers: []
+  EnglishName: Furrie
+  SpanishName: Furro
+  EnglishLines:
+  - Meow
+  - I am a furry!
+  SpanishLines:
+  - Soy el gato 1
+  - Looking Guay joker 2
+  - ahi van 3 frases
+  Answers: []

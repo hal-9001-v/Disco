@@ -200,7 +200,7 @@ public class @NormalInput : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""26a7516c-a376-4128-b105-744a3b578e1d"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Normal"",
@@ -299,7 +299,7 @@ public class @NormalInput : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""7019c9dc-df6c-4031-acf8-c043d4742f2f"",
-                    ""path"": ""<Keyboard>/z"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Normal"",

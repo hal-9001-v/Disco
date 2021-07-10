@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,9 @@ public class Pauser : InputComponent
     float volumeValue;
 
     const float maxAlpha = 1;
+
+    public Action PauseGameAction;
+    public Action ResumeGameAction;
 
     private void Start()
     {
@@ -65,6 +69,8 @@ public class Pauser : InputComponent
 
         DisplayPauseButtons();
 
+        PauseGameAction.Invoke();
+
     }
 
     public void ResumeGame()
@@ -81,6 +87,8 @@ public class Pauser : InputComponent
             myGroup.alpha = 0;
             myGroup.blocksRaycasts = false;
         }
+
+        ResumeGameAction.Invoke();
 
     }
 
@@ -162,4 +170,11 @@ public class Pauser : InputComponent
 
         };
     }
+}
+
+interface IPauseObserver {
+
+    public void OnPauseGame();
+    public void OnResumeGame();
+
 }

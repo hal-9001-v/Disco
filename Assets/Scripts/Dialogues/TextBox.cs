@@ -5,288 +5,364 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(AudioSource))]
-public class TextBox : InputComponent
+public class TextBox : InputComponent, IPauseObserver
 {
-    AudioSource audioSource;
+    [Header("References")]
+    AudioSource _audioSource;
+    [SerializeField] CanvasGroup _myGroup;
 
-    public CanvasGroup myGroup;
     [Header("Text Meshes")]
-    public TextMeshProUGUI textMesh;
-    public TextMeshProUGUI nameMesh;
+    [SerializeField] TextMeshProUGUI _textMesh;
+    [SerializeField] TextMeshProUGUI _nameMesh;
 
-    public TextMeshProUGUI[] answersMeshes;
-    public Animator[] answersAnimators;
-
-    const string selectAnswerTrigger = "Select";
-    const string unselectAnswerTrigger = "Unselect";
+    [SerializeField] TextMeshProUGUI[] _answersMeshes;
+    [SerializeField] Animator[] _answersAnimators;
 
     [Header("Settings")]
     [Range(0.01f, 1)]
-    public float typeDelay;
+    [SerializeField] float _typeDelay;
 
-    Coroutine typing;
+    Queue<string> _lines;
 
-    Queue<string> lines;
-    string currentLine;
+    Dialogue _currentDialogue;
 
-    string[] answers;
-    int currentAnswer = -1;
+    public bool DisplayingDialogue { get; private set; }
 
-    Dialogue currentDialogue;
+    bool _readyForNewLine;
 
-    bool endOfLine;
-    bool displayingDialogue;
-    bool waitingForAnswer;
+    bool _gameIsPaused;
+
+    //It can happen that input that fills a line gets activated right after dialogue starts due to an interaction(It is the same button) and it gets automatically filled.
+    //For that, first frame musnt have any input
+    bool _firstTypingFramePassed;
+
+    bool _waitingForAnswer;
+
+    AnswerSelector _answerSelector;
 
     private void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
+        _audioSource = GetComponent<AudioSource>();
 
-        lines = new Queue<string>();
+        _lines = new Queue<string>();
 
-        hide();
+        _answerSelector = new AnswerSelector(_answersMeshes);
+
+        Hide();
+
+        var pauser = FindObjectOfType<Pauser>();
+
+        if (pauser != null)
+        {
+            pauser.PauseGameAction += OnPauseGame;
+            pauser.ResumeGameAction += OnResumeGame;
+        }
     }
 
-    public void startDialogue(Dialogue d)
+    public void StartDialogue(Dialogue d)
     {
-        GlobalSettings.isPlayerInDialogue = true;
-        Debug.Log("Starting Dialogue " + d.name);
-
-        currentDialogue = d;
-        currentDialogue.atStart.Invoke();
-
-        currentAnswer = -1;
-
-        myGroup.transform.position = currentDialogue.getBoxPosition();
-        nameMesh.text = currentDialogue.getDialogueName();
-
-        show();
-        displayingDialogue = true;
-
-        hideAnswers();
-
-        if (typing != null)
-            StopCoroutine(typing);
-
-        lines.Clear();
-        foreach (string s in d.getLines())
+        if (!DisplayingDialogue)
         {
-            lines.Enqueue(s);
+            Debug.Log("Starting Dialogue " + d.name);
+
+            _currentDialogue = d;
+            _waitingForAnswer = false;
+
+            _myGroup.transform.position = _currentDialogue.GetBoxPosition();
+            _nameMesh.text = _currentDialogue.GetDialogueName();
+
+            Show();
+
+            _lines.Clear();
+
+            foreach (string s in d.GetLines())
+            {
+                _lines.Enqueue(s);
+            }
+
+            StartCoroutine(TypeLine(_lines.Dequeue()));
         }
 
-
-        typing = StartCoroutine(typeLine());
-
-
     }
 
-    void startNextLine()
+    //Start a new line or displaye new Answers. In case there are no answers to display, hide.
+    void StartNextLine()
     {
-        if (!Pauser.isPaused)
+        if (!Pauser.isPaused && _readyForNewLine)
         {
-            if (typing != null)
-                StopCoroutine(typing);
+            //If there are more lines
+            if (_lines.Count != 0)
+            {
+                StartCoroutine(TypeLine(_lines.Dequeue()));
+            }
+            else
+            {
+                //Now text has ended, display answers if there is any. 
+                var answers = _currentDialogue.GetAnswersTexts();
+                if (answers != null && answers.Length != 0)
+                {
+                    _answerSelector.DisplayAnswers(answers, _currentDialogue.GetAnswersActions());
+                    _waitingForAnswer = true;
 
-            typing = StartCoroutine(typeLine());
+                }
+                else //There are no answers to display, close Dialogue
+                {
+                    _answerSelector.UnselectAll();
+
+                    _currentDialogue.AfterText.Invoke();
+                }
+            }
+        }
+    }
+
+    IEnumerator TypeLine(string line)
+    {
+        //Line must be complete for a new line to come
+        _readyForNewLine = false;
+
+        //Make sure no input happens during first typing frame.
+        _firstTypingFramePassed = false;
+
+        _textMesh.text = line;
+        _textMesh.maxVisibleCharacters = 0;
+
+        while (_textMesh.maxVisibleCharacters != line.Length)
+        {
+            _textMesh.maxVisibleCharacters++;
+            PlayTypingSound();
+
+
+            if (_readyForNewLine)
+            {
+                _textMesh.maxVisibleCharacters = line.Length;
+            }
+
+            yield return new WaitForSeconds(_typeDelay);
+
+            _firstTypingFramePassed = true;
         }
 
+        _readyForNewLine = true;
 
     }
 
-    IEnumerator typeLine()
-    {
-
-        currentLine = lines.Dequeue();
-
-        textMesh.text = currentLine;
-
-        endOfLine = false;
-
-
-
-        for (int i = 0; i <= currentLine.Length; i++)
-        {
-
-            textMesh.maxVisibleCharacters = i;
-
-            playTypingSound();
-
-            yield return new WaitForSeconds(typeDelay);
-
-
-        }
-
-        endOfLine = true;
-
-
-    }
-
-
-    void fillCurrentLine()
-    {
-        if (!Pauser.isPaused)
-        {
-
-            if (typing != null)
-                StopCoroutine(typing);
-
-            textMesh.maxVisibleCharacters = textMesh.text.Length;
-            endOfLine = true;
-        }
-
-
-    }
-
-    void playTypingSound()
+    void PlayTypingSound()
     {
         //Do something
-        if (audioSource != null && !audioSource.isPlaying)
-            audioSource.Play();
+        if (_audioSource != null && !_audioSource.isPlaying)
+            _audioSource.Play();
 
     }
 
-
-    public void hide()
+    public void Hide()
     {
-        myGroup.alpha = 0;
-        displayingDialogue = false;
+        _myGroup.alpha = 0;
+        DisplayingDialogue = false;
 
-        StartCoroutine(SetPlayerOutOfDialogue());
-
+        _answerSelector.UnselectAll();
     }
 
-    IEnumerator SetPlayerOutOfDialogue()
+    public void Show()
     {
-
-        yield return new WaitForSeconds(0.5f);
-
-        GlobalSettings.isPlayerInDialogue = false;
-
+        _myGroup.alpha = 1;
+        DisplayingDialogue = true;
     }
-
-
-    public void show()
-    {
-        myGroup.alpha = 1;
-
-        StopAllCoroutines();
-        GlobalSettings.isPlayerInDialogue = true;
-
-    }
-
-    void displayAnswers()
-    {
-
-        answers = currentDialogue.getAnswers();
-        waitingForAnswer = true;
-
-        if (answers != null && answers.Length > 0)
-        {
-            if (answersMeshes.Length < answers.Length)
-            {
-                Debug.LogWarning("AnswerMeshes are " + answersMeshes.Length + " and Text Container have " + currentDialogue.myLines.englishAnswers.Length + " answers!");
-            }
-
-            //Show Meshes
-            for (int i = 0; i < answers.Length; i++)
-            {
-                answersMeshes[i].enabled = true;
-                answersMeshes[i].text = answers[i];
-
-            }
-
-            selectAnswer(0);
-        }
-        else
-        {
-            hide();
-            currentDialogue.afterText.Invoke();
-
-        }
-
-    }
-
-    void selectAnswer(int i)
-    {
-        if (answers != null)
-        {
-            if (i < 0)
-            {
-                i = answers.Length - 1;
-            }
-            else if (i >= answers.Length)
-                i = 0;
-
-            if (currentAnswer != -1)
-            {
-                answersAnimators[currentAnswer].SetTrigger(unselectAnswerTrigger);
-            }
-            currentAnswer = i;
-            answersAnimators[currentAnswer].SetTrigger(selectAnswerTrigger);
-        }
-    }
-
-    void confirmAnswer()
-    {
-        if (currentDialogue.afterText != null)
-            currentDialogue.afterText.Invoke();
-
-        if (currentDialogue.nextDialogues != null && currentDialogue.nextDialogues.Length > 0 && currentAnswer >= 0)
-        {
-            startDialogue(currentDialogue.nextDialogues[currentAnswer]);
-        }
-
-        waitingForAnswer = false;
-
-    }
-
-    void hideAnswers()
-    {
-        for (int i = 0; i < answersMeshes.Length; i++)
-        {
-            answersMeshes[i].enabled = false;
-        }
-
-    }
-
 
     public override void SetInput(NormalInput inputs)
     {
-        inputs.Map.Text.performed += ctx =>
+        inputs.Map.ConfirmAnswer.performed += ctx =>
         {
-            if (displayingDialogue)
+            //If game is paused, no input!
+            if (_gameIsPaused) return;
+
+            //Nothing should happen if no dialogue is shown
+            if (DisplayingDialogue)
             {
-                if (waitingForAnswer)
+                //If waiting for answer, confirm 
+                if (_waitingForAnswer)
                 {
-                    confirmAnswer();
+                    _waitingForAnswer = false;
+                    Hide();
+                    _answerSelector.ConfirmAnswer();
                 }
+                //If not waiting for answer, then attend for autofill or next line confirmation
                 else
                 {
-                    if (endOfLine)
+                    //It can happen that _readyForNewLine gets true on the same Frame that a new Line is requested. So, it will get autofilled a line since the start
+                    if (_firstTypingFramePassed)
                     {
-                        if (lines.Count != 0)
-                            startNextLine();
+                        if (_readyForNewLine)
+                        {
+                            StartNextLine();
+                        }
                         else
-                            displayAnswers();
-                    }
-                    else
-                    {
-                        fillCurrentLine();
+                        {
+                            //Make coroutine fill line fully
+                            _readyForNewLine = true;
+                        }
                     }
                 }
-
             }
 
+
         };
+
 
         inputs.Map.ChangeAnswer.performed += ctx =>
         {
             if (ctx.ReadValue<float>() < 0)
-                selectAnswer(currentAnswer + 1);
+            {
+                if (_waitingForAnswer)
+                    _answerSelector.SelectNextAnswer();
+            }
 
             else if (ctx.ReadValue<float>() > 0)
-                selectAnswer(currentAnswer - 1);
+            {
+                if (_waitingForAnswer)
+                    _answerSelector.SelectPreviousAnswer();
+            }
         };
     }
 
+    public void OnPauseGame()
+    {
+        _gameIsPaused = true;
+    }
+
+    public void OnResumeGame()
+    {
+        _gameIsPaused = false;
+    }
+}
+
+class AnswerSelector
+{
+    TextMeshProUGUI[] _answerMeshes;
+    TextMeshProUGUI[] _possibleAnswers;
+    Animator[] _animators;
+
+    UnityEvent[] _actions;
+
+    int _currentAnswer = 0;
+
+    const string SelectAnswerBool = "Selected";
+
+    public AnswerSelector(TextMeshProUGUI[] answers)
+    {
+        _answerMeshes = answers;
+
+        _animators = new Animator[answers.Length];
+
+        for (int i = 0; i < answers.Length; i++)
+        {
+            _animators[i] = answers[i].GetComponent<Animator>();
+        }
+    }
+
+    public void SelectNextAnswer()
+    {
+        _currentAnswer++;
+
+        SelectAnswer(ref _currentAnswer);
+    }
+
+    public void SelectPreviousAnswer()
+    {
+        _currentAnswer--;
+
+        SelectAnswer(ref _currentAnswer);
+    }
+
+    public void ConfirmAnswer()
+    {
+        if (_actions != null && _possibleAnswers != null)
+        {
+            _actions[_currentAnswer].Invoke();
+        }
+    }
+
+    public void DisplayAnswers(string[] texts, UnityEvent[] actions)
+    {
+
+        if (texts.Length != actions.Length) return;
+
+        if (texts.Length > _answerMeshes.Length) return;
+
+        _possibleAnswers = new TextMeshProUGUI[texts.Length];
+
+        for (int i = 0; i < _possibleAnswers.Length; i++)
+        {
+            _possibleAnswers[i] = _answerMeshes[i];
+            _possibleAnswers[i].text = texts[i];
+        }
+
+        _actions = actions;
+
+
+        //Turn invisible all meshes
+        for (int i = 0; i < _answerMeshes.Length; i++)
+        {
+            _answerMeshes[i].enabled = false;
+        }
+
+        //Show Meshes wich contain answers
+        for (int i = 0; i < _possibleAnswers.Length; i++)
+        {
+            _possibleAnswers[i].enabled = true;
+        }
+
+        _currentAnswer = 0;
+        SelectAnswer(ref _currentAnswer);
+
+    }
+
+    public void UnselectAll()
+    {
+        for (int i = 0; i < _answerMeshes.Length; i++)
+        {
+            _answerMeshes[i].enabled = false;
+            _animators[i].SetBool(SelectAnswerBool, false);
+        }
+    }
+
+    void SelectAnswer(ref int i)
+    {
+        if (_possibleAnswers != null)
+        {
+
+            if (i < 0)
+            {
+                i = _possibleAnswers.Length - 1;
+            }
+            else if (i >= _possibleAnswers.Length)
+            {
+                i = 0;
+            }
+
+            HighlightAnswer(i);
+
+
+        }
+    }
+
+    void HighlightAnswer(int index)
+    {
+
+        if (_possibleAnswers != null)
+        {
+            //Hide and unselect all
+            UnselectAll();
+
+            for (int i = 0; i < _possibleAnswers.Length; i++)
+            {
+                _possibleAnswers[i].enabled = true;
+                _animators[i].SetBool(SelectAnswerBool, false);
+            }
+
+            _animators[index].SetBool(SelectAnswerBool, true);
+        }
+
+    }
+
+  
 }

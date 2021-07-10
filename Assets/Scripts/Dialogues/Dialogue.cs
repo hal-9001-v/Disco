@@ -1,41 +1,112 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Dialogue : MonoBehaviour
 {
-    TextBox textBox;
-
-    public TextContainer myLines;
-
     [Space(5)]
     [Header("Settings")]
-    public Transform talkingPivot;
+    [SerializeField] Transform _talkingPivot;
 
-    public UnityEvent atStart;
-    public UnityEvent afterText;
+    public UnityEvent AtStart;
+    public UnityEvent AfterText;
 
-    public Dialogue[] nextDialogues;
+    TextBox _textBox;
 
+    [Header("Names")]
+    public string EnglishName;
+    public string SpanishName;
 
-    private void Start()
+    [Header("Lines")]
+
+    [TextArea(2, 30)]
+    public string[] EnglishLines;
+
+    [TextArea(2, 30)]
+    public string[] SpanishLines;
+
+    public DialogueAnswer[] Answers;
+
+    public string[] EnglishAnswers
     {
-        textBox = FindObjectOfType<TextBox>();
+
+        get
+        {
+            if (Answers != null)
+            {
+                string[] lines = new string[Answers.Length];
+
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    lines[i] = Answers[i].EnglishText;
+                }
+
+                return lines;
+            }
+
+            return null;
+
+        }
+
+        private set { }
+    }
+    public string[] SpanishAnswers
+    {
+        get
+        {
+
+            if (Answers != null)
+            {
+                string[] lines = new string[Answers.Length];
+
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    lines[i] = Answers[i].SpanishText;
+                }
+
+                return lines;
+            }
+
+            return null;
+
+        }
+
+        private set { }
     }
 
-    public string[] getLines()
+    public UnityEvent[] Actions
     {
+        get
+        {
+            UnityEvent[] actions = new UnityEvent[EnglishAnswers.Length];
 
+            for (int i = 0; i < Answers.Length; i++)
+            {
+                actions[i] = Answers[i].Actions;
+            }
+
+            return actions;
+        }
+
+    }
+
+    private void Awake()
+    {
+        _textBox = FindObjectOfType<TextBox>();
+    }
+
+    public string[] GetLines()
+    {
         string[] lines;
 
         switch (GlobalSettings.selectedLanguage)
         {
-
             case GlobalSettings.Languages.English:
-                lines = myLines.englishLines;
+                lines = EnglishLines;
                 break;
 
             case GlobalSettings.Languages.Spanish:
-                lines = myLines.spanishLines;
+                lines = SpanishLines;
                 break;
 
             default:
@@ -47,18 +118,18 @@ public class Dialogue : MonoBehaviour
 
     }
 
-    public string[] getAnswers()
+    public string[] GetAnswersTexts()
     {
         string[] answers;
 
         switch (GlobalSettings.selectedLanguage)
         {
             case GlobalSettings.Languages.English:
-                answers = myLines.englishAnswers;
+                answers = EnglishAnswers;
                 break;
 
             case GlobalSettings.Languages.Spanish:
-                answers = myLines.spanishAnswers;
+                answers = SpanishAnswers;
                 break;
 
             default:
@@ -70,22 +141,28 @@ public class Dialogue : MonoBehaviour
 
     }
 
-    public void triggerDialogue()
+    public UnityEvent[] GetAnswersActions()
     {
-        if (textBox != null)
+        return Actions;
+
+    }
+
+    public void TriggerDialogue()
+    {
+        if (_textBox != null)
         {
-            textBox.startDialogue(this);
+            _textBox.StartDialogue(this);
         }
 
     }
 
-    public Vector3 getBoxPosition()
+    public Vector3 GetBoxPosition()
     {
         Vector3 boxPosition;
 
-        if (talkingPivot != null)
+        if (_talkingPivot != null)
         {
-            boxPosition = Camera.main.WorldToScreenPoint(talkingPivot.position);
+            boxPosition = Camera.main.WorldToScreenPoint(_talkingPivot.position);
         }
         else
         {
@@ -97,7 +174,7 @@ public class Dialogue : MonoBehaviour
         return boxPosition;
     }
 
-    public string getDialogueName()
+    public string GetDialogueName()
     {
         string dialogueName;
 
@@ -106,11 +183,11 @@ public class Dialogue : MonoBehaviour
 
             case GlobalSettings.Languages.English:
 
-                dialogueName = myLines.englishName;
+                dialogueName = EnglishName;
                 break;
 
             case GlobalSettings.Languages.Spanish:
-                dialogueName = myLines.spanishName;
+                dialogueName = SpanishName;
                 break;
 
             default:
@@ -121,5 +198,15 @@ public class Dialogue : MonoBehaviour
         return dialogueName;
 
     }
+
+}
+
+[Serializable]
+public struct DialogueAnswer
+{
+    public string EnglishText;
+    public string SpanishText;
+
+    public UnityEvent Actions;
 
 }

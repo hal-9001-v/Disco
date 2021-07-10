@@ -12,11 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 148d5187b9fce8d44bb0881b201cd6af, type: 3}
   m_Name: Roleas
   m_EditorClassIdentifier: 
-  englishName: Furry Square
-  spanishName: Furro Cuadrado
-  englishLines:
-  - Do you rolear?
-  englishAnswers: []
-  spanishLines:
-  - Ey, roleas?
-  spanishAnswers: []
+  EnglishName: 
+  SpanishName: 
+  EnglishLines: []
+  SpanishLines: []
+  Answers:
+  - EnglishText: 
+    SpanishText: 
+    NextDialogue: {fileID: 0}
+    Actions:
+      m_PersistentCalls:
+        m_Calls: []
+  - EnglishText: 
+    SpanishText: 
+    NextDialogue: {fileID: 0}
+    Actions:
+      m_PersistentCalls:
+        m_Calls: []
+  - EnglishText: 
+    SpanishText: 
+    NextDialogue: {fileID: 0}
+    Actions:
+      m_PersistentCalls:
+        m_Calls: []

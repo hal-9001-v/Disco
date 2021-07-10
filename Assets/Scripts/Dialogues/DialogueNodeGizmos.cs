@@ -30,7 +30,7 @@ public class DialogueNodeGizmos : MonoBehaviour
             myDialogue = GetComponent<Dialogue>();
             return;
         }
-        answers = myDialogue.getAnswers();
+        answers = myDialogue.GetAnswersTexts();
 
 
         Gizmos.color = radiusColor;
@@ -39,7 +39,7 @@ public class DialogueNodeGizmos : MonoBehaviour
 
 
         Gizmos.color = lineColor;
-
+        /*
         for (int i = 0; i < myDialogue.nextDialogues.Length; i++)
         {
 
@@ -63,6 +63,7 @@ public class DialogueNodeGizmos : MonoBehaviour
         GUI.color = textColor;
         Handles.Label(transform.position, name);
 
+        */
 
     }
 

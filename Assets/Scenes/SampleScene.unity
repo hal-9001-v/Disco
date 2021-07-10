@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!4 &9443458 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9002864090950650853, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+  m_PrefabInstance: {fileID: 9002864091666421390}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &81314869
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,7 +361,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 3851863601479189511, guid: 7c0d6e12cfa01a6408726dbccfdbba57, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 89058e8422f910c49929a0beb489f93e, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 814d04fc10cdf0742be4f5ba0a1d919c, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.6
   m_Pitch: 1
@@ -1278,6 +1283,69 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &1301178355
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1301178357}
+  - component: {fileID: 1301178356}
+  m_Layer: 0
+  m_Name: After Dialogue
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1301178356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1301178355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20982879e03ea6040bb256a9aa1432b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _talkingPivot: {fileID: 9443458}
+  AtStart:
+    m_PersistentCalls:
+      m_Calls: []
+  AfterText:
+    m_PersistentCalls:
+      m_Calls: []
+  EnglishName: Furry
+  SpanishName: 
+  EnglishLines:
+  - But you know?
+  - You are starting to grow on me!
+  SpanishLines:
+  - La verdad es que me caes bien
+  Answers:
+  - EnglishText: That's great!
+    SpanishText: "\xA1Eso esta genial!"
+    Actions:
+      m_PersistentCalls:
+        m_Calls: []
+--- !u!4 &1301178357
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1301178355}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -27.765028, y: -3.288251, z: -544.3994}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1313564681
 GameObject:
   m_ObjectHideFlags: 0
@@ -3912,18 +3980,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c8228586fe095e49a1442d8a612c06b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myGroup: {fileID: 7383618762740271461}
-  textMesh: {fileID: 7383618763400733255}
-  nameMesh: {fileID: 7383618764332779667}
-  answersMeshes:
+  _myGroup: {fileID: 7383618762740271461}
+  _textMesh: {fileID: 7383618763400733255}
+  _nameMesh: {fileID: 7383618764332779667}
+  _answersMeshes:
   - {fileID: 7458777219476211438}
   - {fileID: 4683247890964720885}
   - {fileID: 4867386284764408773}
-  answersAnimators:
-  - {fileID: 2094924185}
-  - {fileID: 1288116962}
-  - {fileID: 1778691915}
-  typeDelay: 0.06
+  _answersAnimators: []
+  _typeDelay: 0.1
 --- !u!224 &7383618762740271460
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5257,6 +5322,134 @@ PrefabInstance:
     - target: {fileID: 9002864092780462211, guid: 397d8c5584553f84b9ea053659622701, type: 3}
       propertyPath: m_Name
       value: furro
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462236, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: _song
+      value: 
+      objectReference: {fileID: 4900000, guid: b4b997ee1d666344389c8d86088958b2, type: 3}
+    - target: {fileID: 9002864092780462238, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: _events.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: TriggerDialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: _myLines
+      value: 
+      objectReference: {fileID: 11400000, guid: 0e63653859a0f3a418630399f6730aed, type: 2}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: EnglishName
+      value: Furry
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: SpanishName
+      value: Furro
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: _talkingPivot
+      value: 
+      objectReference: {fileID: 9443458}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: Answers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: EnglishLines.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: SpanishLines.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: EnglishLines.Array.data[0]
+      value: HELLO! I AM THE....
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: EnglishLines.Array.data[1]
+      value: FURRY MAN hueae
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: SpanishLines.Array.data[0]
+      value: Hola
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: SpanishLines.Array.data[1]
+      value: "Me guzta el caf\xE9 :p"
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: SpanishLines.Array.data[2]
+      value: y el jazz
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: Answers.Array.data[0].EnglishText
+      value: I see
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: Answers.Array.data[0].SpanishText
+      value: Pos mira que bien
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: Answers.Array.data[1].EnglishText
+      value: Don't tell me...
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: Answers.Array.data[1].SpanishText
+      value: Mira que cosas...
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: Answers.Array.data[0].Actions.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: Answers.Array.data[1].Actions.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: Answers.Array.data[0].Actions.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: Answers.Array.data[1].Actions.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: Answers.Array.data[0].Actions.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1301178356}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: Answers.Array.data[1].Actions.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1301178356}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: Answers.Array.data[0].Actions.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: Answers.Array.data[1].Actions.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: Answers.Array.data[0].Actions.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: TriggerDialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: Answers.Array.data[1].Actions.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: TriggerDialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: Answers.Array.data[0].Actions.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Dialogue, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: Answers.Array.data[1].Actions.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Dialogue, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: Answers.Array.data[0].Actions.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: Answers.Array.data[1].Actions.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 397d8c5584553f84b9ea053659622701, type: 3}
