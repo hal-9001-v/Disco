@@ -12,8 +12,12 @@ public class CollisionInteraction : MonoBehaviour
     [SerializeField] bool _enterOnlyOnce;
     [Tooltip("Invoke _exitEvents only the first time?")]
     [SerializeField] bool _exitOnlyOnce;
+    //ReadyForInteraction is related to allowing this interactable to interact on its local scheme.
     public bool ReadyForInteraction = true;
-    
+
+    //ActiveForInteraction makes interaction possible in global scheme.
+    public bool ActiveForInteraction = true;
+
     [Tooltip("This event is invoked when an Interaction Trigger collides with this Gameobject")]
     [SerializeField] UnityEvent _enterEvents;
     [Tooltip("This event is invoked when an Interaction Trigger gets out of collision with this Gameobject")]
@@ -27,6 +31,21 @@ public class CollisionInteraction : MonoBehaviour
 
     bool _enterDone;
     bool _exitDone;
+
+    public bool CanInteract
+    {
+        get
+        {
+            if (!ActiveForInteraction) return false;
+
+            if (!ReadyForInteraction) return false;
+
+            return true;
+        }
+
+        private set { }
+
+    }
 
     private void Start()
     {
@@ -74,7 +93,7 @@ public class CollisionInteraction : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (ReadyForInteraction)
+        if (CanInteract)
         {
             if (collision.GetComponent<InteractionTrigger>() != null)
             {
@@ -85,7 +104,7 @@ public class CollisionInteraction : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (ReadyForInteraction)
+        if (CanInteract)
         {
             if (collision.GetComponent<InteractionTrigger>() != null)
             {

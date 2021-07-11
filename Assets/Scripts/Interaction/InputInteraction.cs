@@ -14,7 +14,11 @@ public class InputInteraction : MonoBehaviour
 
     [Tooltip("Invoke events only the first time?")]
     [SerializeField] bool _onlyOnce;
-    [SerializeField] bool _readyForInteraction = true;
+    //ReadyForInteraction is related to allowing this interactable to interact on its local scheme.
+    public bool ReadyForInteraction = true;
+
+    //ActiveForInteraction makes interaction possible in global scheme.
+    public bool ActiveForInteraction = true;
 
     [Tooltip("This event is invoke if player is in range and Interaction key has been pressed")]
     [SerializeField] UnityEvent _events;
@@ -31,7 +35,9 @@ public class InputInteraction : MonoBehaviour
     {
         get
         {
-            if (!_readyForInteraction) return false;
+            if (!ActiveForInteraction) return false;
+
+            if (!ReadyForInteraction) return false;
 
             if (_done && _onlyOnce) return false;
 
@@ -94,7 +100,7 @@ public class InputInteraction : MonoBehaviour
 
     public void SetReadyForInteraction(bool b)
     {
-        _readyForInteraction = b;
+        ReadyForInteraction = b;
     }
 
     public InputInteractionData GetSaveData()
@@ -103,7 +109,7 @@ public class InputInteraction : MonoBehaviour
         {
             Name = name,
             Done = _done,
-            ReadyForInteraction = _readyForInteraction
+            ReadyForInteraction = ReadyForInteraction
         };
         return data;
 
@@ -112,7 +118,7 @@ public class InputInteraction : MonoBehaviour
     public void SetFromLoadData(InputInteractionData data)
     {
         _done = data.Done;
-        _readyForInteraction = data.ReadyForInteraction;
+        ReadyForInteraction = data.ReadyForInteraction;
     }
     private void OnDrawGizmos()
     {

@@ -12,7 +12,12 @@ public class DistanceInteraction : MonoBehaviour
     [Tooltip("Invoke _events only the first time?")]
     [SerializeField] bool _onlyOnce;
 
+    //ReadyForInteraction is related to allowing this interactable to interact on its local scheme.
     public bool ReadyForInteraction = true;
+
+    //ActiveForInteraction makes interaction possible in global scheme.
+    public bool ActiveForInteraction = true;
+
     [Tooltip("This event will be triggered every time InteractionTrigger is within range")]
     [SerializeField] UnityEvent _events;
 
@@ -22,8 +27,30 @@ public class DistanceInteraction : MonoBehaviour
     [SerializeField] Color _gizmosColor;
 #endif
 
-    static Transform _playerTransform;
+    static Transform _player;
     bool _done;
+
+    public bool CanInteract
+    {
+        get
+        {
+            if (!ActiveForInteraction) return false;
+
+            if (!ReadyForInteraction) return false;
+
+            if (_done && _onlyOnce) return false;
+
+            //Is player within Range?
+            if (_player != null && Vector2.Distance(_player.position, transform.position) > _range)
+                return false;
+
+
+            return true;
+        }
+
+        private set { }
+
+    }
 
     private void Awake()
     {
@@ -31,7 +58,7 @@ public class DistanceInteraction : MonoBehaviour
 
         if (player != null)
         {
-            _playerTransform = player.transform;
+            _player = player.transform;
         }
         else
         {
@@ -42,19 +69,11 @@ public class DistanceInteraction : MonoBehaviour
 
     private void FixedUpdate()
     {
-
-        //Check if it can be interacted and if player is within Range
-        if (ReadyForInteraction && _playerTransform != null)
+        if (CanInteract)
         {
-            if (Vector3.Distance(_playerTransform.position, transform.position) <= _range)
-            {
-                Interaction();
-
-            }
+            Interaction();
         }
     }
-
-
 
     private void Interaction()
     {
