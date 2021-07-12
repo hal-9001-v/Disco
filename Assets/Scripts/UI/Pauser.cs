@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pauser : InputComponent
+public class Pauser : InputComponent, IPauseSubject
 {
     public static bool isPaused { private set; get; }
     bool canSwitchPause = true;
@@ -17,8 +17,8 @@ public class Pauser : InputComponent
 
     const float maxAlpha = 1;
 
-    public Action PauseGameAction;
-    public Action ResumeGameAction;
+    Action _pauseGameAction;
+    Action _resumeGameAction;
 
     private void Start()
     {
@@ -69,7 +69,7 @@ public class Pauser : InputComponent
 
         DisplayPauseButtons();
 
-        PauseGameAction.Invoke();
+        NotifyPauseObservers();
 
     }
 
@@ -88,8 +88,7 @@ public class Pauser : InputComponent
             myGroup.blocksRaycasts = false;
         }
 
-        ResumeGameAction.Invoke();
-
+        NotifyResumeObservers();
     }
 
     public void DisplaySettings()
@@ -169,5 +168,29 @@ public class Pauser : InputComponent
             SwitchPause();
 
         };
+    }
+
+    public void AddPauseObserver(Action action)
+    {
+        _pauseGameAction += action;
+
+    }
+
+    public void AddResumeObserver(Action action)
+    {
+        _resumeGameAction += action;
+
+
+    }
+
+    public void NotifyPauseObservers()
+    {
+        _pauseGameAction.Invoke();
+    }
+
+    public void NotifyResumeObservers()
+    {
+        _resumeGameAction.Invoke();
+
     }
 }

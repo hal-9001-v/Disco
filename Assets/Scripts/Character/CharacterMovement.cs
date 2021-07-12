@@ -148,18 +148,21 @@ public class CharacterMovement : InputComponent, IPauseObserver
     public void InitializeObserver()
     {
         var pauser = FindObjectOfType<Pauser>();
+
         if (pauser != null)
         {
-            pauser.PauseGameAction += OnPauseGame;
-            pauser.ResumeGameAction += OnResumeGame;
+            pauser.AddPauseObserver(OnPauseGame);
+            pauser.AddResumeObserver(OnResumeGame);
         }
 
         var textBox = FindObjectOfType<TextBox>();
         if (textBox != null)
         {
-            textBox.StartDialogueAction += OnPauseGame;
-            textBox.EndDialogueAction += OnResumeGame;
+            textBox.AddPauseObserver(OnPauseGame);
+            textBox.AddResumeObserver(OnResumeGame);
         }
+
+
     }
 
     void OnDrawGizmos()

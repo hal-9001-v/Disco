@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(AudioSource))]
-public class TextBox : InputComponent, IPauseObserver
+public class TextBox : InputComponent, IPauseObserver, IPauseSubject
 {
     [Header("References")]
     AudioSource _audioSource;
@@ -42,9 +42,9 @@ public class TextBox : InputComponent, IPauseObserver
     AnswerSelector _answerSelector;
 
     //Called everytime TextBox is shown
-    public Action StartDialogueAction;
+    Action _startDialogueAction;
     //Called everytime TextBox is hidden
-    public Action EndDialogueAction;
+    Action _endDialogueAction;
 
     private void Awake()
     {
@@ -162,7 +162,7 @@ public class TextBox : InputComponent, IPauseObserver
 
         _answerSelector.UnselectAll();
 
-        EndDialogueAction.Invoke();
+        NotifyResumeObservers();
     }
 
     public void Show()
@@ -170,7 +170,7 @@ public class TextBox : InputComponent, IPauseObserver
         _myGroup.alpha = 1;
         DisplayingDialogue = true;
 
-        StartDialogueAction.Invoke();
+        NotifyPauseObservers();
     }
 
     public override void SetInput(NormalInput inputs)
@@ -245,9 +245,30 @@ public class TextBox : InputComponent, IPauseObserver
 
         if (pauser != null)
         {
-            pauser.PauseGameAction += OnPauseGame;
-            pauser.ResumeGameAction += OnResumeGame;
+            pauser.AddPauseObserver(OnPauseGame);
+            pauser.AddResumeObserver(OnResumeGame);
         }
+    }
+
+    public void AddPauseObserver(Action action)
+    {
+        _startDialogueAction += action;
+
+    }
+
+    public void AddResumeObserver(Action action)
+    {
+        _endDialogueAction += action;
+    }
+
+    public void NotifyPauseObservers()
+    {
+        _startDialogueAction.Invoke();
+    }
+
+    public void NotifyResumeObservers()
+    {
+        _endDialogueAction.Invoke();
     }
 }
 
