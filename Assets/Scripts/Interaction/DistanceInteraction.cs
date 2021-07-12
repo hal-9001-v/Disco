@@ -9,7 +9,7 @@ public class DistanceInteraction : MonoBehaviour
     [SerializeField]
     [Range(0, 20)] float _range;
 
-    [Tooltip("Invoke _events only the first time?")]
+    [Tooltip("Invoke Events only the first time?")]
     [SerializeField] bool _onlyOnce;
 
     //ReadyForInteraction is related to allowing this interactable to interact on its local scheme.
