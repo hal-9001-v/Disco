@@ -171,10 +171,3 @@ public class Pauser : InputComponent
         };
     }
 }
-
-interface IPauseObserver {
-
-    public void OnPauseGame();
-    public void OnResumeGame();
-
-}

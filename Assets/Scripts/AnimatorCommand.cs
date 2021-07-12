@@ -6,10 +6,9 @@ public class AnimatorCommand : MonoBehaviour
     [Header("References")]
     [SerializeField] Animator _animator;
 
-    const string _walkTrigger = "Walk";
-    const string _jumpTrigger = "Jump";
-    const string _idleTrigger = "Idle";
-    const string _runTrigger = "Run";
+    const string MovingBool = "IsMoving";
+    const string RunningBool = "IsRunning";
+    const string JumpTrigger = "Jump";
 
     Vector3 _rightScale;
     Vector3 _leftScale;
@@ -44,28 +43,38 @@ public class AnimatorCommand : MonoBehaviour
     public void Walk()
     {
         if (_animator != null)
-            _animator.SetTrigger(_walkTrigger);
+        {
+            _animator.SetBool(MovingBool, true);
+            _animator.SetBool(RunningBool, false);
+        }
 
     }
 
     public void Jump()
     {
         if (_animator != null)
-            _animator.SetTrigger(_jumpTrigger);
+        {
+            _animator.SetTrigger(JumpTrigger);
+        }
 
     }
 
     public void Idle()
     {
         if (_animator != null)
-            _animator.SetTrigger(_idleTrigger);
-
+        {
+            _animator.SetBool(MovingBool, false);
+            _animator.SetBool(RunningBool, false);
+        }
     }
 
     public void Run()
     {
-        if (_animator != null)
-            _animator.SetTrigger(_runTrigger);
+        if (_animator != null) {
+            _animator.SetBool(MovingBool, true);
+            _animator.SetBool(RunningBool, true);
+
+        }
 
     }
 

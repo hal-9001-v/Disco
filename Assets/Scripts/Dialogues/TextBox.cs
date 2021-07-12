@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -40,6 +41,11 @@ public class TextBox : InputComponent, IPauseObserver
 
     AnswerSelector _answerSelector;
 
+    //Called everytime TextBox is shown
+    public Action StartDialogueAction;
+    //Called everytime TextBox is hidden
+    public Action EndDialogueAction;
+
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
@@ -50,13 +56,7 @@ public class TextBox : InputComponent, IPauseObserver
 
         Hide();
 
-        var pauser = FindObjectOfType<Pauser>();
-
-        if (pauser != null)
-        {
-            pauser.PauseGameAction += OnPauseGame;
-            pauser.ResumeGameAction += OnResumeGame;
-        }
+        InitializeObserver();
     }
 
     public void StartDialogue(Dialogue d)
@@ -160,12 +160,16 @@ public class TextBox : InputComponent, IPauseObserver
         DisplayingDialogue = false;
 
         _answerSelector.UnselectAll();
+        
+        EndDialogueAction.Invoke();
     }
 
     public void Show()
     {
         _myGroup.alpha = 1;
         DisplayingDialogue = true;
+
+        StartDialogueAction.Invoke();
     }
 
     public override void SetInput(NormalInput inputs)
@@ -232,6 +236,17 @@ public class TextBox : InputComponent, IPauseObserver
     public void OnResumeGame()
     {
         _gameIsPaused = false;
+    }
+
+    public void InitializeObserver()
+    {
+        var pauser = FindObjectOfType<Pauser>();
+
+        if (pauser != null)
+        {
+            pauser.PauseGameAction += OnPauseGame;
+            pauser.ResumeGameAction += OnResumeGame;
+        }
     }
 }
 
