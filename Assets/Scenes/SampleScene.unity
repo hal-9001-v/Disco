@@ -2751,6 +2751,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character With Movement
       objectReference: {fileID: 0}
+    - target: {fileID: 4033695594406948830, guid: fa2ea61ef087e8344ad1798202f38aa7, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4033695594406948831, guid: fa2ea61ef087e8344ad1798202f38aa7, type: 3}
       propertyPath: m_RootOrder
       value: 1
