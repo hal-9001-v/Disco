@@ -88,7 +88,7 @@ public class TextBox : InputComponent, IPauseObserver
     //Start a new line or displaye new Answers. In case there are no answers to display, hide.
     void StartNextLine()
     {
-        if (!Pauser.isPaused && _readyForNewLine)
+        if (_readyForNewLine)
         {
             //If there are more lines
             if (_lines.Count != 0)
@@ -97,7 +97,7 @@ public class TextBox : InputComponent, IPauseObserver
             }
             else
             {
-                //Now text has ended, display answers if there is any. 
+                //Since text has ended, display answers if there is any. 
                 var answers = _currentDialogue.GetAnswersTexts();
                 if (answers != null && answers.Length != 0)
                 {
@@ -107,9 +107,10 @@ public class TextBox : InputComponent, IPauseObserver
                 }
                 else //There are no answers to display, close Dialogue
                 {
-                    _answerSelector.UnselectAll();
+                    Hide();
 
                     _currentDialogue.AfterText.Invoke();
+
                 }
             }
         }
@@ -160,7 +161,7 @@ public class TextBox : InputComponent, IPauseObserver
         DisplayingDialogue = false;
 
         _answerSelector.UnselectAll();
-        
+
         EndDialogueAction.Invoke();
     }
 
@@ -379,5 +380,5 @@ class AnswerSelector
 
     }
 
-  
+
 }

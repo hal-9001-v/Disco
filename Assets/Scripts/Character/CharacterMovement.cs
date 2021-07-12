@@ -21,20 +21,11 @@ public class CharacterMovement : InputComponent, IPauseObserver
 
     Vector2 _movementInput;
 
-    //Logic bool for movement. This bool is set automatically, when dialogue and pause occur(player will never move under these circumstances). To force a lock, use LockMovement.
+    //"Logic" bool for movement. This bool is set automatically, when dialogue and pause occur(player will never move under these circumstances). To force a lock, use LockMovement  and SetLockMovement().
     bool _playerCanMove;
 
     [Tooltip("Lock for cutscenes, with use of UnityEvents for example")]
     [SerializeField] bool LockMovement;
-
-    void OnDrawGizmos()
-    {
-        if (_groundPivot != null)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(_groundPivot.position, _groundRadius);
-        }
-    }
 
     private void Awake()
     {
@@ -53,6 +44,7 @@ public class CharacterMovement : InputComponent, IPauseObserver
     {
         LockMovement = b;
 
+        //Make sure player stops moving and animation is Idle in case it stops.
         if (b == false)
         {
             StopMovement();
@@ -169,4 +161,14 @@ public class CharacterMovement : InputComponent, IPauseObserver
             textBox.EndDialogueAction += OnResumeGame;
         }
     }
+
+    void OnDrawGizmos()
+    {
+        if (_groundPivot != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(_groundPivot.position, _groundRadius);
+        }
+    }
+
 }
