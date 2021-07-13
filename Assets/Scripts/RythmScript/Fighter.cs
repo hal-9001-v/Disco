@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fight : MonoBehaviour
+public class Fighter : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] TextAsset _song;
@@ -21,8 +21,6 @@ public class Fight : MonoBehaviour
             Debug.Log("Starting Fight with " + name);
             _command.StartFight("^, ^,<,<,>, -5p,<,>,>,>/");
             //_command.StartFight(_song.text);
-
-
         }
     }
 

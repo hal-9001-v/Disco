@@ -6,31 +6,23 @@ public class ArrowObject : MonoBehaviour
 {
     public bool canBePressed;
     public ButtonScript myButton;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
     {
-
         if (myButton != null)
         {
-            if (canBePressed && myButton.pushed)
+            if (canBePressed && myButton.Pushed)
             {
-
                 gameObject.SetActive(false);
-
             }
         }
-        
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Button") {
+        if (other.tag == "Button")
+        {
 
             myButton = other.gameObject.GetComponent<ButtonScript>();
             canBePressed = true;
@@ -44,7 +36,6 @@ public class ArrowObject : MonoBehaviour
         {
             myButton = null;
             canBePressed = false;
-
         }
     }
 

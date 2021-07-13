@@ -939,7 +939,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 7.08
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -963,7 +963,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.978134, y: -10.134992, z: -17.31836}
+  m_LocalPosition: {x: -14.410438, y: 4.511227, z: -48.27845}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1063,6 +1063,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &674630607 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+  m_PrefabInstance: {fileID: 9002864091666421390}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20982879e03ea6040bb256a9aa1432b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &699982029
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1072,7 +1083,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2748749459016821179, guid: 87127f0c1595fcf498148029595e56b6, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2748749459016821179, guid: 87127f0c1595fcf498148029595e56b6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2065,9 +2076,14 @@ MonoBehaviour:
   Answers:
   - EnglishText: That's great!
     SpanishText: "\xA1Eso esta genial!"
+    NextDialogue: {fileID: 0}
     Actions:
       m_PersistentCalls:
         m_Calls: []
+  _radius: 0
+  _radiusColor: {r: 0, g: 0, b: 0, a: 0}
+  _lineColor: {r: 0, g: 0, b: 0, a: 0}
+  _textColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!4 &1301178357
 Transform:
   m_ObjectHideFlags: 0
@@ -2076,11 +2092,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1301178355}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -27.765028, y: -3.288251, z: -544.3994}
+  m_LocalPosition: {x: -10.19, y: 0.5, z: -544.3994}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1305919478
 PrefabInstance:
@@ -2466,7 +2482,7 @@ Transform:
   - {fileID: 699982030}
   - {fileID: 4782264696996928081}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1609921839
 GameObject:
@@ -4548,7 +4564,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2748749459016821179, guid: 87127f0c1595fcf498148029595e56b6, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2748749459016821179, guid: 87127f0c1595fcf498148029595e56b6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6526,6 +6542,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4900000, guid: b4b997ee1d666344389c8d86088958b2, type: 3}
     - target: {fileID: 9002864092780462238, guid: 397d8c5584553f84b9ea053659622701, type: 3}
+      propertyPath: _events.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 674630607}
+    - target: {fileID: 9002864092780462238, guid: 397d8c5584553f84b9ea053659622701, type: 3}
       propertyPath: _events.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: TriggerDialogue
       objectReference: {fileID: 0}
@@ -6563,7 +6583,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
       propertyPath: EnglishLines.Array.data[1]
-      value: FURRY MAN hueae
+      value: FURRY<color=red> MAN hueae</color>
       objectReference: {fileID: 0}
     - target: {fileID: 9002864092780462239, guid: 397d8c5584553f84b9ea053659622701, type: 3}
       propertyPath: SpanishLines.Array.data[0]

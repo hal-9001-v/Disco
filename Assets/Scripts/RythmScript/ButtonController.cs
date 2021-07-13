@@ -10,43 +10,22 @@ public class ButtonController : CombatInputComponent
     public ButtonScript UpButton;
     public ButtonScript DownButton;
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-       
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
-
     public override void setInput(CombatInput inputs)
     {
         //RhythmButtons Controller
         inputs.Combat.RhythmDown.performed += ctx =>
         {
-
             DownButton.Push();
-
         };
 
         inputs.Combat.RythmUp.performed += ctx =>
         {
-
             UpButton.Push();
-
         };
         
         inputs.Combat.RhythmLeft.performed += ctx =>
         {
-
             LeftButton.Push();
-
         };
         
         inputs.Combat.RhythmRight.performed += ctx =>

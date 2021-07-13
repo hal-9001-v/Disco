@@ -188,7 +188,6 @@ public class TextBox : InputComponent, IPauseObserver, IPauseSubject
 
     }
 
-
     void ExecuteCommand(string code)
     {
 
