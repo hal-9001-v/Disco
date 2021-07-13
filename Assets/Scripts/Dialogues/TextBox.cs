@@ -101,6 +101,8 @@ public class TextBox : InputComponent, IPauseObserver, IPauseSubject
                 var answers = _currentDialogue.GetAnswersTexts();
                 if (answers != null && answers.Length != 0)
                 {
+                    UnityEvent[] actions = _currentDialogue.GetAnswersActions();
+
                     _answerSelector.DisplayAnswers(answers, _currentDialogue.GetAnswersActions());
                     _waitingForAnswer = true;
 
@@ -124,7 +126,46 @@ public class TextBox : InputComponent, IPauseObserver, IPauseSubject
         //Make sure no input happens during first typing frame.
         _firstTypingFramePassed = false;
 
-        _textMesh.text = line;
+        //Look for commands in Dialogue and remove them. At the same, execute it.
+        string cleanedLine = "";
+        for (int i = 0; i < line.Length; i++)
+        {
+
+            if (line[i] == '<')
+            {
+                string code = "";
+
+                int j = i;
+                //Surpass '<'
+                j++;
+                while (line[j] != '>')
+                {
+
+                    code += line[j];
+                    j++;
+
+                }
+
+                //Color commands make text mesh get that color by Unity's default. In that case, ignore
+                if (code.Contains("color") == false)
+                {
+                    //Execute command
+                    ExecuteCommand(code);
+
+                    //A command has been found, make sure it doesnt appear in the dialogue
+                    i = j;
+
+                    continue;
+                }
+
+            }
+
+                cleanedLine += line[i];
+            
+        }
+
+        _textMesh.text = cleanedLine;
+
         _textMesh.maxVisibleCharacters = 0;
 
         while (_textMesh.maxVisibleCharacters != line.Length)
@@ -145,6 +186,25 @@ public class TextBox : InputComponent, IPauseObserver, IPauseSubject
 
         _readyForNewLine = true;
 
+    }
+
+    void ExecuteCommand(string code)
+    {
+
+        Debug.Log("Code is: " + code);
+
+        switch (code.ToLower())
+        {
+            case "color=red":
+
+                break;
+
+            case "":
+                break;
+
+            default:
+                break;
+        }
     }
 
     void PlayTypingSound()
@@ -315,6 +375,8 @@ class AnswerSelector
         if (_actions != null && _possibleAnswers != null)
         {
             _actions[_currentAnswer].Invoke();
+
+
         }
     }
 

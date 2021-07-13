@@ -1,4 +1,5 @@
 using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -83,12 +84,31 @@ public class Dialogue : MonoBehaviour
             for (int i = 0; i < Answers.Length; i++)
             {
                 actions[i] = Answers[i].Actions;
+
+                if (Answers[i].NextDialogue != null)
+                {
+                    actions[i].AddListener(Answers[i].NextDialogue.TriggerDialogue);
+                }
+
             }
 
             return actions;
         }
 
     }
+
+    [Header("Gizmos")]
+
+    [Header("Radius")]
+    [Range(0.1f, 5)]
+    [SerializeField] float _radius = 5;
+    [SerializeField] Color _radiusColor = Color.yellow;
+
+    [Header("Lines")]
+    [SerializeField] Color _lineColor = Color.blue;
+
+    [Header("Text")]
+    [SerializeField] Color _textColor;
 
     private void Awake()
     {
@@ -144,7 +164,6 @@ public class Dialogue : MonoBehaviour
     public UnityEvent[] GetAnswersActions()
     {
         return Actions;
-
     }
 
     public void TriggerDialogue()
@@ -199,6 +218,31 @@ public class Dialogue : MonoBehaviour
 
     }
 
+    private void OnDrawGizmos()
+    {
+        if (Answers != null)
+        {
+            Gizmos.color = _radiusColor;
+            Gizmos.DrawWireSphere(transform.position, _radius);
+            Handles.Label(transform.position, name);
+
+            Gizmos.color = _lineColor;
+            foreach (var answer in Answers)
+            {
+                if (answer.NextDialogue != null)
+                {
+                    Gizmos.DrawLine(transform.position, answer.NextDialogue.transform.position);
+
+                    string lineLabel = answer.EnglishText;
+
+                    Handles.color = _textColor;
+                    Handles.Label(0.5f * (transform.position + answer.NextDialogue.transform.position), lineLabel);
+                }
+            }
+        }
+
+    }
+
 }
 
 [Serializable]
@@ -207,6 +251,7 @@ public struct DialogueAnswer
     public string EnglishText;
     public string SpanishText;
 
+    public Dialogue NextDialogue;
     public UnityEvent Actions;
 
 }

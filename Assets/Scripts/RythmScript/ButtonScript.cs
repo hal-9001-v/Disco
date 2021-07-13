@@ -4,27 +4,29 @@ using UnityEngine;
 
 public class ButtonScript : MonoBehaviour
 {
+    [Header("Settings")]
+    [SerializeField] Color _pressedColor = Color.gray;
 
     private SpriteRenderer mySprite;
-    private Color myOriginalColor;
-    public bool pushed;
+    private Color _originalColor;
+    public bool Pushed { get; private set; }
     private void Awake()
     {
         mySprite = GetComponent<SpriteRenderer>();
-        myOriginalColor = mySprite.color;
+        _originalColor = mySprite.color;
     }
 
     public void Push() {
 
-        pushed = true;
-        mySprite.color = Color.gray;
+        Pushed = true;
+        mySprite.color = _pressedColor;
 
     }
 
     public void Release() {
 
-        pushed = false;
-        mySprite.color = myOriginalColor;
+        Pushed = false;
+        mySprite.color = _originalColor;
 
     }
 

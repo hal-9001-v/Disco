@@ -23,6 +23,7 @@ public class Spawner : MonoBehaviour
     public Scroller levelScroller;
     private float notePauseTime;
     public char[] charray;
+
     enum CurrentArrow
     {
         Up = 0,
@@ -96,6 +97,7 @@ public class Spawner : MonoBehaviour
                 break;
             case '/':
                 break;
+
             default:
                 arrowToCreate = null;
                 break;
