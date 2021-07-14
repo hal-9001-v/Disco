@@ -123,6 +123,83 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &8831350
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8831352}
+  - component: {fileID: 8831351}
+  m_Layer: 0
+  m_Name: Hello
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &8831351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8831350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20982879e03ea6040bb256a9aa1432b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _talkingPivot: {fileID: 0}
+  AtStart:
+    m_PersistentCalls:
+      m_Calls: []
+  AfterText:
+    m_PersistentCalls:
+      m_Calls: []
+  EnglishName: 
+  SpanishName: 
+  EnglishLines: []
+  SpanishLines: []
+  Answers:
+  - EnglishText: Hi!
+    SpanishText: 
+    NextDialogue: {fileID: 810047749}
+    Actions:
+      m_PersistentCalls:
+        m_Calls: []
+  - EnglishText: Go to hell
+    SpanishText: 
+    NextDialogue: {fileID: 461240270}
+    Actions:
+      m_PersistentCalls:
+        m_Calls: []
+  - EnglishText: Let's dance!
+    SpanishText: 
+    NextDialogue: {fileID: 462203756}
+    Actions:
+      m_PersistentCalls:
+        m_Calls: []
+  _radius: 5
+  _radiusColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _lineColor: {r: 0, g: 0, b: 1, a: 1}
+  _textColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!4 &8831352
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8831350}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -147.9, y: -1.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 935448606}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &9443458 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9002864090950650853, guid: 397d8c5584553f84b9ea053659622701, type: 3}
@@ -851,6 +928,136 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &461240268
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 461240269}
+  - component: {fileID: 461240270}
+  m_Layer: 0
+  m_Name: Excuse me?
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &461240269
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 461240268}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -122.3, y: -5.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 935448606}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &461240270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 461240268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20982879e03ea6040bb256a9aa1432b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _talkingPivot: {fileID: 0}
+  AtStart:
+    m_PersistentCalls:
+      m_Calls: []
+  AfterText:
+    m_PersistentCalls:
+      m_Calls: []
+  EnglishName: 
+  SpanishName: 
+  EnglishLines: []
+  SpanishLines: []
+  Answers:
+  - EnglishText: 
+    SpanishText: 
+    NextDialogue: {fileID: 0}
+    Actions:
+      m_PersistentCalls:
+        m_Calls: []
+  _radius: 5
+  _radiusColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _lineColor: {r: 0, g: 0, b: 1, a: 1}
+  _textColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!1 &462203754
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 462203755}
+  - component: {fileID: 462203756}
+  m_Layer: 0
+  m_Name: Ok then
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &462203755
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 462203754}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -122, y: -24.9, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 935448606}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &462203756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 462203754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20982879e03ea6040bb256a9aa1432b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _talkingPivot: {fileID: 0}
+  AtStart:
+    m_PersistentCalls:
+      m_Calls: []
+  AfterText:
+    m_PersistentCalls:
+      m_Calls: []
+  EnglishName: 
+  SpanishName: 
+  EnglishLines: []
+  SpanishLines: []
+  Answers:
+  - EnglishText: 
+    SpanishText: 
+    NextDialogue: {fileID: 0}
+    Actions:
+      m_PersistentCalls:
+        m_Calls: []
+  _radius: 5
+  _radiusColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _lineColor: {r: 0, g: 0, b: 1, a: 1}
+  _textColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1186,6 +1393,73 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3928c7c27867434b9848953d725a6b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &810047747
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 810047748}
+  - component: {fileID: 810047749}
+  m_Layer: 0
+  m_Name: How are you?
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &810047748
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 810047747}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -122, y: 11.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 935448606}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &810047749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 810047747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20982879e03ea6040bb256a9aa1432b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _talkingPivot: {fileID: 0}
+  AtStart:
+    m_PersistentCalls:
+      m_Calls: []
+  AfterText:
+    m_PersistentCalls:
+      m_Calls: []
+  EnglishName: 
+  SpanishName: 
+  EnglishLines:
+  - <Sad>Why did you say that?
+  SpanishLines:
+  - 
+  Answers:
+  - EnglishText: Just fine
+    SpanishText: 
+    NextDialogue: {fileID: 1685185685}
+    Actions:
+      m_PersistentCalls:
+        m_Calls: []
+  _radius: 5
+  _radiusColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _lineColor: {r: 0, g: 0, b: 1, a: 1}
+  _textColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &827442726
 GameObject:
   m_ObjectHideFlags: 0
@@ -1300,6 +1574,41 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 19.436464}
   m_EdgeRadius: 0
+--- !u!1 &935448605
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 935448606}
+  m_Layer: 0
+  m_Name: Dialogues
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &935448606
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 935448605}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -18.790165, y: 4.4050508, z: 4407.65}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 8831352}
+  - {fileID: 810047748}
+  - {fileID: 461240269}
+  - {fileID: 462203755}
+  - {fileID: 1685185684}
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &975593426 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 810889750468876412, guid: f7b1f66a1840cc141ac75fe4a46d97f9, type: 3}
@@ -2080,9 +2389,9 @@ MonoBehaviour:
     Actions:
       m_PersistentCalls:
         m_Calls: []
-  _radius: 0
-  _radiusColor: {r: 0, g: 0, b: 0, a: 0}
-  _lineColor: {r: 0, g: 0, b: 0, a: 0}
+  _radius: 5
+  _radiusColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _lineColor: {r: 0, g: 0, b: 1, a: 1}
   _textColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!4 &1301178357
 Transform:
@@ -2593,6 +2902,71 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1685185683
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1685185684}
+  - component: {fileID: 1685185685}
+  m_Layer: 0
+  m_Name: Glad to hear
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1685185684
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685185683}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -88.6, y: 11.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 935448606}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1685185685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685185683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20982879e03ea6040bb256a9aa1432b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _talkingPivot: {fileID: 0}
+  AtStart:
+    m_PersistentCalls:
+      m_Calls: []
+  AfterText:
+    m_PersistentCalls:
+      m_Calls: []
+  EnglishName: 
+  SpanishName: 
+  EnglishLines: []
+  SpanishLines: []
+  Answers:
+  - EnglishText: 
+    SpanishText: 
+    NextDialogue: {fileID: 0}
+    Actions:
+      m_PersistentCalls:
+        m_Calls: []
+  _radius: 5
+  _radiusColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _lineColor: {r: 0, g: 0, b: 1, a: 1}
+  _textColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1001 &1699157775
 PrefabInstance:
   m_ObjectHideFlags: 0
