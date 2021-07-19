@@ -19,7 +19,7 @@ public class Fighter : MonoBehaviour
         if (_command != null && _song != null)
         {
             Debug.Log("Starting Fight with " + name);
-            _command.StartFight("^, ^,<,<,>, -5p,<,>,>,>/");
+            _command.StartFight("^, ^,<,<,>, -5p,<,>,>,>,c,/");
             //_command.StartFight(_song.text);
         }
     }

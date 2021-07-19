@@ -13,6 +13,8 @@ public class Spawner : MonoBehaviour
     public GameObject _downArrowPrototype;
     public GameObject _rightArrowPrototype;
 
+    RythmCommand _rythmCommand;
+
     //Arrow Logic
     public GameObject arrowToCreate;
     private bool waiting;
@@ -23,6 +25,7 @@ public class Spawner : MonoBehaviour
     public Scroller levelScroller;
     private float notePauseTime;
     public char[] charray;
+
 
     enum CurrentArrow
     {
@@ -40,8 +43,10 @@ public class Spawner : MonoBehaviour
         waiting = false;
         standBy = false;
 
-        string song = "^,^,<,<,>,-5p,<,>,>,>/";
+        string song = "^,^,<,<,>,-5p,<,>,>,>,/";
         StoreSong(song);
+
+        _rythmCommand = FindObjectOfType<RythmCommand>();
     }
 
     // Update is called once per frame
@@ -57,7 +62,6 @@ public class Spawner : MonoBehaviour
                 Spawn(arrowToCreate);
             }
         }
-
     }
 
     public void StartPlaying()
@@ -96,6 +100,12 @@ public class Spawner : MonoBehaviour
             case ',':
                 break;
             case '/':
+                
+                break;
+
+            //Cards
+            case 'c':
+                _rythmCommand.DisplayCards();
                 break;
 
             default:

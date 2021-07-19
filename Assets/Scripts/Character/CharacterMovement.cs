@@ -148,7 +148,6 @@ public class CharacterMovement : InputComponent, IPauseObserver
     public void InitializeObserver()
     {
         var pauser = FindObjectOfType<Pauser>();
-
         if (pauser != null)
         {
             pauser.AddPauseObserver(OnPauseGame);
@@ -162,6 +161,12 @@ public class CharacterMovement : InputComponent, IPauseObserver
             textBox.AddResumeObserver(OnResumeGame);
         }
 
+        var rythmCommand = FindObjectOfType<RythmCommand>();
+        if (rythmCommand != null)
+        {
+            rythmCommand.AddPauseObserver(OnPauseGame);
+            rythmCommand.AddResumeObserver(OnResumeGame);
+        }
 
     }
 

@@ -1,13 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RythmCommand : MonoBehaviour
+public class RythmCommand : MonoBehaviour, IPauseSubject
 {
     [Header("References")]
     [SerializeField] Transform _buttonsParent;
+    [SerializeField] Transform _cardsParent;
     [SerializeField] Spawner _spawner;
+
     SpriteRenderer[] _renderers;
+    Card[] _cards;
+
+    Action _startFightAction;
+    Action _endFightAction;
 
     private void Awake()
     {
@@ -18,6 +25,16 @@ public class RythmCommand : MonoBehaviour
 
         _renderers = _buttonsParent.GetComponentsInChildren<SpriteRenderer>();
 
+        if (_cardsParent == null)
+        {
+            _cardsParent = transform;
+        }
+
+        _cards = _cardsParent.GetComponentsInChildren<Card>();
+
+    }
+    private void Start()
+    {
         Hide();
     }
 
@@ -31,6 +48,10 @@ public class RythmCommand : MonoBehaviour
 
             }
         }
+
+        HideCards();
+
+        NotifyResumeObservers();
     }
 
     public void Show()
@@ -43,6 +64,8 @@ public class RythmCommand : MonoBehaviour
 
             }
         }
+
+        NotifyPauseObservers();
     }
 
     public void StartFight(string song)
@@ -54,5 +77,49 @@ public class RythmCommand : MonoBehaviour
             GlobalSettings.IsPlayerInFight = true;
         }
         Show();
+    }
+
+    public void StopFight() { 
+        
+    }
+
+    public void DisplayCards()
+    {
+        foreach (var card in _cards)
+        {
+            card.Show();
+        }
+    }
+
+    public void HideCards()
+    {
+        foreach (var card in _cards)
+        {
+            card.Hide();
+        }
+    }
+
+    public void AddPauseObserver(Action action)
+    {
+        _startFightAction += action;
+
+    }
+
+    public void AddResumeObserver(Action action)
+    {
+        _endFightAction += action;
+
+    }
+
+    public void NotifyPauseObservers()
+    {
+        if (_startFightAction != null)
+            _startFightAction.Invoke();
+    }
+
+    public void NotifyResumeObservers()
+    {
+        if (_endFightAction != null)
+            _endFightAction.Invoke();
     }
 }
