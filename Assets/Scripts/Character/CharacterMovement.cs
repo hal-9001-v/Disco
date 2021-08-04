@@ -13,7 +13,7 @@ public class CharacterMovement : InputComponent, IPauseObserver
     [SerializeField] AnimatorCommand _animatorCommand;
 
     [Header("Settings")]
-    [Range(1f, 50f)] public float velocity;
+    [Range(1f, 50f)] public float speed;
     [Range(1f, 100f)] public float jumpHeight;
     [Range(0f, 1f)] [SerializeField] float _groundRadius;
 
@@ -21,11 +21,14 @@ public class CharacterMovement : InputComponent, IPauseObserver
 
     Vector2 _movementInput;
 
+    public bool isOnStairs { get; private set; }
+    Vector3 _stairsRight;
+
     //"Logic" bool for movement. This bool is set automatically, when dialogue and pause occur(player will never move under these circumstances). To force a lock, use LockMovement  and SetLockMovement().
     bool _playerCanMove;
 
     [Tooltip("Lock for cutscenes, with use of UnityEvents for example")]
-    [SerializeField] bool LockMovement;
+    int _lockMovementCount;
 
     private void Awake()
     {
@@ -40,24 +43,52 @@ public class CharacterMovement : InputComponent, IPauseObserver
     }
 
     //Setter for UnityEvents on Scene
-    public void SetLockMovement(bool b)
+    public void LockMovement()
     {
-        LockMovement = b;
+        _lockMovementCount++;
 
         //Make sure player stops moving and animation is Idle in case it stops.
-        if (b == false)
+        if (_lockMovementCount == 1)
         {
             StopMovement();
         }
     }
 
+    public void FreeMovement()
+    {
+        _lockMovementCount--;
+
+        if (_lockMovementCount < 0)
+        {
+            _lockMovementCount = 0;
+        }
+    }
+
+    public void EnterStairs(Vector3 rightDirection)
+    {
+        isOnStairs = true;
+        _stairsRight = rightDirection;
+    }
+
+    public void ExitStairs()
+    {
+        isOnStairs = false;
+    }
+
     private void FixedUpdate()
     {
-        if (_playerCanMove && !LockMovement)
+        if (_playerCanMove && _lockMovementCount == 0)
         {
             if (_movementInput != Vector2.zero)
             {
-                ApplyMovement(_movementInput);
+                if (isOnStairs)
+                {
+                    ApplyMovement(_movementInput, _stairsRight);
+                }
+                else
+                {
+                    ApplyMovement(_movementInput, Vector2.right);
+                }
             }
             else
             {
@@ -66,27 +97,28 @@ public class CharacterMovement : InputComponent, IPauseObserver
         }
     }
 
-    private void ApplyMovement(Vector2 movementReadValue)
+    private void ApplyMovement(Vector2 movementReadValue, Vector2 right)
     {
 
         if (_animatorCommand != null)
             _animatorCommand.Run();
 
-        Vector2 newVelocity = new Vector2(0, 0);
+        Vector2 newVelocity = Vector2.zero;
 
         if (movementReadValue.x > 0)
         {
-            newVelocity.x = velocity;
+            newVelocity = right * speed;
             _animatorCommand.Flip(true);
         }
         else if (movementReadValue.x < 0)
         {
-            newVelocity.x = -velocity;
+            newVelocity = -right * speed;
             _animatorCommand.Flip(false);
         }
 
         newVelocity.y = _rigid_body.velocity.y;
-        _rigid_body.velocity = newVelocity;
+        _rigid_body.AddForce(newVelocity - _rigid_body.velocity, ForceMode2D.Impulse);
+        //_rigid_body.velocity = newVelocity;
     }
 
     private void StopMovement()

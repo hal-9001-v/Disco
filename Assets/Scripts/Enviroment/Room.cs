@@ -23,10 +23,9 @@ public class Room : MonoBehaviour
     InputInteraction[] _inputInteractions;
     DistanceInteraction[] _distanceInteractions;
     CollisionInteraction[] _collisionInteractions;
-
-    bool _roomIsActive = true;
-
     Coroutine _fadeCoroutine;
+
+    bool _isActive;
 
     private void Awake()
     {
@@ -38,6 +37,9 @@ public class Room : MonoBehaviour
             _renderers = _roomObjects.GetComponentsInChildren<SpriteRenderer>();
             _colliders = _roomObjects.GetComponentsInChildren<Collider2D>();
         }
+
+        _isActive = false;
+        ActivateRoom();
     }
 
     /// <summary>
@@ -45,39 +47,43 @@ public class Room : MonoBehaviour
     /// </summary>
     public void ActivateRoom()
     {
-        if (_camera != null)
-            _camera.enabled = true;
-
-        _roomIsActive = true;
-
-        foreach (var room in FindObjectsOfType<Room>())
+        if (_isActive == false)
         {
-            if (room != this)
-                room.DeactivateRoom();
+            _isActive = true;
+
+            if (_camera != null)
+                _camera.enabled = true;
+
+            foreach (var room in FindObjectsOfType<Room>())
+            {
+                if (room != this)
+                    room.DeactivateRoom();
+            }
+
+            foreach (InputInteraction input in _inputInteractions)
+            {
+                input.ActiveForInteraction = true;
+            }
+
+            foreach (var interaction in _distanceInteractions)
+            {
+                interaction.ActiveForInteraction = true;
+            }
+
+            foreach (var collision in _collisionInteractions)
+            {
+                collision.ActiveForInteraction = true;
+            }
+
+            foreach (var collider in _colliders)
+            {
+                collider.enabled = true;
+            }
+
+            TurnSpritesVisible();
+
+
         }
-
-        foreach (InputInteraction input in _inputInteractions)
-        {
-            input.ActiveForInteraction = true;
-        }
-
-        foreach (var interaction in _distanceInteractions)
-        {
-            interaction.ActiveForInteraction = true;
-        }
-
-        foreach (var collision in _collisionInteractions)
-        {
-            collision.ActiveForInteraction = true;
-        }
-
-        foreach (var collider in _colliders)
-        {
-            collider.enabled = true;
-        }
-
-        TurnSpritesVisible();
-
     }
 
 
@@ -86,46 +92,36 @@ public class Room : MonoBehaviour
     /// </summary>
     public void DeactivateRoom()
     {
-        if (_camera != null)
-            _camera.enabled = false;
-
-        _roomIsActive = false;
-
-        foreach (InputInteraction input in _inputInteractions)
+        if (_isActive == true)
         {
-            input.ActiveForInteraction = false;
+            _isActive = false;
+
+            if (_camera != null)
+                _camera.enabled = false;
+
+
+            foreach (InputInteraction input in _inputInteractions)
+            {
+                input.ActiveForInteraction = false;
+            }
+
+            foreach (var interaction in _distanceInteractions)
+            {
+                interaction.ActiveForInteraction = false;
+            }
+
+            foreach (var collision in _collisionInteractions)
+            {
+                collision.ActiveForInteraction = false;
+            }
+
+            foreach (var collider in _colliders)
+            {
+                collider.enabled = false;
+            }
+
+            TurnSpritesInvisible();
         }
-
-        foreach (var interaction in _distanceInteractions)
-        {
-            interaction.ActiveForInteraction = false;
-        }
-
-        foreach (var collision in _collisionInteractions)
-        {
-            collision.ActiveForInteraction = false;
-        }
-
-        foreach (var collider in _colliders)
-        {
-            collider.enabled = false;
-        }
-
-        TurnSpritesInvisible();
-    }
-
-    public void SwitchInteraction()
-    {
-
-        if (_roomIsActive)
-        {
-            DeactivateRoom();
-        }
-        else
-        {
-            ActivateRoom();
-        }
-
     }
 
     public void TurnSpritesVisible()
