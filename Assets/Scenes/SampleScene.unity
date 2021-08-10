@@ -2430,7 +2430,7 @@ GameObject:
   - component: {fileID: 1483887014}
   - component: {fileID: 1483887015}
   m_Layer: 0
-  m_Name: Cards 2
+  m_Name: Card 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2866,6 +2866,10 @@ PrefabInstance:
       propertyPath: _cardsParent
       value: 
       objectReference: {fileID: 131195123}
+    - target: {fileID: 1345713980, guid: fe218d965d8548a47a2759252b97d3be, type: 3}
+      propertyPath: _cardSelector
+      value: 
+      objectReference: {fileID: 1876250238}
     - target: {fileID: 1218687408264953211, guid: fe218d965d8548a47a2759252b97d3be, type: 3}
       propertyPath: m_Name
       value: Rhytm Game
@@ -3294,7 +3298,7 @@ GameObject:
   - component: {fileID: 1768696584}
   - component: {fileID: 1768696585}
   m_Layer: 0
-  m_Name: Cards 3
+  m_Name: Card 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3396,6 +3400,27 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &1876250237 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1218687408264953211, guid: fe218d965d8548a47a2759252b97d3be, type: 3}
+  m_PrefabInstance: {fileID: 1699157775}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1876250238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1876250237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b1ac839d362bff498f8536ad123cead, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cards:
+  - {fileID: 2035278865}
+  - {fileID: 1483887015}
+  - {fileID: 1768696585}
 --- !u!4 &1931835305 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4033695594836561261, guid: fa2ea61ef087e8344ad1798202f38aa7, type: 3}
@@ -6759,7 +6784,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9002864092780462209, guid: 397d8c5584553f84b9ea053659622701, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -18.97
+      value: 41.7
       objectReference: {fileID: 0}
     - target: {fileID: 9002864092780462209, guid: 397d8c5584553f84b9ea053659622701, type: 3}
       propertyPath: m_LocalPosition.y

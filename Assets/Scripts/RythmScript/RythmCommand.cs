@@ -6,33 +6,14 @@ using UnityEngine;
 public class RythmCommand : MonoBehaviour, IPauseSubject
 {
     [Header("References")]
-    [SerializeField] Transform _buttonsParent;
-    [SerializeField] Transform _cardsParent;
     [SerializeField] Spawner _spawner;
+    [SerializeField] CardSelector _cardSelector;
 
-    SpriteRenderer[] _renderers;
-    Card[] _cards;
+    [SerializeField] ButtonScript[] _buttons;
 
     Action _startFightAction;
     Action _endFightAction;
 
-    private void Awake()
-    {
-        if (_buttonsParent == null)
-        {
-            _buttonsParent = transform;
-        }
-
-        _renderers = _buttonsParent.GetComponentsInChildren<SpriteRenderer>();
-
-        if (_cardsParent == null)
-        {
-            _cardsParent = transform;
-        }
-
-        _cards = _cardsParent.GetComponentsInChildren<Card>();
-
-    }
     private void Start()
     {
         Hide();
@@ -40,30 +21,58 @@ public class RythmCommand : MonoBehaviour, IPauseSubject
 
     public void Hide()
     {
-        if (_renderers != null)
-        {
-            for (int i = 0; i < _renderers.Length; i++)
-            {
-                _renderers[i].enabled = false;
-
-            }
-        }
-
+        HideButtons();
         HideCards();
 
         NotifyResumeObservers();
     }
 
+    public void DisplayCards()
+    {
+        if (_cardSelector != null)
+        {
+            _cardSelector.DisplayCards();
+        }
+    }
+
+    public void HideCards()
+    {
+        if (_cardSelector != null)
+        {
+            _cardSelector.HideCards();
+
+        }
+    }
+
+    public void DisplayButtons()
+    {
+        if (_buttons != null)
+        {
+            foreach (var button in _buttons)
+            {
+                button.Display();
+            }
+
+        }
+    }
+
+    public void HideButtons()
+    {
+        if (_buttons != null)
+        {
+            foreach (var button in _buttons)
+            {
+                button.Hide();
+            }
+
+        }
+    }
+
     public void Show()
     {
-        if (_renderers != null)
-        {
-            for (int i = 0; i < _renderers.Length; i++)
-            {
-                _renderers[i].enabled = true;
 
-            }
-        }
+        DisplayButtons();
+        HideCards();
 
         NotifyPauseObservers();
     }
@@ -72,30 +81,16 @@ public class RythmCommand : MonoBehaviour, IPauseSubject
     {
         if (_spawner != null)
         {
-            _spawner.StoreSong(song);
-            _spawner.StartPlaying();
-            GlobalSettings.IsPlayerInFight = true;
+            _spawner.StartPlaying(song);
         }
         Show();
     }
 
-    public void StopFight() { 
-        
-    }
-
-    public void DisplayCards()
+    public void StopFight()
     {
-        foreach (var card in _cards)
+        if (_spawner != null)
         {
-            card.Show();
-        }
-    }
 
-    public void HideCards()
-    {
-        foreach (var card in _cards)
-        {
-            card.Hide();
         }
     }
 

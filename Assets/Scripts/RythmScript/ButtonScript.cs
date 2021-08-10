@@ -7,27 +7,45 @@ public class ButtonScript : MonoBehaviour
     [Header("Settings")]
     [SerializeField] Color _pressedColor = Color.gray;
 
-    private SpriteRenderer mySprite;
+    private SpriteRenderer[] _sprites;
     private Color _originalColor;
     public bool Pushed { get; private set; }
     private void Awake()
     {
-        mySprite = GetComponent<SpriteRenderer>();
-        _originalColor = mySprite.color;
+        _sprites = GetComponentsInChildren<SpriteRenderer>();
+        //_originalColor = _sprites.color;
     }
 
-    public void Push() {
+    public void Push()
+    {
 
         Pushed = true;
-        mySprite.color = _pressedColor;
+        // _sprites.color = _pressedColor;
 
     }
 
-    public void Release() {
+    public void Release()
+    {
 
         Pushed = false;
-        mySprite.color = _originalColor;
+        // _sprites.color = _originalColor;
 
+    }
+
+    public void Display()
+    {
+        foreach (var sprite in _sprites)
+        {
+            sprite.enabled = true;
+        }
+    }
+
+    public void Hide()
+    {
+        foreach (var sprite in _sprites)
+        {
+            sprite.enabled = false;
+        }
     }
 
 }

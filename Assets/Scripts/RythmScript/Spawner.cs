@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public bool IsPlaying { get; private set; }
+    public bool isPlaying { get; private set; }
 
     //ArrowGOs
     [Header("Referencees")]
@@ -16,16 +16,15 @@ public class Spawner : MonoBehaviour
     RythmCommand _rythmCommand;
 
     //Arrow Logic
-    public GameObject arrowToCreate;
-    private bool waiting;
-    private bool standBy;
+    float _elapsedTime;
 
     //BeatCalculator GOs
-    int i;
-    public Scroller levelScroller;
+    Scroller _scroller;
     private float notePauseTime;
-    public char[] charray;
+    public char[] songCode;
+    int songCodeIndex;
 
+    bool _displayCards;
 
     enum CurrentArrow
     {
@@ -38,13 +37,7 @@ public class Spawner : MonoBehaviour
 
     private void Awake()
     {
-        levelScroller = FindObjectOfType<Scroller>();
-        i = 0;
-        waiting = false;
-        standBy = false;
-
-        string song = "^,^,<,<,>,-5p,<,>,>,>,/";
-        StoreSong(song);
+        _scroller = FindObjectOfType<Scroller>();
 
         _rythmCommand = FindObjectOfType<RythmCommand>();
     }
@@ -52,43 +45,88 @@ public class Spawner : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (IsPlaying && standBy == false)
+        if (isPlaying)
         {
-            notePauseTime = levelScroller.fps / levelScroller.originalBeatTempo;
-            if (!waiting)
+            if (_displayCards)
             {
-                Pause(notePauseTime);
-                Generator();
-                Spawn(arrowToCreate);
+                if (_scroller.Arrows.Count == 0)
+                {
+                    _rythmCommand.DisplayCards();
+                    _rythmCommand.HideButtons();
+
+                    _displayCards = false;
+
+                    PauseSong();
+                }
             }
+            else
+            {
+                if (songCode != null && songCodeIndex < songCode.Length)
+                {
+                    PlayNote();
+                }
+            }
+
         }
     }
 
-    public void StartPlaying()
+    void PlayNote()
     {
-        IsPlaying = true;
+        notePauseTime = _scroller.fps / _scroller.originalBeatTempo;
+        if (_elapsedTime >= notePauseTime)
+        {
+            CheckCode(songCode[songCodeIndex]);
+            songCodeIndex++;
+
+            _elapsedTime = 0;
+        }
+        else
+        {
+            _elapsedTime += Time.fixedDeltaTime;
+        }
     }
 
-    public void Generator()
+    public void PauseSong()
     {
-        waiting = true;
+        isPlaying = false;
+    }
 
-        switch (charray[i])
+    public void ContinueSong()
+    {
+        isPlaying = true;
+    }
+
+    public void StartPlaying(string song)
+    {
+        isPlaying = true;
+
+        songCode = new char[song.Length];
+        songCodeIndex = 0;
+
+        for (int i = 0; i < song.Length; i++)
+        {
+            songCode[i] = song[i];
+        }
+    }
+
+    public void CheckCode(char c)
+    {
+        switch (c)
         {
             case '^':
-                SelectCurrentArrow(0);
+                Spawn(_upArrowPrototype);
                 break;
             case 'v':
-                SelectCurrentArrow(1);
+                Spawn(_downArrowPrototype);
                 break;
             case '<':
-                SelectCurrentArrow(2);
+                Spawn(_leftArrowPrototype);
                 break;
             case '>':
-                SelectCurrentArrow(3);
+                Spawn(_rightArrowPrototype);
                 break;
             case '-':
-                string stopString = null;
+                /*string stopString = null;
                 for (int j = i + 1; j < charray.Length; j++)
                 {
                     if (charray[j] != 'p') stopString += charray[j];
@@ -96,94 +134,40 @@ public class Spawner : MonoBehaviour
                 }
                 float stop = float.Parse(stopString, System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 StandBy(stop);
+                */
                 break;
             case ',':
                 break;
             case '/':
-                
+
                 break;
 
             //Cards
             case 'c':
-                _rythmCommand.DisplayCards();
+                _displayCards = true;
                 break;
 
             default:
-                arrowToCreate = null;
                 break;
         }
-        i++;
-    }
-
-    public void StoreSong(string song)
-    {
-        charray = new char[song.Length];
-        for (int i = 0; i < song.Length; i++)
-        {
-            charray[i] = song[i];
-        }
-    }
-
-    public void SelectCurrentArrow(int arrow)
-    {
-        switch (arrow)
-        {
-            case ((int)CurrentArrow.Up):
-                arrowToCreate = _upArrowPrototype;
-                break;
-            case ((int)CurrentArrow.Down):
-                arrowToCreate = _downArrowPrototype;
-                break;
-            case ((int)CurrentArrow.Left):
-                arrowToCreate = _leftArrowPrototype;
-                break;
-            case ((int)CurrentArrow.Right):
-                arrowToCreate = _rightArrowPrototype;
-                break;
-
-        }
-
     }
 
     public void Spawn(GameObject arrow)
     {
         if (arrow != null)
         {
-            var newArrow = Instantiate(arrow, new Vector3(arrow.transform.position.x, arrow.transform.position.y, arrow.transform.position.z), Quaternion.identity);
+            var newArrow = Instantiate(arrow, new Vector3(arrow.transform.position.x, arrow.transform.position.y, arrow.transform.position.z), Quaternion.identity).GetComponent<ArrowObject>();
+            newArrow.Initialize(_scroller);
 
-            levelScroller.Arrows.Add(newArrow.GetComponent<ArrowObject>());
+            _scroller.Arrows.Add(newArrow);
             Debug.Log("Spawned!");
 
         }
     }
 
-    public void Pause(float wait)
-    {
-        waiting = true;
-        StartCoroutine(PauseNum(wait));
-    }
-
-    private IEnumerator PauseNum(float wait)
-    {
-        yield return new WaitForSecondsRealtime(wait);
-        waiting = false;
-    }
-
-    public void StandBy(float sby)
-    {
-        standBy = true;
-        StartCoroutine(StandByNum(sby));
-    }
-
-    private IEnumerator StandByNum(float sby)
-    {
-        yield return new WaitForSecondsRealtime(sby);
-        standBy = false;
-    }
-
     public void SetBeatTempo(float newBeatTempo)
     {
-        levelScroller.originalBeatTempo = newBeatTempo;
+        _scroller.originalBeatTempo = newBeatTempo;
     }
 
 }

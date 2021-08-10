@@ -4,22 +4,38 @@ using UnityEngine;
 
 public class Card : MonoBehaviour
 {
-    Renderer[] _renderers;
+    SpriteRenderer[] _renderers;
 
     public void Awake()
     {
-        _renderers = GetComponentsInChildren<Renderer>();
+        _renderers = GetComponents<SpriteRenderer>();
+    }
+
+    public void Select()
+    {
+
+    }
+
+    public void Deselect()
+    {
+
+    }
+
+    public void Confirm()
+    {
+
     }
 
     public void Show()
     {
-        if (_renderers != null) {
+        if (_renderers != null)
+        {
             foreach (var renderer in _renderers)
             {
                 renderer.enabled = true;
             }
         }
-        
+
     }
 
     public void Hide()

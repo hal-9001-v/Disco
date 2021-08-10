@@ -16,7 +16,6 @@ public class GlobalSettings : MonoBehaviour
     public static Languages selectedLanguage = Languages.English;
 
     public static bool isPlayerInDialogue;
-    public static bool IsPlayerInFight;
 
     public static int currentScene;
 
