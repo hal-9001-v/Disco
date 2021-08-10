@@ -5,7 +5,14 @@ using UnityEngine;
 public class CardSelector : InputComponent
 {
     [Header("References")]
-    [SerializeField] Card[] _cards;
+    //[SerializeField] Card[] _cards;
+
+    [SerializeField] Card _upCard;
+    [SerializeField] Card _downCard;
+    [SerializeField] Card _rightCard;
+    [SerializeField] Card _leftCard;
+
+    Card _selectedCard;
 
     public bool isDisplayed { get; private set; }
 
@@ -17,6 +24,9 @@ public class CardSelector : InputComponent
         HideCards();
     }
 
+
+
+    /*
     void SelectCard(int index)
     {
         if (isDisplayed)
@@ -41,60 +51,102 @@ public class CardSelector : InputComponent
             }
         }
     }
-
+    */
     void ConfirmCard(int index)
+    {
+        if (isDisplayed && _selectedCard != null)
+        {
+            _selectedCard.Confirm();
+        }
+
+    }
+
+    void SelectCard(Card card)
     {
         if (isDisplayed)
         {
-            if (_cards != null && _cards.Length != 0)
+            if (card == _selectedCard)
             {
-                _cards[index].Confirm();
+                _selectedCard.Confirm();
+                return;
             }
+
+            _upCard.Deselect();
+            _downCard.Deselect();
+            _rightCard.Deselect();
+            _leftCard.Deselect();
+
+            _selectedCard = card;
+            _selectedCard.Select();
         }
 
     }
 
     public void DisplayCards()
     {
-        if (_cards != null)
+        if (!isDisplayed)
         {
             isDisplayed = true;
 
-            foreach (var card in _cards)
-            {
-                card.Show();
-            }
+            if (_upCard != null)
+                _upCard.Show();
 
-            SelectCard(0);
+            if (_downCard != null)
+                _downCard.Show();
+
+            if (_rightCard != null)
+                _rightCard.Show();
+
+            if (_leftCard != null)
+                _leftCard.Show();
+
+            _selectedCard = null;
         }
+
+
     }
+
+
 
     public void HideCards()
     {
-        if (_cards != null)
-        {
-            isDisplayed = false;
+        if (_upCard != null)
+            _upCard.Hide();
 
-            foreach (var card in _cards)
-            {
-                card.Hide();
-            }
-        }
+        if (_downCard != null)
+            _downCard.Hide();
+
+        if (_rightCard != null)
+            _rightCard.Hide();
+
+        if (_leftCard != null)
+            _leftCard.Hide();
+
     }
 
     public override void SetInput(NormalInput inputs)
     {
-        inputs.Map.ChangeAnswer.performed += ctx =>
+        inputs.Map.ChangeCard.performed += ctx =>
         {
-            float axisInput = ctx.ReadValue<float>();
+            Vector2 axisInput = ctx.ReadValue<Vector2>();
 
-            if (axisInput < 0)
+            if (axisInput.x < 0)
             {
-                SelectCard(_cardIndex - 1);
+                SelectCard(_leftCard);
             }
-            else if (axisInput > 0)
+            else if (axisInput.x > 0)
             {
-                SelectCard(_cardIndex + 1);
+                SelectCard(_rightCard);
+
+            }
+            else if (axisInput.y > 0)
+            {
+                SelectCard(_upCard);
+            }
+            else if (axisInput.y < 0)
+            {
+                SelectCard(_downCard);
+
             }
 
 

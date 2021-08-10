@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ArrowObject : MonoBehaviour
 {
     public bool canBePressed;
     public ButtonScript myButton;
     Scroller _scroller;
+    RawImage _rawImage;
 
     public Action endAction;
 
@@ -23,9 +25,19 @@ public class ArrowObject : MonoBehaviour
         }
     }
 
-    public void Initialize(Scroller scroller)
+    private void Awake()
+    {
+        _rawImage = GetComponent<RawImage>();
+
+        _rawImage.enabled = false;
+    }
+
+    public void Initialize(Scroller scroller, Transform canvas)
     {
         _scroller = scroller;
+        transform.SetParent(canvas.transform, false);
+
+        _rawImage.enabled = true;
     }
 
     private void OnTriggerEnter2D(Collider2D other)

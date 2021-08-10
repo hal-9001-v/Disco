@@ -73,6 +73,22 @@ public class @NormalInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ChangeCard"",
+                    ""type"": ""Value"",
+                    ""id"": ""d9bdf408-51dd-45d6-9873-102f86416e7c"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""ConfirmCard"",
+                    ""type"": ""Button"",
+                    ""id"": ""eaf0dbc0-6cc4-41e2-9ecf-f82ce9b51ff2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -309,12 +325,177 @@ public class @NormalInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""842740da-07e4-4d94-9334-8643601046ff"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""ConfirmAnswer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0a57c851-7d60-48ef-a28d-52de1599dfdf"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""ConfirmAnswer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""ffa11535-b350-45e8-a049-acb23fa405b8"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Normal"",
                     ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""477df1ff-3751-41b3-99ad-6f6704fad489"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeCard"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""f3858014-3eee-41ff-85a2-9c857478984d"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""ChangeCard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""85f9f4e8-42e4-4ae9-b305-ad128d48591b"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""ChangeCard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""78197175-86d1-4323-8f53-b5be00e74144"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""ChangeCard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""50f5b82e-25db-4ac5-9fcf-151c8ea1d1ad"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""ChangeCard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""c31b9d71-c171-4ee3-a793-13d72d35f752"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""ChangeCard"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""28900869-f1d3-40a4-b032-ff60862189a7"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""ChangeCard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""9e9b4f6d-a1a1-4d06-830b-46669f2f5568"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""ChangeCard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""5544cce7-6958-451a-9115-7ff06e6949b2"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""ChangeCard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""d0d2ce10-e4ca-4c30-840c-404ea8c0a464"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""ChangeCard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""93b5a45c-c901-416d-968b-c3c4b5ff1ba3"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""ConfirmCard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a5dec7f3-2e76-4c27-93bb-eebda8e07264"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""ConfirmCard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""27034ee0-4462-4c71-9c0f-4e7b4f21e537"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""ConfirmCard"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -364,6 +545,8 @@ public class @NormalInput : IInputActionCollection, IDisposable
         m_Map_ChangeAnswer = m_Map.FindAction("Change Answer", throwIfNotFound: true);
         m_Map_ConfirmAnswer = m_Map.FindAction("ConfirmAnswer", throwIfNotFound: true);
         m_Map_Jump = m_Map.FindAction("Jump", throwIfNotFound: true);
+        m_Map_ChangeCard = m_Map.FindAction("ChangeCard", throwIfNotFound: true);
+        m_Map_ConfirmCard = m_Map.FindAction("ConfirmCard", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -420,6 +603,8 @@ public class @NormalInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Map_ChangeAnswer;
     private readonly InputAction m_Map_ConfirmAnswer;
     private readonly InputAction m_Map_Jump;
+    private readonly InputAction m_Map_ChangeCard;
+    private readonly InputAction m_Map_ConfirmCard;
     public struct MapActions
     {
         private @NormalInput m_Wrapper;
@@ -431,6 +616,8 @@ public class @NormalInput : IInputActionCollection, IDisposable
         public InputAction @ChangeAnswer => m_Wrapper.m_Map_ChangeAnswer;
         public InputAction @ConfirmAnswer => m_Wrapper.m_Map_ConfirmAnswer;
         public InputAction @Jump => m_Wrapper.m_Map_Jump;
+        public InputAction @ChangeCard => m_Wrapper.m_Map_ChangeCard;
+        public InputAction @ConfirmCard => m_Wrapper.m_Map_ConfirmCard;
         public InputActionMap Get() { return m_Wrapper.m_Map; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -461,6 +648,12 @@ public class @NormalInput : IInputActionCollection, IDisposable
                 @Jump.started -= m_Wrapper.m_MapActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnJump;
+                @ChangeCard.started -= m_Wrapper.m_MapActionsCallbackInterface.OnChangeCard;
+                @ChangeCard.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnChangeCard;
+                @ChangeCard.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnChangeCard;
+                @ConfirmCard.started -= m_Wrapper.m_MapActionsCallbackInterface.OnConfirmCard;
+                @ConfirmCard.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnConfirmCard;
+                @ConfirmCard.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnConfirmCard;
             }
             m_Wrapper.m_MapActionsCallbackInterface = instance;
             if (instance != null)
@@ -486,6 +679,12 @@ public class @NormalInput : IInputActionCollection, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @ChangeCard.started += instance.OnChangeCard;
+                @ChangeCard.performed += instance.OnChangeCard;
+                @ChangeCard.canceled += instance.OnChangeCard;
+                @ConfirmCard.started += instance.OnConfirmCard;
+                @ConfirmCard.performed += instance.OnConfirmCard;
+                @ConfirmCard.canceled += instance.OnConfirmCard;
             }
         }
     }
@@ -517,5 +716,7 @@ public class @NormalInput : IInputActionCollection, IDisposable
         void OnChangeAnswer(InputAction.CallbackContext context);
         void OnConfirmAnswer(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnChangeCard(InputAction.CallbackContext context);
+        void OnConfirmCard(InputAction.CallbackContext context);
     }
 }

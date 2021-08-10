@@ -1,26 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ButtonScript : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] Color _pressedColor = Color.gray;
 
-    private SpriteRenderer[] _sprites;
+    private RawImage _rawImage;
     private Color _originalColor;
     public bool Pushed { get; private set; }
     private void Awake()
     {
-        _sprites = GetComponentsInChildren<SpriteRenderer>();
-        //_originalColor = _sprites.color;
+        _rawImage = GetComponent<RawImage>();
+        _originalColor = _rawImage.color;
+
     }
 
     public void Push()
     {
 
         Pushed = true;
-        // _sprites.color = _pressedColor;
+        _rawImage.color = _pressedColor;
 
     }
 
@@ -28,24 +30,30 @@ public class ButtonScript : MonoBehaviour
     {
 
         Pushed = false;
-        // _sprites.color = _originalColor;
+        _rawImage.color = _originalColor;
 
     }
 
     public void Display()
     {
+        /*
         foreach (var sprite in _sprites)
         {
             sprite.enabled = true;
-        }
+        }*/
+        _rawImage.enabled = true;
     }
 
     public void Hide()
     {
+        /*
         foreach (var sprite in _sprites)
         {
             sprite.enabled = false;
         }
+        */
+
+        _rawImage.enabled = false;
     }
 
 }

@@ -89,6 +89,17 @@ public class @CombatInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""07515d63-45e0-49fb-a27a-427d4852e3c8"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""RythmUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""ddee3e83-bc54-4bed-a723-8a2d3572b16e"",
                     ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
@@ -100,8 +111,19 @@ public class @CombatInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""cfff7883-9db5-462a-97e4-19aeeab159db"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Normal"",
+                    ""action"": ""Rhythm Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""13ad2d12-08e9-45ca-8da6-af81facf59d3"",
-                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Normal"",
@@ -112,7 +134,7 @@ public class @CombatInput : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ba9cc088-9f35-40d7-a55d-9b74f1a7e5ac"",
-                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Normal"",

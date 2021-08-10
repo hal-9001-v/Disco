@@ -8,10 +8,14 @@ public class Spawner : MonoBehaviour
 
     //ArrowGOs
     [Header("Referencees")]
-    public GameObject _leftArrowPrototype;
-    public GameObject _upArrowPrototype;
-    public GameObject _downArrowPrototype;
-    public GameObject _rightArrowPrototype;
+    [SerializeField] Canvas _canvas;
+    [Space(6)]
+    [SerializeField] ArrowObject _leftArrowPrototype;
+    [SerializeField] ArrowObject _upArrowPrototype;
+    [SerializeField] ArrowObject _downArrowPrototype;
+    [SerializeField] ArrowObject _rightArrowPrototype;
+
+
 
     RythmCommand _rythmCommand;
 
@@ -152,12 +156,12 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    public void Spawn(GameObject arrow)
+    public void Spawn(ArrowObject arrow)
     {
         if (arrow != null)
         {
-            var newArrow = Instantiate(arrow, new Vector3(arrow.transform.position.x, arrow.transform.position.y, arrow.transform.position.z), Quaternion.identity).GetComponent<ArrowObject>();
-            newArrow.Initialize(_scroller);
+            var newArrow = Instantiate(arrow.gameObject).GetComponent<ArrowObject>();
+            newArrow.Initialize(_scroller, arrow.transform.parent);
 
             _scroller.Arrows.Add(newArrow);
             Debug.Log("Spawned!");
