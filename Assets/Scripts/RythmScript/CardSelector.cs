@@ -6,6 +6,7 @@ public class CardSelector : InputComponent
 {
     [Header("References")]
     //[SerializeField] Card[] _cards;
+    [SerializeField] RythmCommand _rythmCommand;
 
     [SerializeField] Card _upCard;
     [SerializeField] Card _downCard;
@@ -57,6 +58,8 @@ public class CardSelector : InputComponent
         if (isDisplayed && _selectedCard != null)
         {
             _selectedCard.Confirm();
+            _rythmCommand.ContinueSong();
+
         }
 
     }
@@ -82,31 +85,43 @@ public class CardSelector : InputComponent
 
     }
 
-    public void DisplayCards()
+    public void DisplayCards(Fighter fighter)
     {
         if (!isDisplayed)
         {
+            List<FlirtAnswer> possibleAnswers = new List<FlirtAnswer>();
+
+            foreach (FlirtAnswer answer in fighter.flirtSettings.options)
+            {
+                if (answer.neededCombo <= 1)
+                {
+                    possibleAnswers.Add(answer);
+                }
+            }
+
             isDisplayed = true;
 
+            FlirtAnswer randomAnswer = possibleAnswers[Random.Range(0, possibleAnswers.Count)];
             if (_upCard != null)
-                _upCard.Show();
+                _upCard.Show(randomAnswer.englishAnswer, randomAnswer.englishReaction, randomAnswer.points);
 
+            randomAnswer = possibleAnswers[Random.Range(0, possibleAnswers.Count)];
             if (_downCard != null)
-                _downCard.Show();
+                _downCard.Show(randomAnswer.englishAnswer, randomAnswer.englishReaction, randomAnswer.points);
 
+            randomAnswer = possibleAnswers[Random.Range(0, possibleAnswers.Count)];
             if (_rightCard != null)
-                _rightCard.Show();
+                _rightCard.Show(randomAnswer.englishAnswer, randomAnswer.englishReaction, randomAnswer.points);
 
+            randomAnswer = possibleAnswers[Random.Range(0, possibleAnswers.Count)];
             if (_leftCard != null)
-                _leftCard.Show();
+                _leftCard.Show(randomAnswer.englishAnswer, randomAnswer.englishReaction, randomAnswer.points);
 
             _selectedCard = null;
         }
 
 
     }
-
-
 
     public void HideCards()
     {

@@ -11,27 +11,64 @@ public class RythmCommand : MonoBehaviour, IPauseSubject
 
     [SerializeField] ButtonScript[] _buttons;
 
+    [SerializeField] CanvasGroup _canvasGroup;
+
     Action _startFightAction;
     Action _endFightAction;
+
+    public float gaugePoints;
+
+    Fighter _currentFighter;
 
     private void Start()
     {
         Hide();
     }
 
+    public void ChangeGauge(float points)
+    {
+        gaugePoints += points;
+
+        if (gaugePoints < 0)
+        {
+            gaugePoints = 0;
+        }
+
+    }
+
+    public void CalculateResults()
+    {
+
+        if (_currentFighter != null)
+        {
+            if (gaugePoints >= _currentFighter.flirtSettings.neededPoints)
+            {
+                _currentFighter.Success();
+            }
+            else
+            {
+                _currentFighter.Failure();
+            }
+
+
+        }
+
+    }
+
     public void Hide()
     {
+        _canvasGroup.enabled = false;
         HideButtons();
         HideCards();
-
+        
         NotifyResumeObservers();
     }
 
     public void DisplayCards()
     {
-        if (_cardSelector != null)
+        if (_cardSelector != null && _currentFighter != null)
         {
-            _cardSelector.DisplayCards();
+            _cardSelector.DisplayCards(_currentFighter);
         }
     }
 
@@ -70,28 +107,37 @@ public class RythmCommand : MonoBehaviour, IPauseSubject
 
     public void Show()
     {
-
+        _canvasGroup.enabled = true;
         DisplayButtons();
         HideCards();
 
         NotifyPauseObservers();
     }
 
-    public void StartFight(string song)
+    public void StartFight(Fighter fighter, string song)
     {
         if (_spawner != null)
         {
             _spawner.StartPlaying(song);
+            _currentFighter = fighter;
+
         }
         Show();
     }
 
     public void StopFight()
     {
-        if (_spawner != null)
-        {
+        CalculateResults();
 
-        }
+        Hide();
+
+    }
+
+    public void ContinueSong() {
+
+        HideCards();
+        DisplayButtons();
+        _spawner.ContinueSong();
     }
 
     public void AddPauseObserver(Action action)

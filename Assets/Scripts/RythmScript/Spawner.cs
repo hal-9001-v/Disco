@@ -15,8 +15,6 @@ public class Spawner : MonoBehaviour
     [SerializeField] ArrowObject _downArrowPrototype;
     [SerializeField] ArrowObject _rightArrowPrototype;
 
-
-
     RythmCommand _rythmCommand;
 
     //Arrow Logic
@@ -149,6 +147,10 @@ public class Spawner : MonoBehaviour
             //Cards
             case 'c':
                 _displayCards = true;
+                break;
+
+            case 'e':
+                _rythmCommand.StopFight();
                 break;
 
             default:

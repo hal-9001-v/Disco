@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a86381b3374c7e94887fbbf6e550a53a, type: 3}
+  m_Name: Flirt 1
+  m_EditorClassIdentifier: 
+  options:
+  - englishAnswer: Nice Weather...
+    spanishAnswer: Se ha quedado buen dia...
+    englishReaction: Ah, yes.
+    spanishReaction: Si...
+    points: 0
+    neededCombo: 0
+  - englishAnswer: You look Great!
+    spanishAnswer: "\xA1Estas genial!"
+    englishReaction: You are so kind!
+    spanishReaction: "\xA1Que rico eres!"
+    points: 10
+    neededCombo: 0
+  - englishAnswer: Woof Wooof
+    spanishAnswer: Woof Wooof
+    englishReaction: Wooooof!
+    spanishReaction: Wooooooof!
+    points: 20
+    neededCombo: 0
+  - englishAnswer: Let's go watch Anime!
+    spanishAnswer: "\xA1Vamos a ver Anime!"
+    englishReaction: Heck yeah!
+    spanishReaction: "\xA1Dios SI!"
+    points: 30
+    neededCombo: 0
+  neededPoints: 40
